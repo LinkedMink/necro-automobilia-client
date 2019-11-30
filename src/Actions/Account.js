@@ -1,15 +1,11 @@
 export const SAVE_SESSION = 'SAVE_SESSION';
 export const DESTROY_SESSION = 'DESTROY_SESSION';
 
-export function saveSession(serverBaseUrl, email, userId, token, roles) {
+export function saveSession(token) {
   return { 
     type: SAVE_SESSION, 
     payload: { 
-      serverBaseUrl: serverBaseUrl, 
-      email: email, 
-      userId: userId, 
-      token: token,
-      roles: roles
+      token: token
     }
   };
 }

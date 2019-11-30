@@ -1,17 +1,62 @@
+
+import { withStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import RouterOutlet from './RouterOutlet';
+import NavigationMenuContainer from './Containers/NavigationMenuContainer';
+import HeaderPanel from './Components/HeaderPanel';
+import RouterOutlet from './Components/RouterOutlet';
 
-import './App.scss';
+const styles = theme => ({
+  root: {
+    display: 'flex',
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+});
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isMenuOpen: undefined,
+    };
+  }
+
+  handleMenuOpen = () => {
+    this.setState({ isMenuOpen: true });
+  }
+
+  handleMenuClose = () => {
+    this.setState({ isMenuOpen: false });
+  }
+
   render = () => (
     <BrowserRouter>
-    <h4>Hello</h4>
-      <RouterOutlet />
+      <CssBaseline />
+      <div className={this.props.classes.root}>
+        <HeaderPanel isOpen={this.state.isMenuOpen} onMenuOpen={this.handleMenuOpen} />
+        <NavigationMenuContainer isOpen={this.state.isMenuOpen} onMenuClose={this.handleMenuClose} />
+        <main className={this.props.classes.content}>
+          <div className={this.props.classes.appBarSpacer} />
+          <Container maxWidth="lg" className={this.props.classes.container}>
+            <RouterOutlet />
+          </Container>
+        </main>
+      </div>
     </BrowserRouter>
   )
 }
 
-export default App;
+export default withStyles(styles)(App);
