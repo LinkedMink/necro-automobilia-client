@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import NavigationMenuContainer from './Containers/NavigationMenuContainer';
 import HeaderPanel from './Components/HeaderPanel';
 import RouterOutlet from './Components/RouterOutlet';
+import FooterPanel from './Components/FooterPanel';
 
 const styles = theme => ({
   root: {
@@ -15,11 +16,14 @@ const styles = theme => ({
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
+    display: 'flex',
+    flexDirection: 'column',
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
   },
   container: {
+    flex: '1 1 auto',
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
@@ -53,6 +57,7 @@ class App extends React.Component {
           <Container maxWidth="lg" className={this.props.classes.container}>
             <RouterOutlet />
           </Container>
+          <FooterPanel />
         </main>
       </div>
     </BrowserRouter>

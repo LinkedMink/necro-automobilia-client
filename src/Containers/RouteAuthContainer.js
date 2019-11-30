@@ -4,7 +4,7 @@ import RouteAuth from "../Components/RouteAuth";
 
 function mapStateToProps (state) {
   return {
-    roles: state.account.roles ? state.account.roles : []
+    claims: state.account.claims ? state.account.claims : []
   };
 }
 

@@ -2,12 +2,14 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom'
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 
 import NavigationMenu from "../Components/NavigationMenu";
 
 function getGuestLinks() {
   return [
     { path: "/login", name: "Login", icon: LockOpenIcon, active: false },
+    { path: "/register", name: "Register", icon: PersonAddOutlinedIcon, active: false },
     { path: "/about", name: "About", icon: InfoOutlinedIcon, active: false },
   ];
 }

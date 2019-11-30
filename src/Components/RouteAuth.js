@@ -13,20 +13,20 @@ class RouteAuth extends React.Component {
     return rest;
   }
 
-  hasRequiredRole() {
-    let hasRequiredRole = true;
-    if (this.props.requiredRole) {
-      if (!this.props.roles || 
-          this.props.roles.indexOf(this.props.requiredRole) < 0) {
-        hasRequiredRole = false;
+  hasRequiredClaim() {
+    let hasRequiredClaim = true;
+    if (this.props.requiredClaim) {
+      if (!this.props.claims || 
+          this.props.claims.indexOf(this.props.requiredClaim) < 0) {
+        hasRequiredClaim = false;
       }
     }
 
-    return hasRequiredRole;
+    return hasRequiredClaim;
   }
 
   renderComponentRedirect(props) {
-    if (this.hasRequiredRole()) {
+    if (this.hasRequiredClaim()) {
       return (<this.props.component {...props} />);
     } else {
       return (<Redirect to={{ pathname: '/login', state: { from: props.location } }} />);
