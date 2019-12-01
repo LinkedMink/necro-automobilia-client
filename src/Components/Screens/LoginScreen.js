@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Link as RouterLink } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/List';
 import TextField from '@material-ui/core/TextField';
@@ -42,11 +43,11 @@ class LoginScreen extends React.Component {
     ));
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({[event.target.id]: event.target.value});
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
 
     if (this.props.login) {
@@ -54,62 +55,65 @@ class LoginScreen extends React.Component {
     }
   }
 
-  render() {
+  render = () => {
     if (this.props.isLoggedIn) {
       return <Redirect to='/' />
     }
 
     return (
-      <Paper className={this.props.classes.paper}>
-        <Typography variant="h5" component="h1">
-          Login
-        </Typography>
-        <form className={this.props.classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password" />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me" />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={this.props.classes.submit}>
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link component={this.getLinkReference("/password-reset")} variant="body2">
-                Forgot password?
-              </Link>
+      <Container maxWidth="md">
+        <Paper className={this.props.classes.paper}>
+          <Typography variant="h5" component="h1">
+            Login
+          </Typography>
+          <form className={this.props.classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              type="email"
+              autoFocus />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password" />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me" />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={this.props.classes.submit}>
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link component={this.getLinkReference("/password-reset")} variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link component={this.getLinkReference("/register")} variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link component={this.getLinkReference("/register")} variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
+          </form>
+        </Paper>
+      </Container>
     );
   }
 }

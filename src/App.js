@@ -1,10 +1,9 @@
-
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import LoadingOverlayContainer from './Containers/LoadingOverlayContainer';
 import NavigationMenuContainer from './Containers/NavigationMenuContainer';
 import HeaderPanel from './Components/HeaderPanel';
 import RouterOutlet from './Components/RouterOutlet';
@@ -49,14 +48,15 @@ class App extends React.Component {
   render = () => (
     <BrowserRouter>
       <CssBaseline />
+      <LoadingOverlayContainer />
       <div className={this.props.classes.root}>
         <HeaderPanel isOpen={this.state.isMenuOpen} onMenuOpen={this.handleMenuOpen} />
         <NavigationMenuContainer isOpen={this.state.isMenuOpen} onMenuClose={this.handleMenuClose} />
         <main className={this.props.classes.content}>
           <div className={this.props.classes.appBarSpacer} />
-          <Container maxWidth="lg" className={this.props.classes.container}>
+          <div className={this.props.classes.container}>
             <RouterOutlet />
-          </Container>
+          </div>
           <FooterPanel />
         </main>
       </div>

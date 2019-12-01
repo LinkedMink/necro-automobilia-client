@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: necro-automobilia
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: necro-automobilia
+  template:
+    metadata:
+      labels:
+        app: necro-automobilia
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: necro-automobilia
+        image: linkedmink/necro-automobilia
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: necro-automobilia
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: necro-automobilia

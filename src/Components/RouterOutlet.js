@@ -20,7 +20,7 @@ class RouterOutlet extends React.Component {
       <Route exact path="/login" component={LoginScreen} />
       <Route exact path="/register" component={RegisterScreen} />
       <Route exact path="/password-reset" component={PasswordResetScreen} />
-      <Route exact path="/set-password" component={SetPasswordScreen} />
+      <Route exact path="/set-password/:email/:token" component={SetPasswordScreen} />
       <Route exact path="/about" component={AboutScreen} />
       <RouteAuthContainer 
         requiredRole={Claim.NECRO_AUTOMOBILIA_USER} 

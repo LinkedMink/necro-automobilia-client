@@ -3,10 +3,12 @@ coverage
 node_modules
 public
 src
+tests
 .env
 .eslintrc.json
 .gitignoore
 jest.config.js
 README.md
+webpack.config.js
 
 npm-debug.log

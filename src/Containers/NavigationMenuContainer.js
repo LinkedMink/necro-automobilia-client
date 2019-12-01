@@ -18,10 +18,14 @@ function mapStateToProps (state, ownProps) {
   let links = getGuestLinks();
   const location = ownProps.location;
   
-  if (location && location.pathname.startsWith(links[1].path)) {
-    links[1].active = true;
-  } else {
-    links[1].active = false;
+  if (location) {
+    links.forEach((link) => {
+      if (location.pathname.startsWith(link.path)) {
+        link.active = true;
+      } else {
+        link.active = false;
+      }
+    });
   }
 
   return {
