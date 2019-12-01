@@ -47,9 +47,10 @@ class SetPasswordScreen extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    const { email, resetToken } = this.props.match.params
 
-    if (this.props.login) {
-      this.props.login(this.state)
+    if (this.props.resetPassword) {
+      this.props.resetPassword(email, resetToken, this.state.password);
     }
   }
 

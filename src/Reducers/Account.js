@@ -5,7 +5,7 @@ function account(state = {}, action) {
     return Object.assign({}, state, action.payload);
   } else if (action.type === DESTROY_SESSION) {
     return Object.assign({}, state, {
-      serverBaseUrl: null, email: null, userId: null, token: null, roles: null
+      token: undefined, decodedToken: undefined
     });
   } else {
     return Object.assign({}, state, action.payload);

@@ -9,11 +9,11 @@ const AlertSeverity = {
 function account(state = {}, action) {
   if (action.type === ALERT_CLEAR) {
     return Object.assign({}, state, { 
-      severity: null, message: null, redirect: null
+      severity: undefined, message: undefined, redirect: undefined
     });
   } else if (action.type === ALERT_ERROR) {
     return Object.assign({}, state, { 
-      severity: AlertSeverity.ERROR, message: action.payload, redirect: null
+      severity: AlertSeverity.ERROR, message: action.payload, redirect: undefined
     });
   } else if (action.type === ALERT_REDIRECT) {
     return Object.assign({}, state, { 

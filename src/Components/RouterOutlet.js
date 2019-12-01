@@ -13,9 +13,9 @@ import AboutScreen from './Screens/AboutScreen';
 
 class RouterOutlet extends React.Component {
   getDefaultRedirect = () => {
-    return this.props.isLoggedIn ? '/home' : '/login'
+    return this.props.defaultRedirect ? this.props.defaultRedirect : '/login'
   }
-LoginContainer
+
   render = () => (
     <Switch>
       <Route exact path="/login" component={LoginContainer} />
@@ -25,7 +25,7 @@ LoginContainer
       <Route exact path="/set-password/:email/:token" component={SetPasswordContainer} />
       <Route exact path="/about" component={AboutScreen} />
       <RouteAuthContainer 
-        requiredRole={Claim.NECRO_AUTOMOBILIA_USER} 
+        requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
         exact path="/home" component={HomeScreen} />
       <Redirect from="/" to={this.getDefaultRedirect()} />
     </Switch>

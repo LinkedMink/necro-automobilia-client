@@ -49,8 +49,8 @@ class RegisterScreen extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    if (this.props.login) {
-      this.props.login(this.state)
+    if (this.props.register) {
+      this.props.register(this.state.email, this.state.password);
     }
   }
 

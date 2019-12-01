@@ -1,14 +1,18 @@
+import jwt from "jsonwebtoken"
 import { connect } from "react-redux";
 
 import App from "./App";
+import { StorageKey } from "./Constants/Storage";
 import { RequestFactory } from "./Shared/RequestFactory";
 import { saveConfig } from "./Actions/Config";
+import { saveSession } from "./Actions/Account";
 
 const CONFIG_PATH = 'config';
 
 function mapStateToProps (state) {
   return {
-    isConfigLoaded: state.config.token ? true : false
+    isConfigLoaded: state.config.token ? true : false,
+    isLoggedIn: state.account.token ? true : false
   };
 }
 
@@ -30,6 +34,14 @@ function mapDispatchToProps(dispatch) {
         '',
         CONFIG_PATH, 
         responseHandler);
+    },
+    getAccount: () => {
+      const token = localStorage.getItem(StorageKey.JWT_TOKEN);
+      if (token) {
+        // TODO get public key with config endpoint and verify
+        var decoded = jwt.decode(token);
+        return dispatch(saveSession(token, decoded));
+      }
     }
   };
 }

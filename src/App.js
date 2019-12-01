@@ -39,6 +39,10 @@ class App extends React.Component {
     if (!this.props.isConfigLoaded && this.props.getConfig) {
       this.props.getConfig();
     }
+
+    if (this.props.getAccount) {
+      this.props.getAccount();
+    }
   }
 
   handleMenuOpen = () => {
@@ -59,7 +63,7 @@ class App extends React.Component {
         <main className={this.props.classes.content}>
           <div className={this.props.classes.appBarSpacer} />
           <div className={this.props.classes.container}>
-            <RouterOutlet />
+            <RouterOutlet defaultRedirect={this.props.isLoggedIn ? "/home" : "/login"} />
           </div>
           <FooterPanel />
         </main>

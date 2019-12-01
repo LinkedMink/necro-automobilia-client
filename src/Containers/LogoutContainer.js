@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom'
 import { connect } from "react-redux";
 
+import { StorageKey } from "../Constants/Storage";
 import { destroySession } from "../Actions/Account";
 
 function mapStateToProps (state) {
@@ -12,7 +13,10 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    logout: () => { dispatch(destroySession()) }
+    logout: () => { 
+      localStorage.removeItem(StorageKey.JWT_TOKEN);
+      dispatch(destroySession());
+    }
   };
 }
 

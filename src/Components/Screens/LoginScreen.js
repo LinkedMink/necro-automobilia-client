@@ -52,7 +52,7 @@ class LoginScreen extends React.Component {
     event.preventDefault();
 
     if (this.props.login) {
-      this.props.login(this.state)
+      this.props.login(this.state.email, this.state.password, this.state.password);
     }
   }
 

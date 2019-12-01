@@ -1,13 +1,34 @@
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/List';
+
+const styles = theme => ({
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+});
 
 class HomeScreen extends React.Component {
   render() {
     return (
-      <div>
+      <Container maxWidth="lg">
+        <Paper className={this.props.classes.paper}>
+          <Typography variant="h5" component="h1">
+            Home
+          </Typography>
+          <Typography variant="body1">
+            TODO. This is a work in progress.
+          </Typography>
 
-      </div>
+        </Paper>
+      </Container>
     );
   }
 }
 
-export default HomeScreen;
+export default withStyles(styles)(HomeScreen);

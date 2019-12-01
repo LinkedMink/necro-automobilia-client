@@ -1,11 +1,12 @@
 export const SAVE_SESSION = 'SAVE_SESSION';
 export const DESTROY_SESSION = 'DESTROY_SESSION';
 
-export function saveSession(token) {
+export function saveSession(token, decodedToken) {
   return { 
     type: SAVE_SESSION, 
     payload: { 
-      token: token
+      token,
+      decodedToken
     }
   };
 }

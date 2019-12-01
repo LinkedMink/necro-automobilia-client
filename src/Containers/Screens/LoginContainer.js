@@ -1,5 +1,7 @@
+import jwt from "jsonwebtoken"
 import { connect } from "react-redux";
 
+import { StorageKey } from "../../Constants/Storage";
 import { ServiceUrl } from "../../Constants/Service";
 import { HttpMethods, RequestFactory } from "../../Shared/RequestFactory";
 import LoginScreen from "../../Components/Screens/LoginScreen";
@@ -15,14 +17,20 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: credentials => {
+    login: (email, password, rememberMe) => {
       let requestData = { 
-        email: credentials.email, 
-        password: credentials.password 
+        email,
+        password,
       };
 
       let responseHandler = data => {
-        return dispatch(saveSession(data.token));
+        if (rememberMe) {
+          localStorage.setItem(StorageKey.JWT_TOKEN, data.token)
+        }
+
+        // TODO get public key with config endpoint and verify
+        var decoded = jwt.decode(data.token);
+        return dispatch(saveSession(data.token, decoded));
       }
 
       return RequestFactory.getJsonResponse(

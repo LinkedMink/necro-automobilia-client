@@ -8,7 +8,7 @@ function loading(state = {}, action) {
 
     return Object.assign({}, state, { 
       isLoading: true, 
-      percentComplete: action.payload.isProgressable ? 0 : null,
+      percentComplete: action.payload.isProgressable ? 0 : undefined,
       message: action.payload.message
     });
   } 
@@ -19,7 +19,7 @@ function loading(state = {}, action) {
   } else if (action.type === LOADING_END) {
     return Object.assign({}, state, { 
       isLoading: false,
-      percentComplete: null
+      percentComplete: undefined
     });
   } else {
     return state;
