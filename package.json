@@ -12,11 +12,11 @@
   },
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
     "test": "jest",
     "lint": "eslint --fix src/**/*.js",
-    "startProduction": "serve -s build -l 80",
+    "startProduction": "node ./server.js",
     "containerize": "npm run build && docker build -t linkedmink/base-app ."
   },
   "dependencies": {
@@ -68,6 +68,7 @@
     "style-loader": "^1.0.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^3.9.0",
+    "webpack-merge": "^4.2.2"
   }
 }

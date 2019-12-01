@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom'
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 
 import NavigationMenu from "../Components/NavigationMenu";
 
@@ -14,10 +16,23 @@ function getGuestLinks() {
   ];
 }
 
+function getAuthenticatedLinks() {
+  return [
+    { path: "/home", name: "Home", icon: HomeOutlinedIcon, active: false },
+    { path: "/about", name: "About", icon: InfoOutlinedIcon, active: false },
+    { path: "/logout", name: "Logout", icon: ExitToAppIcon, active: false },
+  ];
+}
+
 function mapStateToProps (state, ownProps) {
-  let links = getGuestLinks();
+  let links;
+  if (state.account.token) {
+    links = getAuthenticatedLinks();
+  } else {
+    links = getGuestLinks();
+  }
+
   const location = ownProps.location;
-  
   if (location) {
     links.forEach((link) => {
       if (location.pathname.startsWith(link.path)) {

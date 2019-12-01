@@ -35,6 +35,10 @@ class App extends React.Component {
     this.state = {
       isMenuOpen: undefined,
     };
+
+    if (!this.props.isConfigLoaded && this.props.getConfig) {
+      this.props.getConfig();
+    }
   }
 
   handleMenuOpen = () => {

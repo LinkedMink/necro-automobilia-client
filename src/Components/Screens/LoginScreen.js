@@ -33,7 +33,8 @@ class LoginScreen extends React.Component {
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      rememberMe: false
     };
   }
 
@@ -66,7 +67,10 @@ class LoginScreen extends React.Component {
           <Typography variant="h5" component="h1">
             Login
           </Typography>
-          <form className={this.props.classes.form} noValidate>
+          <form 
+            className={this.props.classes.form} 
+            onSubmit={this.handleSubmit}
+            noValidate>
             <TextField
               variant="outlined"
               margin="normal"
@@ -77,6 +81,8 @@ class LoginScreen extends React.Component {
               name="email"
               autoComplete="email"
               type="email"
+              value={this.state.email}
+              onChange={this.handleChange}
               autoFocus />
             <TextField
               variant="outlined"
@@ -87,9 +93,13 @@ class LoginScreen extends React.Component {
               label="Password"
               type="password"
               id="password"
+              value={this.state.password}
+              onChange={this.handleChange}
               autoComplete="current-password" />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={
+                <Checkbox id="rememberMe" value={this.state.rememberMe} color="primary" onChange={this.handleChange} />
+              }
               label="Remember me" />
             <Button
               type="submit"

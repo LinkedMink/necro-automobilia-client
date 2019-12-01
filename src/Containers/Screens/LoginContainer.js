@@ -1,9 +1,9 @@
 import { connect } from "react-redux";
 
-import { ServiceUrl } from "../Const/Service";
-import RequestFactory from "../Shared/RequestFactory";
-import LoginScreen from "../Components/Screens/LoginScreen";
-import { saveSession } from "../Actions/Account";
+import { ServiceUrl } from "../../Constants/Service";
+import { HttpMethods, RequestFactory } from "../../Shared/RequestFactory";
+import LoginScreen from "../../Components/Screens/LoginScreen";
+import { saveSession } from "../../Actions/Account";
 
 const AUTHENTICATE_PATH = 'authenticate';
 
@@ -22,7 +22,7 @@ function mapDispatchToProps(dispatch) {
       };
 
       let responseHandler = data => {
-        return saveSession(data.token);
+        return dispatch(saveSession(data.token));
       }
 
       return RequestFactory.getJsonResponse(
@@ -30,7 +30,7 @@ function mapDispatchToProps(dispatch) {
         ServiceUrl.USER,
         AUTHENTICATE_PATH, 
         responseHandler, 
-        true,
+        HttpMethods.POST,
         requestData);
     }
   };

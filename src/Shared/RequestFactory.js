@@ -4,9 +4,16 @@ import store from "../Store";
 import { alertError } from "../Actions/Alert";
 import { loadingStart, loadingEnd } from "../Actions/Loading";
 
-class RequestFactory {
-  static getHeaders(isAuthorized = true) {
-    let headers = { 
+export const HttpMethods = {
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  DELETE: "DELETE",
+}
+
+export class RequestFactory {
+  static getOptions(method = HttpMethods.GET, requestData = null, isAuthorized = true) {
+    const headers = { 
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
@@ -18,26 +25,16 @@ class RequestFactory {
       }
     }
 
-    return headers;
-  }
-
-  static getGetOptions(isAuthorized = true) {
-    let headers = RequestFactory.getHeaders(isAuthorized);
-
-    return {
-      method: 'GET',
+    const options = {
+      method: method,
       headers: headers,
     };
-  }
 
-  static getPostOptions(requestData = {}, isAuthorized = true) {
-    let headers = RequestFactory.getHeaders(isAuthorized);
+    if (requestData) {
+      options.body = JSON.stringify(requestData)
+    }
 
-    return {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(requestData)
-    };
+    return options
   }
 
   static getRequestUrl(targetService, pathQuery) {
@@ -49,15 +46,9 @@ class RequestFactory {
     }
   }
 
-  static getJsonResponse(dispatch, targetService, pathQuery, requestSuccessFunc, isPost = false, requestData = {}, isAuthorized = true) {
-    let url = RequestFactory.getRequestUrl(targetService, pathQuery);
-
-    let options = null;
-    if (isPost) {
-      options = RequestFactory.getPostOptions(requestData, isAuthorized);
-    } else {
-      options = RequestFactory.getGetOptions(requestData, isAuthorized);
-    }
+  static getJsonResponse(dispatch, targetService, pathQuery, requestSuccessFunc, method = HttpMethods.GET, requestData = null, isAuthorized = true) {
+    const url = RequestFactory.getRequestUrl(targetService, pathQuery);
+    const options = RequestFactory.getOptions(method, requestData, isAuthorized);
 
     dispatch(loadingStart())
 
@@ -77,10 +68,10 @@ class RequestFactory {
   }
 
   static handleServiceResponse(dispatch, json, requestSuccessFunc) {
-    if (json && json.code === 0) {
+    if (json && json.status === 0) {
       dispatch(requestSuccessFunc(json.data));
-    } else if (json && json.code) {
-      dispatch(alertError(`${json.code} : ${json.description} : ${json.errors}`));
+    } else if (json && json.status) {
+      dispatch(alertError(`${json.status} : ${json.data}`));
     } else if (json) {
       dispatch(requestSuccessFunc(json));
     }
@@ -93,5 +84,3 @@ class RequestFactory {
     dispatch(alertError(error.message));
   }
 }
-
-export default RequestFactory;

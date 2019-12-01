@@ -19,6 +19,13 @@ spec:
         image: linkedmink/necro-automobilia
         ports:
         - containerPort: 80
+        env:
+        - name: USER_SERVICE_URL
+          value: "https://[Your Host]"
+        - name: PREFERENCE_SERVICE_URL
+          value: "https://[Your Host]"
+        - name: NECRO_AUTOMOBILIA_URL
+          value: "https://[Your Host]"
 ---
 apiVersion: v1
 kind: Service
