@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
+import { ValidationRule, Validator } from "../../Shared/Validator";
+
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
@@ -28,10 +30,23 @@ const styles = theme => ({
 class SetPasswordScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.rules = {
+      password: {
+        label: "Password",
+        rules: [ValidationRule.REQUIRED, [ValidationRule.LENGTH, 8]]
+      },
+      confirmPassword: {
+        label: "Confirm Password",
+        rules: [ValidationRule.REQUIRED, [ValidationRule.MATCH, 'password']]
+      }
+    };
+
+    this.validator = new Validator(this.rules);
 
     this.state = {
       password: "",
       confirmPassword: "",
+      errors: this.validator.getDefaultErrorState()
     };
   }
 
@@ -49,7 +64,10 @@ class SetPasswordScreen extends React.Component {
     event.preventDefault();
     const { email, resetToken } = this.props.match.params
 
-    if (this.props.resetPassword) {
+    const validationState = this.validator.validate(this.state);
+    this.setState({ errors: validationState.errors });
+
+    if (validationState.isValid && this.props.resetPassword) {
       this.props.resetPassword(email, resetToken, this.state.password);
     }
   }
@@ -65,15 +83,19 @@ class SetPasswordScreen extends React.Component {
           <Typography variant="h5" component="h1">
             Reset Password
           </Typography>
-          <form className={this.props.classes.form} noValidate>
+          <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label={this.rules.password.label}
               type="password"
+              value={this.state.password}
+              error={this.state.errors.password.isInvalid}
+              helperText={this.state.errors.password.message}
+              onChange={this.handleChange}
               id="password" />
             <TextField
               variant="outlined"
@@ -81,8 +103,12 @@ class SetPasswordScreen extends React.Component {
               required
               fullWidth
               name="confirmPassword"
-              label="Confirm Password"
+              label={this.rules.confirmPassword.label}
               type="password"
+              value={this.state.confirmPassword}
+              error={this.state.errors.confirmPassword.isInvalid}
+              helperText={this.state.errors.confirmPassword.message}
+              onChange={this.handleChange}
               id="confirmPassword" />
             <Button
               type="submit"

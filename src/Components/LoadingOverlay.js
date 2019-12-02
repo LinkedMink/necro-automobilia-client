@@ -6,17 +6,22 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = theme => ({
   overlay: {
+    position: "absolute",
     width: "100%",
-    height: "calc(100% - 56px)",
+    height: "100%",
     backgroundColor: "#282d32",
-    color: "azure",
     zIndex: -1,
     opacity: 0,
-    transition: "0.25s ease-in-out",
+    transition: "0.2s ease-in-out",
   },
   overlayVisible: {
     zIndex: 100,
     opacity: 0.6
+  },
+  animation: {
+    display: "flex",
+    height: "100%",
+    alignItems: "center",
   }
 });
 
@@ -24,11 +29,11 @@ class LoadingOverlay extends React.Component {
   renderLoadingAnimation() {
     if (Number.isInteger(this.props.percentComplete)) {
       return (
-        <LinearProgress />
+        <LinearProgress variant="determinate" value={this.props.percentComplete} />
       );
     } else {
       return (
-        <LinearProgress variant="determinate" value={this.props.percentComplete} />
+        <LinearProgress />
       );
     }
   }
@@ -38,7 +43,7 @@ class LoadingOverlay extends React.Component {
       <div className={clsx(
         this.props.classes.overlay, 
         this.props.isLoading && this.props.classes.overlayVisible)}>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" className={this.props.classes.animation}>
           {this.renderLoadingAnimation()}
         </Container>
       </div>

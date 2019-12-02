@@ -3,6 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import AlertDialogContainer from './Containers/AlertDialogContainer';
 import LoadingOverlayContainer from './Containers/LoadingOverlayContainer';
 import NavigationMenuContainer from './Containers/NavigationMenuContainer';
 import HeaderPanel from './Components/HeaderPanel';
@@ -57,6 +58,7 @@ class App extends React.Component {
     <BrowserRouter>
       <CssBaseline />
       <LoadingOverlayContainer />
+      <AlertDialogContainer />
       <div className={this.props.classes.root}>
         <HeaderPanel isOpen={this.state.isMenuOpen} onMenuOpen={this.handleMenuOpen} />
         <NavigationMenuContainer isOpen={this.state.isMenuOpen} onMenuClose={this.handleMenuClose} />

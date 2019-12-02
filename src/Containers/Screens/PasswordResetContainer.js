@@ -25,7 +25,7 @@ function mapDispatchToProps(dispatch) {
       return RequestFactory.getJsonResponse(
         dispatch, 
         ServiceUrl.USER,
-        urlJoin(PASSWORD_RESET_PATH, email), 
+        urlJoin(PASSWORD_RESET_PATH, encodeURIComponent(email)), 
         responseHandler);
     }
   };

@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
+import { ValidationRule, Validator } from "../../Shared/Validator";
+
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
@@ -28,9 +30,18 @@ const styles = theme => ({
 class PasswordResetScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.rules = {
+      email: { 
+        label: "Email Address", 
+        rules: [ValidationRule.REQUIRED, ValidationRule.EMAIL]
+      },
+    };
+
+    this.validator = new Validator(this.rules);
 
     this.state = {
       email: "",
+      errors: this.validator.getDefaultErrorState()
     };
   }
 
@@ -47,7 +58,10 @@ class PasswordResetScreen extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    if (this.props.getResetLink) {
+    const validationState = this.validator.validate(this.state);
+    this.setState({ errors: validationState.errors });
+
+    if (validationState.isValid && this.props.getResetLink) {
       this.props.getResetLink(this.state.email);
     }
   }
@@ -63,17 +77,21 @@ class PasswordResetScreen extends React.Component {
           <Typography variant="h5" component="h1">
             Reset Password
           </Typography>
-          <form className={this.props.classes.form} noValidate>
+          <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={this.rules.email.label}
               name="email"
               autoComplete="email"
               type="email"
+              onChange={this.handleChange}
+              value={this.state.email}
+              error={this.state.errors.email.isInvalid}
+              helperText={this.state.errors.email.message}
               autoFocus />
             <Button
               type="submit"

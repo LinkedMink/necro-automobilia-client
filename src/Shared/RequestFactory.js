@@ -59,7 +59,7 @@ export class RequestFactory {
   }
 
   static handleRawResponse(dispatch, response) {
-    if (!response.ok) {
+    if (!response.status === 500) {
       dispatch(alertError(`${response.status} : ${response.statusText}`));
       return Promise.resolve(null);
     }
@@ -70,8 +70,8 @@ export class RequestFactory {
   static handleServiceResponse(dispatch, json, requestSuccessFunc) {
     if (json && json.status === 0) {
       dispatch(requestSuccessFunc(json.data));
-    } else if (json && json.status) {
-      dispatch(alertError(`${json.status} : ${json.data}`));
+    } else if (json && json.status === 1) {
+      dispatch(alertError(json.data));
     } else if (json) {
       dispatch(requestSuccessFunc(json));
     }

@@ -11,7 +11,7 @@ const CONFIG_PATH = 'config';
 
 function mapStateToProps (state) {
   return {
-    isConfigLoaded: state.config.token ? true : false,
+    isConfigLoaded: state.config.userServiceUrl ? true : false,
     isLoggedIn: state.account.token ? true : false
   };
 }

@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
+import { ValidationRule, Validator } from "../../Shared/Validator";
+
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
@@ -28,11 +30,28 @@ const styles = theme => ({
 class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.rules = {
+      email: { 
+        label: "Email Address", 
+        rules: [ValidationRule.REQUIRED, ValidationRule.EMAIL]
+      },
+      password: {
+        label: "Password",
+        rules: [ValidationRule.REQUIRED, [ValidationRule.LENGTH, 8]]
+      },
+      confirmPassword: {
+        label: "Confirm Password",
+        rules: [ValidationRule.REQUIRED, [ValidationRule.MATCH, 'password']]
+      }
+    };
+
+    this.validator = new Validator(this.rules);
 
     this.state = {
       email: "",
       password: "",
       confirmPassword: "",
+      errors: this.validator.getDefaultErrorState()
     };
   }
 
@@ -49,7 +68,10 @@ class RegisterScreen extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    if (this.props.register) {
+    const validationState = this.validator.validate(this.state);
+    this.setState({ errors: validationState.errors });
+
+    if (validationState.isValid && this.props.register) {
       this.props.register(this.state.email, this.state.password);
     }
   }
@@ -65,17 +87,21 @@ class RegisterScreen extends React.Component {
           <Typography variant="h5" component="h1">
             Register
           </Typography>
-          <form className={this.props.classes.form} noValidate>
+          <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={this.rules.email.label}
               name="email"
               autoComplete="email"
               type="email"
+              onChange={this.handleChange}
+              value={this.state.email}
+              error={this.state.errors.email.isInvalid}
+              helperText={this.state.errors.email.message}
               autoFocus />
             <TextField
               variant="outlined"
@@ -83,8 +109,12 @@ class RegisterScreen extends React.Component {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={this.rules.password.label}
               type="password"
+              value={this.state.password}
+              error={this.state.errors.password.isInvalid}
+              helperText={this.state.errors.password.message}
+              onChange={this.handleChange}
               id="password" />
             <TextField
               variant="outlined"
@@ -92,8 +122,12 @@ class RegisterScreen extends React.Component {
               required
               fullWidth
               name="confirmPassword"
-              label="Confirm Password"
+              label={this.rules.confirmPassword.label}
               type="password"
+              value={this.state.confirmPassword}
+              error={this.state.errors.confirmPassword.isInvalid}
+              helperText={this.state.errors.confirmPassword.message}
+              onChange={this.handleChange}
               id="confirmPassword" />
             <Button
               type="submit"

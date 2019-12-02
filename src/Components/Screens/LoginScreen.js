@@ -11,6 +11,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
+import { ValidationRule, Validator } from "../../Shared/Validator";
+
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
@@ -30,11 +32,24 @@ const styles = theme => ({
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.rules = {
+      email: { 
+        label: "Email Address", 
+        rules: [ValidationRule.REQUIRED]
+      },
+      password: {
+        label: "Password",
+        rules: [ValidationRule.REQUIRED]
+      }
+    };
+
+    this.validator = new Validator(this.rules);
 
     this.state = {
       email: "",
       password: "",
-      rememberMe: false
+      rememberMe: false,
+      errors: this.validator.getDefaultErrorState()
     };
   }
 
@@ -51,7 +66,10 @@ class LoginScreen extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    if (this.props.login) {
+    const validationState = this.validator.validate(this.state);
+    this.setState({ errors: validationState.errors });
+
+    if (validationState.isValid && this.props.login) {
       this.props.login(this.state.email, this.state.password, this.state.password);
     }
   }
@@ -77,11 +95,13 @@ class LoginScreen extends React.Component {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={this.rules.email.label}
               name="email"
               autoComplete="email"
               type="email"
               value={this.state.email}
+              error={this.state.errors.email.isInvalid}
+              helperText={this.state.errors.email.message}
               onChange={this.handleChange}
               autoFocus />
             <TextField
@@ -90,15 +110,21 @@ class LoginScreen extends React.Component {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={this.rules.password.label}
               type="password"
               id="password"
               value={this.state.password}
+              error={this.state.errors.password.isInvalid}
+              helperText={this.state.errors.password.message}
               onChange={this.handleChange}
               autoComplete="current-password" />
             <FormControlLabel
               control={
-                <Checkbox id="rememberMe" value={this.state.rememberMe} color="primary" onChange={this.handleChange} />
+                <Checkbox 
+                  id="rememberMe" 
+                  value={this.state.rememberMe} 
+                  color="primary" 
+                  onChange={this.handleChange} />
               }
               label="Remember me" />
             <Button
