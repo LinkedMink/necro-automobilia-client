@@ -51,14 +51,15 @@ class NavigationMenu extends React.Component {
 
   getLinkItem = (link, index) => {
     return (
-      <Link key={index} component={this.getLinkReference(link.path)}>
-        <ListItem button selected={link.active}>
-          <ListItemIcon>
-            <link.icon />
-          </ListItemIcon>
-          <ListItemText primary={link.name} />
-        </ListItem>
-      </Link>
+      <ListItem button 
+        key={index} 
+        component={this.getLinkReference(link.path)} 
+        selected={link.active}>
+        <ListItemIcon>
+          <link.icon />
+        </ListItemIcon>
+        <ListItemText primary={link.name} />
+      </ListItem>
     );
   }
 

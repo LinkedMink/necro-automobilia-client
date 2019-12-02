@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const config = require('./webpack.local.config.js');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -8,11 +9,7 @@ module.exports = merge(common, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.EnvironmentPlugin({
-      "LOCAL_CONFIG": JSON.stringify({
-        userServiceUrl: "https://user.api.linkedmink.space",
-        perferenceServiceUrl: "",
-        necroAutomobiliaUrl: ""
-      })
+      "LOCAL_CONFIG": JSON.stringify(config)
     }),
   ],
   devServer: {

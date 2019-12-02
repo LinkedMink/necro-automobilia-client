@@ -26,6 +26,10 @@ spec:
           value: "https://[Your Host]"
         - name: NECRO_AUTOMOBILIA_URL
           value: "https://[Your Host]"
+        - name: JWT_PUBLIC_KEY
+          value: ""
+        - name: GOOGLE_MAPS_API_KEY
+          value: ""
 ---
 apiVersion: v1
 kind: Service

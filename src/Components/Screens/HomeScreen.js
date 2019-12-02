@@ -1,31 +1,35 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
+
+import MapSearchContainer from "../../Containers/MapSearchContainer";
+import MortRankPanel from '../MortRankPanel';
+import StatsPanel from '../StatsPanel';
+import AnimationPanel from '../AnimationPanel';
 
 const styles = theme => ({
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
+
 });
 
 class HomeScreen extends React.Component {
   render() {
     return (
-      <Container maxWidth="lg">
-        <Paper className={this.props.classes.paper}>
-          <Typography variant="h5" component="h1">
-            Home
-          </Typography>
-          <Typography variant="body1">
-            TODO. This is a work in progress.
-          </Typography>
-
-        </Paper>
+      <Container maxWidth="xl">
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            <MapSearchContainer />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <MortRankPanel />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <StatsPanel />
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <AnimationPanel />
+          </Grid>
+        </Grid>
       </Container>
     );
   }

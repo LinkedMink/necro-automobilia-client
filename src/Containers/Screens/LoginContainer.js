@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken"
 import { connect } from "react-redux";
 
 import { StorageKey } from "../../Constants/Storage";
 import { ServiceUrl } from "../../Constants/Service";
+import { decodeToken } from "../../Shared/DecodeToken";
 import { HttpMethods, RequestFactory } from "../../Shared/RequestFactory";
 import LoginScreen from "../../Components/Screens/LoginScreen";
 import { saveSession } from "../../Actions/Account";
@@ -28,8 +28,7 @@ function mapDispatchToProps(dispatch) {
           localStorage.setItem(StorageKey.JWT_TOKEN, data.token)
         }
 
-        // TODO get public key with config endpoint and verify
-        var decoded = jwt.decode(data.token);
+        var decoded = decodeToken(data.token);
         return dispatch(saveSession(data.token, decoded));
       }
 
