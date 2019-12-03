@@ -60,8 +60,13 @@ class App extends React.Component {
       <LoadingOverlayContainer />
       <AlertDialogContainer />
       <div className={this.props.classes.root}>
-        <HeaderPanel isOpen={this.state.isMenuOpen} onMenuOpen={this.handleMenuOpen} />
-        <NavigationMenuContainer isOpen={this.state.isMenuOpen} onMenuClose={this.handleMenuClose} />
+        <HeaderPanel 
+          isLoggedIn={this.props.isLoggedIn}
+          isOpen={this.state.isMenuOpen} 
+          onMenuOpen={this.handleMenuOpen} />
+        <NavigationMenuContainer 
+          isOpen={this.state.isMenuOpen} 
+          onMenuClose={this.handleMenuClose} />
         <main className={this.props.classes.content}>
           <div className={this.props.classes.appBarSpacer} />
           <div className={this.props.classes.container}>

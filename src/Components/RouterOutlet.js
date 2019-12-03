@@ -9,6 +9,7 @@ import PasswordResetContainer from '../Containers/Screens/PasswordResetContainer
 import SetPasswordContainer from '../Containers/Screens/SetPasswordContainer';
 import RegisterSContainer from '../Containers/Screens/RegisterContainer';
 import HomeScreen from './Screens/HomeScreen';
+import AccountScreen from './Screens/AccountScreen';
 import AboutScreen from './Screens/AboutScreen';
 
 class RouterOutlet extends React.Component {
@@ -27,6 +28,9 @@ class RouterOutlet extends React.Component {
       <RouteAuthContainer 
         requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
         exact path="/home" component={HomeScreen} />
+      <RouteAuthContainer 
+        requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
+        exact path="/account" component={AccountScreen} />
       <Redirect from="/" to={this.getDefaultRedirect()} />
     </Switch>
   )

@@ -1,8 +1,10 @@
 import clsx from 'clsx';
+import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
@@ -38,6 +40,25 @@ const styles = theme => ({
 });
 
 class HeaderPanel extends React.Component {
+  getLinkReference = (path) => {
+    return React.forwardRef((props, ref) => (
+      <RouterLink innerRef={ref} to={path} {...props} />
+    ));
+  }
+
+  renderAccount = () => {
+    if (this.props.isLoggedIn) {
+      return (
+        <IconButton 
+          aria-label="account"
+          color="inherit"
+          component={this.getLinkReference("/account")} >
+          <AccountCircleIcon />
+        </IconButton>
+      )
+    }
+  }
+
   render = () => (
     <AppBar 
       position="absolute" 
@@ -59,6 +80,7 @@ class HeaderPanel extends React.Component {
           className={this.props.classes.title}>
           Necro Automobilia
         </Typography>
+        {this.renderAccount()}
       </Toolbar>
     </AppBar>
   )

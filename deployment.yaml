@@ -27,9 +27,9 @@ spec:
         - name: NECRO_AUTOMOBILIA_URL
           value: "https://[Your Host]"
         - name: JWT_PUBLIC_KEY
-          value: ""
+          value: "[Base64(PEM) If empty, the JWT token will be decoded without verification]"
         - name: GOOGLE_MAPS_API_KEY
-          value: ""
+          value: "[See https://developers.google.com/maps/gmp-get-started]"
 ---
 apiVersion: v1
 kind: Service
