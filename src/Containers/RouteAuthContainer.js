@@ -4,6 +4,7 @@ import RouteAuth from "../Components/RouteAuth";
 
 function mapStateToProps (state) {
   return {
+    isLoggedIn: state.account.token ? true : false,
     claims: state.account.decodedToken && state.account.decodedToken.claims 
       ? state.account.decodedToken.claims : []
   };

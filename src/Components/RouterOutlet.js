@@ -11,6 +11,7 @@ import RegisterSContainer from '../Containers/Screens/RegisterContainer';
 import HomeScreen from './Screens/HomeScreen';
 import AccountScreen from './Screens/AccountScreen';
 import AboutScreen from './Screens/AboutScreen';
+import UnauthorizedScreen from './Screens/UnauthorizedScreen';
 
 class RouterOutlet extends React.Component {
   getDefaultRedirect = () => {
@@ -25,6 +26,7 @@ class RouterOutlet extends React.Component {
       <Route exact path="/password-reset" component={PasswordResetContainer} />
       <Route exact path="/set-password/:email/:token" component={SetPasswordContainer} />
       <Route exact path="/about" component={AboutScreen} />
+      <Route exact path="/unauthorized/:claims" component={UnauthorizedScreen} />
       <RouteAuthContainer 
         requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
         exact path="/home" component={HomeScreen} />

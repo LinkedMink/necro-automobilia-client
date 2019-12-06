@@ -10,7 +10,9 @@ if (!jwtPublicKey) {
     ? process.env.JWT_PUBLIC_KEY_FILE 
     : 'jwtRS256.key.pub';
 
-  jwtPublicKey = btoa(fs.readFileSync(jwtPublicKeyFile, 'utf8'));
+  if (fs.existsSync(jwtPublicKeyFile)) {
+    jwtPublicKey = btoa(fs.readFileSync(jwtPublicKeyFile, 'utf8'));
+  }
 }
 
 app.use(express.static(path.join(__dirname, 'public')));

@@ -14,7 +14,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    minHeight: 300
+    minHeight: 350
   },
   form: {
     width: '100%', // Fix IE 11 issue.

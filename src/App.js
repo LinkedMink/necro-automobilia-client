@@ -7,6 +7,7 @@ import AlertDialogContainer from './Containers/AlertDialogContainer';
 import LoadingOverlayContainer from './Containers/LoadingOverlayContainer';
 import NavigationMenuContainer from './Containers/NavigationMenuContainer';
 import HeaderPanel from './Components/HeaderPanel';
+import LoadingOverlay from './Components/LoadingOverlay';
 import RouterOutlet from './Components/RouterOutlet';
 import FooterPanel from './Components/FooterPanel';
 
@@ -54,29 +55,35 @@ class App extends React.Component {
     this.setState({ isMenuOpen: false });
   }
 
-  render = () => (
-    <BrowserRouter>
-      <CssBaseline />
-      <LoadingOverlayContainer />
-      <AlertDialogContainer />
-      <div className={this.props.classes.root}>
-        <HeaderPanel 
-          isLoggedIn={this.props.isLoggedIn}
-          isOpen={this.state.isMenuOpen} 
-          onMenuOpen={this.handleMenuOpen} />
-        <NavigationMenuContainer 
-          isOpen={this.state.isMenuOpen} 
-          onMenuClose={this.handleMenuClose} />
-        <main className={this.props.classes.content}>
-          <div className={this.props.classes.appBarSpacer} />
-          <div className={this.props.classes.container}>
-            <RouterOutlet defaultRedirect={this.props.isLoggedIn ? "/home" : "/login"} />
-          </div>
-          <FooterPanel />
-        </main>
-      </div>
-    </BrowserRouter>
-  )
+  render = () => {
+    if (!this.props.isConfigLoaded) {
+      return <LoadingOverlay isLoading={true} />
+    }
+
+    return (
+      <BrowserRouter>
+        <CssBaseline />
+        <LoadingOverlayContainer />
+        <AlertDialogContainer />
+        <div className={this.props.classes.root}>
+          <HeaderPanel 
+            isLoggedIn={this.props.isLoggedIn}
+            isOpen={this.state.isMenuOpen} 
+            onMenuOpen={this.handleMenuOpen} />
+          <NavigationMenuContainer 
+            isOpen={this.state.isMenuOpen} 
+            onMenuClose={this.handleMenuClose} />
+          <main className={this.props.classes.content}>
+            <div className={this.props.classes.appBarSpacer} />
+            <div className={this.props.classes.container}>
+              <RouterOutlet defaultRedirect={this.props.isLoggedIn ? "/home" : "/login"} />
+            </div>
+            <FooterPanel />
+          </main>
+        </div>
+      </BrowserRouter>
+    )
+  }
 }
 
 export default withStyles(styles)(App);

@@ -26,10 +26,12 @@ class RouteAuth extends React.Component {
   }
 
   renderComponentRedirect(props) {
-    if (this.hasRequiredClaim()) {
+    if (!this.props.isLoggedIn) {
+      return (<Redirect to={{ pathname: '/login', state: { from: props.location } }} />);
+    } else if (this.hasRequiredClaim()) {
       return (<this.props.component {...props} />);
     } else {
-      return (<Redirect to={{ pathname: '/login', state: { from: props.location } }} />);
+      return (<Redirect to={{ pathname: `/unauthorized/${this.props.requiredClaim}`, state: { from: props.location } }} />);
     }
   }
 
