@@ -15,15 +15,24 @@ if (!jwtPublicKey) {
   }
 }
 
+const logLevelConsole = process.env.LOG_LEVEL_CONSOLE 
+  ? process.env.LOG_LEVEL_CONSOLE.toUpperCase() 
+  : 'NONE'
+
+const logLevelPersist = process.env.LOG_LEVEL_CONSOLE 
+  ? process.env.LOG_LEVEL_PERSIST.toUpperCase() 
+  : 'WARN'
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/config', function (req, res) {
   res.send({
     userServiceUrl: process.env.USER_SERVICE_URL,
-    perferenceServiceUrl: process.env.PREFERENCE_SERVICE_URL,
     necroAutomobiliaUrl: process.env.NECRO_AUTOMOBILIA_URL,
     jwtPublicKey: jwtPublicKey,
     googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+    logLevelConsole,
+    logLevelPersist
   });
 })
 

@@ -22,8 +22,6 @@ spec:
         env:
         - name: USER_SERVICE_URL
           value: "https://[Your Host]"
-        - name: PREFERENCE_SERVICE_URL
-          value: "https://[Your Host]"
         - name: NECRO_AUTOMOBILIA_URL
           value: "https://[Your Host]"
         - name: JWT_PUBLIC_KEY

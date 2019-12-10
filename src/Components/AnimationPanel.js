@@ -9,6 +9,8 @@ const styles = theme => ({
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
+    height: '100%',
+    minHeight: 300
   },
 });
 

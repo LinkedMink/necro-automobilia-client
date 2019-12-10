@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import urlJoin from "url-join";
 
 import { ServiceUrl } from "../../Constants/Service";
-import { RequestFactory } from "../../Shared/RequestFactory";
+import { getJsonResponse } from "../../Shared/RequestFactory";
 import PasswordResetScreen from "../../Components/Screens/PasswordResetScreen";
 import { alertRedirect } from "../../Actions/Alert";
 
@@ -22,7 +22,7 @@ function mapDispatchToProps(dispatch) {
           "A reset link has been sent. Check your email.", "/login"));
       }
 
-      return RequestFactory.getJsonResponse(
+      return getJsonResponse(
         dispatch, 
         ServiceUrl.USER,
         urlJoin(PASSWORD_RESET_PATH, encodeURIComponent(email)), 

@@ -2,10 +2,10 @@ import { connect } from "react-redux";
 
 import { ServiceUrl } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
-import SetPasswordScreen from "../../Components/Screens/SetPasswordScreen";
-import { alertRedirect } from "../../Actions/Alert";
+import QueryScreen from "../../Components/Screens/QueryScreen";
+import { saveAccidents } from "../../Actions/Accidents";
 
-const PASSWORD_RESET_PATH = 'password';
+const AUTHENTICATE_PATH = 'authenticate';
 
 function mapStateToProps (state) {
   return {
@@ -15,29 +15,27 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    resetPassword: (email, resetToken, password) => {
+    login: (email, password, rememberMe) => {
       let requestData = { 
         email,
-        resetToken,
         password,
       };
 
       let responseHandler = data => {
-        return dispatch(alertRedirect(
-          "Your password has been reset.", "/login"));
+        saveAccidents(data);
       }
 
       return getJsonResponse(
         dispatch, 
-        ServiceUrl.USER,
-        PASSWORD_RESET_PATH, 
+        ServiceUrl.NECRO_AUTOMOBILIA,
+        AUTHENTICATE_PATH, 
         responseHandler, 
-        HttpMethods.PUT,
+        HttpMethods.POST,
         requestData);
     }
   };
 }
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(SetPasswordScreen);
+const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(QueryScreen);
 
 export default LoginContainer

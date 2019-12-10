@@ -3,6 +3,9 @@ import urlJoin from "url-join";
 import store from "../Store";
 import { alertError } from "../Actions/Alert";
 import { loadingStart, loadingEnd } from "../Actions/Loading";
+import { LogService } from "../Shared/LogService";
+
+const GENERIC_REQUEST_ERROR = "An error occurred while processing your request. If the problem persist, contact the administrator."
 
 export const HttpMethods = {
   GET: "GET",
@@ -11,63 +14,61 @@ export const HttpMethods = {
   DELETE: "DELETE",
 }
 
-export class RequestFactory {
-  static getOptions(method = HttpMethods.GET, requestData = null, isAuthorized = true) {
-    const headers = { 
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
-    
-    if (isAuthorized) {
-      const state = store.getState();
-      if (state.account.token) {
-        headers['Authorization'] = `Bearer ${state.account.token}`
-      }
-    }
+const logger = LogService.getInstance("RequestFactory");
 
-    const options = {
-      method: method,
-      headers: headers,
-    };
-
-    if (requestData) {
-      options.body = JSON.stringify(requestData)
-    }
-
-    return options
-  }
-
-  static getRequestUrl(targetService, pathQuery) {
+const getOptions = (method = HttpMethods.GET, requestData = null, isAuthorized = true) => {
+  const headers = { 
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  };
+  
+  if (isAuthorized) {
     const state = store.getState();
-    if (state.config[targetService]) {
-      return urlJoin(state.config[targetService], pathQuery);
-    } else {
-      return pathQuery;
+    if (state.account.token) {
+      headers['Authorization'] = `Bearer ${state.account.token}`
     }
   }
 
-  static getJsonResponse(dispatch, targetService, pathQuery, requestSuccessFunc, method = HttpMethods.GET, requestData = null, isAuthorized = true) {
-    const url = RequestFactory.getRequestUrl(targetService, pathQuery);
-    const options = RequestFactory.getOptions(method, requestData, isAuthorized);
+  const options = {
+    method: method,
+    headers: headers,
+  };
 
-    dispatch(loadingStart())
-
-    return fetch(url, options)
-      .then(response => RequestFactory.handleRawResponse(dispatch, response))
-      .then(json => RequestFactory.handleServiceResponse(dispatch, json, requestSuccessFunc))
-      .catch(error => RequestFactory.handleGenericCatch(dispatch, error));
+  if (requestData) {
+    options.body = JSON.stringify(requestData)
   }
 
-  static handleRawResponse(dispatch, response) {
-    if (!response.status === 500) {
-      dispatch(alertError(`${response.status} : ${response.statusText}`));
+  return options
+}
+
+const getRequestUrl = (targetService, pathQuery) => {
+  const state = store.getState();
+  if (state.config[targetService]) {
+    return urlJoin(state.config[targetService], pathQuery);
+  } else {
+    return pathQuery;
+  }
+}
+
+const handleRawResponse = (dispatch, url, options) => {
+  return (response) => {
+    if (response.status === 500) {
+      logger.error({
+        url,
+        verb: options.method, 
+        body: options.body,
+        response: `${response.status}: ${response.body}`,
+      });
+      dispatch(alertError(GENERIC_REQUEST_ERROR));
       return Promise.resolve(null);
     }
 
     return response.json();
   }
+}
 
-  static handleServiceResponse(dispatch, json, requestSuccessFunc) {
+const handleServiceResponse = (dispatch, requestSuccessFunc) => {
+  return (json) => {
     if (json && json.status === 0) {
       dispatch(requestSuccessFunc(json.data));
     } else if (json && json.status === 1) {
@@ -78,9 +79,26 @@ export class RequestFactory {
 
     dispatch(loadingEnd())
   }
+}
 
-  static handleGenericCatch(dispatch, error) {
+const handleGenericCatch = (dispatch, url, options) => {
+  return (error) => {
+    logger.error({ url, verb: options.method, body: options.body, error });
     dispatch(loadingEnd());
-    dispatch(alertError(error.message));
+    dispatch(alertError(GENERIC_REQUEST_ERROR));
   }
+}
+
+export const getJsonResponse = (
+  dispatch, targetService, pathQuery, requestSuccessFunc, method = HttpMethods.GET, requestData = null, isAuthorized = true) => {
+    
+  const url = getRequestUrl(targetService, pathQuery);
+  const options = getOptions(method, requestData, isAuthorized);
+
+  dispatch(loadingStart())
+
+  return fetch(url, options)
+    .then(handleRawResponse(dispatch, url, options))
+    .then(handleServiceResponse(dispatch, requestSuccessFunc))
+    .catch(handleGenericCatch(dispatch, url, options));
 }

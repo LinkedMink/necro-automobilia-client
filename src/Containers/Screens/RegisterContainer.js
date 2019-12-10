@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { ServiceUrl } from "../../Constants/Service";
-import { HttpMethods, RequestFactory } from "../../Shared/RequestFactory";
+import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import RegisterScreen from "../../Components/Screens/RegisterScreen";
 import { alertRedirect } from "../../Actions/Alert";
 
@@ -26,7 +26,7 @@ function mapDispatchToProps(dispatch) {
           "Your account has been created. Verify your email address to login.", "/login"));
       }
 
-      return RequestFactory.getJsonResponse(
+      return getJsonResponse(
         dispatch, 
         ServiceUrl.USER,
         REGISTER_PATH, 

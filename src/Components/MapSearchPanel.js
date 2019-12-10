@@ -35,12 +35,12 @@ class MapSearchPanel extends React.Component {
     super(props)
 
     this.rules = {
-      source: { 
-        label: "source", 
+      mapSource: { 
+        label: "Source", 
         rules: [ValidationRule.REQUIRED]
       },
-      destination: { 
-        label: "destination", 
+      mapDestination: { 
+        label: "Destination", 
         rules: [ValidationRule.REQUIRED]
       },
     };
@@ -48,8 +48,8 @@ class MapSearchPanel extends React.Component {
     this.validator = new Validator(this.rules);
 
     this.state = {
-      source: "",
-      destination: "",
+      mapSource: "",
+      mapDestination: "",
       isMapLoaded: false,
       errors: this.validator.getDefaultErrorState()
     };
@@ -82,8 +82,8 @@ class MapSearchPanel extends React.Component {
       const initMap = () => {
         this.setState({ isMapLoaded: true })
         this.map.initMap("mapSurface")
-        this.map.initAutocomplete("source", this.handleAutocompleteChange)
-        this.map.initAutocomplete("destination", this.handleAutocompleteChange)
+        //this.map.initAutocomplete("mapSource", this.handleAutocompleteChange)
+        //this.map.initAutocomplete("mapDestination", this.handleAutocompleteChange)
       };
 
       const loadPromise = this.map.loadApiScript({ libraries: "places" });
@@ -104,31 +104,28 @@ class MapSearchPanel extends React.Component {
               <TextField
                 required
                 fullWidth
-                id="source"
-                label={this.rules.source.label}
-                name="source"
-                autoComplete="source"
+                id="mapSource"
+                label={this.rules.mapSource.label}
+                name="mapSource"
                 type="text"
                 onChange={this.handleChange}
-                value={this.state.source}
-                error={this.state.errors.source.isInvalid}
-                helperText={this.state.errors.source.message}
+                value={this.state.mapSource}
+                error={this.state.errors.mapSource.isInvalid}
+                helperText={this.state.errors.mapSource.message}
                 autoFocus />
             </Grid>
             <Grid item xs={12} sm={5}>
               <TextField
                 required
                 fullWidth
-                id="destination"
-                label={this.rules.destination.label}
-                name="destination"
-                autoComplete="destination"
+                id="mapDestination"
+                label={this.rules.mapDestination.label}
+                name="mapDestination"
                 type="text"
                 onChange={this.handleChange}
-                value={this.state.destination}
-                error={this.state.errors.destination.isInvalid}
-                helperText={this.state.errors.destination.message}
-                autoFocus />
+                value={this.state.mapDestination}
+                error={this.state.errors.mapDestination.isInvalid}
+                helperText={this.state.errors.mapDestination.message} />
             </Grid>
             <Grid item xs={6} sm={2} className={this.props.classes.submitContainer}>
               <Button

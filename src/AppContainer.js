@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import App from "./App";
 import { StorageKey } from "./Constants/Storage";
-import { RequestFactory } from "./Shared/RequestFactory";
+import { getJsonResponse } from "./Shared/RequestFactory";
 import { decodeToken } from "./Shared/DecodeToken";
 import { saveConfig } from "./Actions/Config";
 import { saveSession } from "./Actions/Account";
@@ -29,7 +29,7 @@ function mapDispatchToProps(dispatch) {
         return dispatch(saveConfig(data));
       }
 
-      return RequestFactory.getJsonResponse(
+      return getJsonResponse(
         dispatch, 
         '',
         CONFIG_PATH, 

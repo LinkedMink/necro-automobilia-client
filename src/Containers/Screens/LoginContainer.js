@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { StorageKey } from "../../Constants/Storage";
 import { ServiceUrl } from "../../Constants/Service";
 import { decodeToken } from "../../Shared/DecodeToken";
-import { HttpMethods, RequestFactory } from "../../Shared/RequestFactory";
+import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import LoginScreen from "../../Components/Screens/LoginScreen";
 import { saveSession } from "../../Actions/Account";
 
@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
         return dispatch(saveSession(data.token, decoded));
       }
 
-      return RequestFactory.getJsonResponse(
+      return getJsonResponse(
         dispatch, 
         ServiceUrl.USER,
         AUTHENTICATE_PATH, 
