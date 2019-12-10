@@ -2,6 +2,7 @@ export const ValidationRule = {
   REQUIRED: "REQUIRED",
   EMAIL: "EMAIL",
   LENGTH: "LENGTH",
+  RANGE: "RANGE",
   MATCH: "MATCH",
 }
 
@@ -53,6 +54,7 @@ export class Validator {
       ruleType = rule[0]
     }
 
+    let min, max;
     switch (ruleType) {
       case ValidationRule.REQUIRED:
         if (value === undefined || value === "") {
@@ -65,13 +67,25 @@ export class Validator {
         }
         return;
       case ValidationRule.LENGTH:
-        const min = rule[1];
-        const max = rule[2];
+        if (value.trim() === '') return;
+        min = rule[1];
+        max = rule[2];
         if (min && value.length < min) {
           return `${label} must be longer than ${min} characters`;
         }
         if (max && value.length > max) {
           return `${label} must be shorter than ${max} characters`;
+        }
+        return;
+      case ValidationRule.RANGE:
+        if (value.trim() === '') return;
+        min = rule[1];
+        max = rule[2];
+        if (min && value < min) {
+          return `${label} must be greater than ${min}`;
+        }
+        if (max && value > max) {
+          return `${label} must be less than ${max}`;
         }
         return;
       case ValidationRule.MATCH:

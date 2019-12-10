@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/List';
-import Typography from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   paper: {
@@ -21,7 +21,7 @@ class AboutScreen extends React.Component {
     return (
       <Container maxWidth="lg">
         <Paper className={this.props.classes.paper}>
-          <Typography variant="h5" component="h1">
+          <Typography variant="h3">
             About
           </Typography>
           <Typography variant="body1">

@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   paper: {
@@ -17,7 +17,7 @@ class FooterPanel extends React.Component {
   render() {
     return (
       <Box pt={4}>
-        <Typography variant="body2" color="textSecondary" align="center">
+        <Typography variant="body1" color="textSecondary" align="center">
           {'Copyright © '}
           <Link color="inherit" href="#">
             Harlan Sang

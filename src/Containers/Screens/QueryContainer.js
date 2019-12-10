@@ -3,39 +3,41 @@ import { connect } from "react-redux";
 import { ServiceUrl } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import QueryScreen from "../../Components/Screens/QueryScreen";
-import { saveAccidents } from "../../Actions/Accidents";
+import { saveAccidents } from "../../Actions/Accident";
 
-const AUTHENTICATE_PATH = 'authenticate';
+const ACCIDENTS_PATH = 'accidents';
 
 function mapStateToProps (state) {
   return {
-    isLoggedIn: state.account.token ? true : false
+    accidentData: state.accident.queryResult
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (email, password, rememberMe) => {
+    query: (query, sort, pageNumber, pageSize) => {
       let requestData = { 
-        email,
-        password,
+        query,
+        sort,
+        pageNumber,
+        pageSize
       };
 
       let responseHandler = data => {
-        saveAccidents(data);
+        return dispatch(saveAccidents(data));
       }
 
       return getJsonResponse(
         dispatch, 
         ServiceUrl.NECRO_AUTOMOBILIA,
-        AUTHENTICATE_PATH, 
+        ACCIDENTS_PATH, 
         responseHandler, 
-        HttpMethods.POST,
+        HttpMethods.GET,
         requestData);
     }
   };
 }
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(QueryScreen);
+const QueryContainer = connect(mapStateToProps, mapDispatchToProps)(QueryScreen);
 
-export default LoginContainer
+export default QueryContainer

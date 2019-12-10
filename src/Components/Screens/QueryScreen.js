@@ -1,35 +1,38 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
+
+import JsonResultPanel from '../JsonResultPanel';
+import QueryControlPanel from '../QueryControlPanel';
 
 const styles = theme => ({
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
+  fill: {
+    height: "100%"
+  }
 });
 
-class AboutScreen extends React.Component {
-  render() {
-    return (
-      <Container maxWidth="lg">
-        <Paper className={this.props.classes.paper}>
-          <Typography variant="h5" component="h1">
-            Fatality Query
-          </Typography>
-          <Typography variant="body1">
-            TODO. This will eventually display the data in a more user friendly format. For now,
-            I've created this tool for colloborators to get a sense of the available data.
-          </Typography>
+class QueryScreen extends React.Component {
+  handleControlPanelSubmit = (query, sort, pageNumber, pageSize) => {
+    if (this.props.query) {
+      this.props.query(query, sort, pageNumber, pageSize);
+    }
+  }
 
-        </Paper>
+  render = () => {
+    return (
+      <Container maxWidth="xl" className={this.props.classes.fill}>
+        <Grid container spacing={3} className={this.props.classes.fill}>
+          <Grid item xs={12} md={3}>
+            <QueryControlPanel onSubmit={this.handleControlPanelSubmit} />
+          </Grid>
+          <Grid item xs={12} md={9}>
+            <JsonResultPanel result={this.props.accidentData} />
+          </Grid>
+        </Grid>
       </Container>
     );
   }
 }
 
-export default withStyles(styles)(AboutScreen);
+export default withStyles(styles)(QueryScreen);

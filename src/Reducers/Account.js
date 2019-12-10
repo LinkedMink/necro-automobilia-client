@@ -8,7 +8,7 @@ function account(state = {}, action) {
       token: undefined, decodedToken: undefined
     });
   } else {
-    return Object.assign({}, state, action.payload);
+    return state;
   }
 }
 

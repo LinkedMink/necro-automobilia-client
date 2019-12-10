@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -67,7 +67,7 @@ class MortRankPanel extends React.Component {
   render = () => {
     return (
       <Paper className={this.props.classes.paper}>
-        <Typography variant="h5" component="h2">
+        <Typography variant="h4">
           <Link href="https://en.wikipedia.org/wiki/Micromort">Micromorts</Link>
         </Typography>
         <List>

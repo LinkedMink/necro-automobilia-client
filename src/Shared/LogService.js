@@ -21,7 +21,7 @@ export class LogService {
     this.levelPersist = LogLevel[state.config.logLevelPersist];
   }
 
-  static getInstance = (context) => {
+  static get = (context) => {
     const service = logServiceMap.get(context);
     if (service) {
       return service;

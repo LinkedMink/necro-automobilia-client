@@ -1,3 +1,4 @@
+import queryString from "query-string";
 import urlJoin from "url-join";
 
 import store from "../Store";
@@ -13,8 +14,6 @@ export const HttpMethods = {
   PUT: "PUT",
   DELETE: "DELETE",
 }
-
-const logger = LogService.getInstance("RequestFactory");
 
 const getOptions = (method = HttpMethods.GET, requestData = null, isAuthorized = true) => {
   const headers = { 
@@ -41,19 +40,10 @@ const getOptions = (method = HttpMethods.GET, requestData = null, isAuthorized =
   return options
 }
 
-const getRequestUrl = (targetService, pathQuery) => {
-  const state = store.getState();
-  if (state.config[targetService]) {
-    return urlJoin(state.config[targetService], pathQuery);
-  } else {
-    return pathQuery;
-  }
-}
-
 const handleRawResponse = (dispatch, url, options) => {
   return (response) => {
     if (response.status === 500) {
-      logger.error({
+      LogService.get("RequestFactory").error({
         url,
         verb: options.method, 
         body: options.body,
@@ -83,17 +73,29 @@ const handleServiceResponse = (dispatch, requestSuccessFunc) => {
 
 const handleGenericCatch = (dispatch, url, options) => {
   return (error) => {
-    logger.error({ url, verb: options.method, body: options.body, error });
+    LogService.get("RequestFactory").error({ url, verb: options.method, body: options.body, stack: error.stack });
     dispatch(loadingEnd());
     dispatch(alertError(GENERIC_REQUEST_ERROR));
   }
 }
 
 export const getJsonResponse = (
-  dispatch, targetService, pathQuery, requestSuccessFunc, method = HttpMethods.GET, requestData = null, isAuthorized = true) => {
+  dispatch, targetService, path, requestSuccessFunc, method = HttpMethods.GET, requestData = null, isAuthorized = true) => {
     
-  const url = getRequestUrl(targetService, pathQuery);
-  const options = getOptions(method, requestData, isAuthorized);
+  const state = store.getState();
+  let url;
+  if (state.config[targetService]) {
+    url = urlJoin(state.config[targetService], path);
+  } else {
+    url = path;
+  }
+
+  if (requestData && method === HttpMethods.GET) {
+    const query = queryString.stringify(requestData);
+    url += '?' + query
+  }
+
+  const options = getOptions(method, method === HttpMethods.GET ? null : requestData, isAuthorized);
 
   dispatch(loadingStart())
 

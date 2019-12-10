@@ -76,7 +76,7 @@ class HeaderPanel extends React.Component {
             this.props.isOpen && this.props.classes.menuButtonHidden)}>
           <MenuIcon />
         </IconButton>
-        <Typography component="h1" variant="h6" color="inherit" 
+        <Typography variant="h6" color="inherit" 
           className={this.props.classes.title}>
           Necro Automobilia
         </Typography>

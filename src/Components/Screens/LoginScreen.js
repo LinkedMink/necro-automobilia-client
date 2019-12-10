@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -82,7 +82,7 @@ class LoginScreen extends React.Component {
     return (
       <Container maxWidth="md">
         <Paper className={this.props.classes.paper}>
-          <Typography variant="h5" component="h1">
+          <Typography variant="h3">
             Login
           </Typography>
           <form 

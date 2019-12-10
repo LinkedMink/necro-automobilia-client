@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   paper: {
@@ -17,7 +17,7 @@ class StatsPanel extends React.Component {
   render = () => {
     return (
       <Paper className={this.props.classes.paper}>
-        <Typography variant="h5" component="h1">
+        <Typography variant="h4">
           Stats
         </Typography>
       </Paper>

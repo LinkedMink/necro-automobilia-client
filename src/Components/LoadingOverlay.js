@@ -54,7 +54,7 @@ class LoadingOverlay extends React.Component {
       <div className={clsx(
         this.props.classes.overlay, 
         this.props.isLoading && this.props.classes.overlayVisible)}>
-        <Container maxWidth="lg" className={this.props.classes.animationContainer}>
+        <Container maxWidth="md" className={this.props.classes.animationContainer}>
           <Paper className={this.props.classes.animationSurface}>
             <Typography 
               className={this.props.classes.loadingText} 
