@@ -70,10 +70,10 @@ export class Validator {
         if (value.trim() === '') return;
         min = rule[1];
         max = rule[2];
-        if (min && value.length < min) {
+        if (min !== undefined && value.length < min) {
           return `${label} must be longer than ${min} characters`;
         }
-        if (max && value.length > max) {
+        if (max !== undefined && value.length > max) {
           return `${label} must be shorter than ${max} characters`;
         }
         return;
@@ -81,10 +81,10 @@ export class Validator {
         if (value.trim() === '') return;
         min = rule[1];
         max = rule[2];
-        if (min && value < min) {
+        if (min !== undefined && Number(value) < min) {
           return `${label} must be greater than ${min}`;
         }
-        if (max && value > max) {
+        if (max !== undefined && Number(value) > max) {
           return `${label} must be less than ${max}`;
         }
         return;

@@ -91,6 +91,12 @@ export const getJsonResponse = (
   }
 
   if (requestData && method === HttpMethods.GET) {
+    for (const [key, value] of Object.entries(requestData)) {
+      if (value === "") {
+        requestData[key] = undefined;
+      }
+    }
+
     const query = queryString.stringify(requestData);
     url += '?' + query
   }
