@@ -11,6 +11,8 @@ import LoadingOverlay from './Components/LoadingOverlay';
 import RouterOutlet from './Components/RouterOutlet';
 import FooterPanel from './Components/FooterPanel';
 
+import "./App.scss"
+
 const styles = theme => ({
   root: {
     display: 'flex',
