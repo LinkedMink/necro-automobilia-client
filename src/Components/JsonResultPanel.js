@@ -7,6 +7,8 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+//import FormControlLabel from '@material-ui/core/FormControlLabel';
+//import Switch from '@material-ui/core/Switch';
 
 import { download } from '../Shared/FileOperations';
 
@@ -22,6 +24,15 @@ const styles = theme => ({
   },
   download: {
     textAlign: 'right',
+  },
+  code: {
+    width: '100%',
+    overflow: 'auto',
+    marginTop: theme.spacing(2),
+    color: '#fff',
+    backgroundColor: '#333',
+    border: '1px solid #111',
+    boxShadow: '3px 3px 5px 1px rgba(30, 30, 30, .5)'
   }
 });
 
@@ -31,17 +42,31 @@ class JsonResultPanel extends React.Component {
 
     this.state = {
       jsonString: "",
+      isPrettyPrinting: false
     };
+  }
+
+  componentDidMount = () => {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+  
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+  
+  updateWindowDimensions = () => {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
   getResult = () => {
     if (this.props.result) {
       const jsonString = JSON.stringify(this.props.result, null, JSON_SPACING);
       if (jsonString !== this.state.jsonString) {
-        this.setState({ 
-          jsonString,
-        });
-        setTimeout(() => Prism.highlightAll(), 100)
+        this.setState({  jsonString });
+        if (this.state.isPrettyPrinting) {
+          setTimeout(() => Prism.highlightAll(), 100);
+        }
       }
 
       return jsonString;
@@ -50,26 +75,67 @@ class JsonResultPanel extends React.Component {
     return '';
   }
 
-  startDownload = () => {
-    download('accidents.json', this.state.jsonString, 'application/json');
+  handlePrettyPrint = () => {
+    this.setState({ isPrettyPrinting: !this.state.isPrettyPrinting })
+    if (this.state.isPrettyPrinting) {
+      setTimeout(() => Prism.highlightAll(), 100);
+    }
   }
 
-  renderDownload = () => {
+  startDownload = () => {
+    download('accidents.json', JSON.stringify(this.props.result), 'application/json');
+  }
+
+  renderButtons = () => {
     if (!this.state.jsonString) {
       return;
     }
 
     return (
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        startIcon={<CloudDownloadIcon />}
-        onClick={this.startDownload}>
-        Download
-      </Button>
+      <Grid item xs={6} className={this.props.classes.download}>
+        {/*
+        <FormControlLabel
+          control={
+            <Switch
+              checked={this.state.isPrettyPrinting}
+              onChange={this.handlePrettyPrint}
+              value="isPrettyPrinting"
+              color="primary" />
+          }
+          label="Highlight Syntax" 
+          title="This can be slow."/>
+        */}
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          startIcon={<CloudDownloadIcon />}
+          onClick={this.startDownload}>
+          Download
+        </Button>
+      </Grid>
     );
   }
+
+  renderText = () => {
+    if (this.state.isPrettyPrinting) {
+      return (
+        <pre className="line-numbers json-result">
+          <code className="language-javascript">{this.getResult()}</code>
+        </pre>
+      )
+    } else {
+      return (
+        <div className={this.props.classes.code} style={{ height: this.state.height - 300 }}>
+        <pre>
+          <code>{this.getResult()}</code>
+        </pre>
+        </div>
+
+      )
+    }
+  }
+
   render = () => {
     return (
       <Paper className={this.props.classes.paper}>
@@ -79,13 +145,9 @@ class JsonResultPanel extends React.Component {
               Result
             </Typography>
           </Grid>
-          <Grid item xs={6} className={this.props.classes.download}>
-            {this.renderDownload()}
-          </Grid>
+          {this.renderButtons()}
         </Grid>
-        <pre className="line-numbers json-result">
-          <code className="language-javascript">{this.getResult()}</code>
-        </pre>
+        {this.renderText()}
       </Paper>
     );
   }

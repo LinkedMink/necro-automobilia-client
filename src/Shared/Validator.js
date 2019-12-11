@@ -63,6 +63,7 @@ export class Validator {
         }
         break;
       case ValidationRule.EMAIL:
+        if (value.trim() === '') return;
         if (!EMAIL_REGEX.test(value)) {
           return `${label} must be an email address`;
         }
@@ -96,6 +97,7 @@ export class Validator {
         }
         return;
       case ValidationRule.JSON:
+        if (value.trim() === '') return;
         try {
           JSON.parse(value);
         } catch (e) {

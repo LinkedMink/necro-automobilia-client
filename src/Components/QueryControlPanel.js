@@ -41,7 +41,7 @@ class QueryControlPanel extends React.Component {
       },
       pageSize: {
         label: "Items per Page",
-        rules: [[ValidationRule.RANGE, 1, 100]]
+        rules: [[ValidationRule.RANGE, 1, 60]]
       },
     };
 

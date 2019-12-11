@@ -27,12 +27,25 @@ class AboutScreen extends React.Component {
           <Typography variant="body1">
             TODO. This is a work in progress.
           </Typography>
+          <br/>
+          <Typography variant="h4">
+            Related Projects
+          </Typography>
           <List>
             <ListItem>
               <Link href="https://github.com/LinkedMink/necro-automobilia">Necro Automobilia UI</Link>
             </ListItem>
             <ListItem>
+              <Link href="https://github.com/LinkedMink/necro-automobilia-service">Necro Automobilia Service</Link>
+            </ListItem>
+            <ListItem>
+              <Link href="https://github.com/LinkedMink/necro-automobilia-ml">Necro Automobilia Machine Learning</Link>
+            </ListItem>
+            <ListItem>
               <Link href="https://github.com/LinkedMink/node-user-service">User Service</Link>
+            </ListItem>
+            <ListItem>
+              <Link href="https://github.com/LinkedMink/nhtsa-fatalities-data-loader">NHTSA Fatality Data Loader</Link>
             </ListItem>
           </List>
         </Paper>
