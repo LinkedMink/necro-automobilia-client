@@ -4,6 +4,7 @@ export const ValidationRule = {
   LENGTH: "LENGTH",
   RANGE: "RANGE",
   MATCH: "MATCH",
+  JSON: "JSON"
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -92,6 +93,13 @@ export class Validator {
         const matchProperty = rule[1];
         if (value !== state[matchProperty]) {
           return `${label} must match ${this.rules[matchProperty].label}`;
+        }
+        return;
+      case ValidationRule.JSON:
+        try {
+          JSON.parse(value);
+        } catch (e) {
+          return `${label} must be valid JSON`;
         }
         return;
       default:

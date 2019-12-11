@@ -29,11 +29,11 @@ class QueryControlPanel extends React.Component {
     this.rules = {
       query: { 
         label: "Query", 
-        rules: []
+        rules: [ValidationRule.JSON]
       },
       sort: {
         label: "Sort Properties",
-        rules: []
+        rules: [ValidationRule.JSON]
       },
       pageNumber: {
         label: "Page Number",
@@ -81,7 +81,7 @@ class QueryControlPanel extends React.Component {
           <TextField
             variant="outlined"
             margin="normal"
-            required
+            placeholder='{ "stateName": "Minnesota" }'
             fullWidth
             multiline
             rows="2"
@@ -98,7 +98,7 @@ class QueryControlPanel extends React.Component {
           <TextField
             variant="outlined"
             margin="normal"
-            required
+            placeholder='{ "consecutiveNumber": -1 }'
             fullWidth
             multiline
             rows="2"
@@ -114,7 +114,7 @@ class QueryControlPanel extends React.Component {
           <TextField
             variant="outlined"
             margin="normal"
-            required
+            placeholder="Default 0"
             fullWidth
             name="pageNumber"
             label={this.rules.pageNumber.label}
@@ -127,7 +127,7 @@ class QueryControlPanel extends React.Component {
           <TextField
             variant="outlined"
             margin="normal"
-            required
+            placeholder="Default 20"
             fullWidth
             name="pageSize"
             label={this.rules.pageSize.label}
