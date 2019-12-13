@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -13,6 +12,7 @@ function getGuestLinks() {
   return [
     { path: "/login", name: "Login", icon: LockOpenIcon, active: false },
     { path: "/register", name: "Register", icon: PersonAddOutlinedIcon, active: false },
+    { path: null, name: null, icon: null, active: null },
     { path: "/about", name: "About", icon: InfoOutlinedIcon, active: false },
   ];
 }
@@ -21,8 +21,8 @@ function getAuthenticatedLinks() {
   return [
     { path: "/home", name: "Home", icon: HomeOutlinedIcon, active: false },
     { path: "/query", name: "Fatality Query", icon: SearchIcon, active: false },
+    { path: null, name: null, icon: null, active: null },
     { path: "/about", name: "About", icon: InfoOutlinedIcon, active: false },
-    { path: "/logout", name: "Logout", icon: ExitToAppIcon, active: false },
   ];
 }
 

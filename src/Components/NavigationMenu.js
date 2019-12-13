@@ -49,6 +49,10 @@ class NavigationMenu extends React.Component {
   }
 
   getLinkItem = (link, index) => {
+    if (!link.path) {
+      return <Divider key={index} />
+    }
+
     return (
       <ListItem button 
         key={index} 

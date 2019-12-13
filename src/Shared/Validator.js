@@ -63,13 +63,13 @@ export class Validator {
         }
         break;
       case ValidationRule.EMAIL:
-        if (value.trim() === '') return;
+        if (typeof value !== 'string' || value.trim() === '') return;
         if (!EMAIL_REGEX.test(value)) {
           return `${label} must be an email address`;
         }
         return;
       case ValidationRule.LENGTH:
-        if (value.trim() === '') return;
+        if (typeof value !== 'string' || value.trim() === '') return;
         min = rule[1];
         max = rule[2];
         if (min !== undefined && value.length < min) {
@@ -80,7 +80,7 @@ export class Validator {
         }
         return;
       case ValidationRule.RANGE:
-        if (value.trim() === '') return;
+        if (value.trim && value.trim() === '') return;
         min = rule[1];
         max = rule[2];
         if (min !== undefined && Number(value) < min) {

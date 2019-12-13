@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Slider from '@material-ui/core/Slider';
 
 import { ValidationRule, Validator } from "../Shared/Validator";
 
@@ -21,6 +22,9 @@ const styles = theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  pageSize: {
+    padding: theme.spacing(1),
+  }
 });
 
 class QueryControlPanel extends React.Component {
@@ -40,8 +44,8 @@ class QueryControlPanel extends React.Component {
         rules: [[ValidationRule.RANGE, 0]]
       },
       pageSize: {
-        label: "Items per Page",
-        rules: [[ValidationRule.RANGE, 1, 60]]
+        label: "Page Size",
+        rules: [[ValidationRule.RANGE, 1, 40]]
       },
     };
 
@@ -51,13 +55,29 @@ class QueryControlPanel extends React.Component {
       query: "",
       sort: "",
       pageNumber: "",
-      pageSize: "",
+      pageSize: 22,
       errors: this.validator.getDefaultErrorState()
     };
   }
 
-  handleChange = (event) => {
-    this.setState({[event.target.id]: event.target.value});
+  handleChange = (event, value) => {
+    if (value) {
+      this.sliderValue = value
+    } else {
+      this.setState({[event.target.id]: event.target.value});
+    }
+  }
+
+  handleChange = (event, value) => {
+    if (value) {
+      this.setState({[event.target.id]: value});
+    } else {
+      this.setState({[event.target.id]: event.target.value});
+    }
+  }
+
+  handleDragStop = (event, value) => {
+    this.setState({pageSize: this.sliderValue});
   }
 
   handleSubmit = (event) => {
@@ -94,6 +114,7 @@ class QueryControlPanel extends React.Component {
             value={this.state.query}
             error={this.state.errors.query.isInvalid}
             helperText={this.state.errors.query.message}
+            title="See the MongoDB find() method"
             autoFocus />
           <TextField
             variant="outlined"
@@ -109,6 +130,7 @@ class QueryControlPanel extends React.Component {
             value={this.state.sort}
             error={this.state.errors.sort.isInvalid}
             helperText={this.state.errors.sort.message}
+            title="See the MongoDB sort() method"
             onChange={this.handleChange}
             id="sort" />
           <TextField
@@ -124,19 +146,26 @@ class QueryControlPanel extends React.Component {
             helperText={this.state.errors.pageNumber.message}
             onChange={this.handleChange}
             id="pageNumber" />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            placeholder="Default 20"
-            fullWidth
-            name="pageSize"
-            label={this.rules.pageSize.label}
-            type="number"
-            value={this.state.pageSize}
-            error={this.state.errors.pageSize.isInvalid}
-            helperText={this.state.errors.pageSize.message}
-            onChange={this.handleChange}
-            id="pageSize" />
+          <div className={this.props.classes.pageSize}>
+            <Typography 
+              id="query-control-panel-page-size"
+              gutterBottom>
+              {this.rules.pageSize.label}
+            </Typography>
+            <Slider
+              id="pageSize"
+              aria-labelledby="query-control-panel-page-size"
+              step={3}
+              marks
+              min={1}
+              max={40}
+              valueLabelDisplay="auto" 
+              value={this.state.pageSize} 
+              error={this.state.errors.pageSize.isInvalid}
+              helperText={this.state.errors.pageSize.message}
+              onChange={this.handleChange}
+              onDragStop={this.handleDragStop} />
+          </div>
           <Button
             type="submit"
             fullWidth

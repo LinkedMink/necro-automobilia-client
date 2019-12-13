@@ -3,10 +3,15 @@ import { Link as RouterLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import React from 'react';
 
 const styles = theme => ({
@@ -40,6 +45,23 @@ const styles = theme => ({
 });
 
 class HeaderPanel extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      menuAnchor: null
+    };
+  }
+
+  handleMenuClick = event => {
+    this.setState({ menuAnchor: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ menuAnchor: null });
+  };
+
+
   getLinkReference = (path) => {
     return React.forwardRef((props, ref) => (
       <RouterLink innerRef={ref} to={path} {...props} />
@@ -51,10 +73,49 @@ class HeaderPanel extends React.Component {
       return (
         <IconButton 
           aria-label="account"
+          aria-controls="account-menu" 
+          aria-haspopup="true"
           color="inherit"
-          component={this.getLinkReference("/account")} >
+          onClick={this.handleMenuClick}>
           <AccountCircleIcon />
         </IconButton>
+      )
+    } else {
+      return (
+        <IconButton 
+          aria-label="account"
+          aria-controls="account-menu" 
+          aria-haspopup="true"
+          color="inherit"
+          component={this.getLinkReference("/login")}>
+          <AccountCircleIcon />
+        </IconButton>
+      )
+    }
+  }
+
+  renderMenu = () => {
+    if (this.props.isLoggedIn) {
+      return (
+        <Menu 
+          id="account-menu" 
+          keepMounted
+          anchorEl={this.state.menuAnchor}
+          open={Boolean(this.state.menuAnchor)}
+          onClose={this.handleMenuClose}>
+          <MenuItem component={this.getLinkReference("/account")}>
+            <ListItemIcon>
+              <SettingsOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Settings</Typography>
+          </MenuItem>
+          <MenuItem component={this.getLinkReference("/logout")}>
+            <ListItemIcon>
+              <ExitToAppIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Logout</Typography>
+          </MenuItem>
+        </Menu>
       )
     }
   }
@@ -81,6 +142,7 @@ class HeaderPanel extends React.Component {
           Necro Automobilia
         </Typography>
         {this.renderAccount()}
+        {this.renderMenu()}
       </Toolbar>
     </AppBar>
   )
