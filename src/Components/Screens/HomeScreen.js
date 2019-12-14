@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
-import MapSearchContainer from "../../Containers/MapSearchContainer";
+import RouteSearchPanel from "../RouteSearchPanel";
 import MortRankPanel from '../MortRankPanel';
 import StatsPanel from '../StatsPanel';
 import AnimationPanel from '../AnimationPanel';
@@ -24,7 +24,7 @@ class HomeScreen extends React.Component {
       <Container maxWidth="xl">
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <MapSearchContainer />
+            <RouteSearchPanel mapsApiKey={this.props.mapsApiKey} />
           </Grid>
           <Grid item xs={12} md={4}>
             <MortRankPanel

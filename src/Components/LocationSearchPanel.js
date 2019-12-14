@@ -30,17 +30,13 @@ const styles = theme => ({
   }
 });
 
-class MapSearchPanel extends React.Component {
+class LocationSearchPanel extends React.Component {
   constructor(props) {
     super(props)
 
     this.rules = {
-      mapSource: { 
-        label: "Source", 
-        rules: [ValidationRule.REQUIRED]
-      },
-      mapDestination: { 
-        label: "Destination", 
+      mapLocation: { 
+        label: "Location", 
         rules: [ValidationRule.REQUIRED]
       },
     };
@@ -48,8 +44,7 @@ class MapSearchPanel extends React.Component {
     this.validator = new Validator(this.rules);
 
     this.state = {
-      mapSource: "",
-      mapDestination: "",
+      mapLocation: "",
       isMapLoaded: false,
       errors: this.validator.getDefaultErrorState()
     };
@@ -71,19 +66,18 @@ class MapSearchPanel extends React.Component {
     const validationState = this.validator.validate(this.state);
     this.setState({ errors: validationState.errors });
 
-    if (validationState.isValid && this.props.submit) {
-      this.props.submit(this.state.address);
+    if (validationState.isValid && this.props.onSubmit) {
+      this.props.onSubmit(this.state.mapLocation);
     }
   }
 
   componentDidMount = () => {
     if (!this.map) {
-      this.map = new GoogleMaps(this.props.apiKey)
+      this.map = new GoogleMaps(this.props.mapsApiKey)
       const initMap = () => {
         this.setState({ isMapLoaded: true })
         this.map.initMap("mapSurface")
-        //this.map.initAutocomplete("mapSource", this.handleAutocompleteChange)
-        //this.map.initAutocomplete("mapDestination", this.handleAutocompleteChange)
+        //this.map.initAutocomplete("mapLocation", this.handleAutocompleteChange)
       };
 
       const loadPromise = this.map.loadApiScript({ libraries: "places" });
@@ -100,34 +94,21 @@ class MapSearchPanel extends React.Component {
       <Paper className={this.props.classes.paper}>
         <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
           <Grid container spacing={1}>
-            <Grid item xs={12} sm={5}>
+            <Grid item xs={9}>
               <TextField
                 required
                 fullWidth
-                id="mapSource"
-                label={this.rules.mapSource.label}
-                name="mapSource"
+                id="mapLocation"
+                label={this.rules.mapLocation.label}
+                name="mapLocation"
                 type="text"
                 onChange={this.handleChange}
-                value={this.state.mapSource}
-                error={this.state.errors.mapSource.isInvalid}
-                helperText={this.state.errors.mapSource.message}
+                value={this.state.mapLocation}
+                error={this.state.errors.mapLocation.isInvalid}
+                helperText={this.state.errors.mapLocation.message}
                 autoFocus />
             </Grid>
-            <Grid item xs={12} sm={5}>
-              <TextField
-                required
-                fullWidth
-                id="mapDestination"
-                label={this.rules.mapDestination.label}
-                name="mapDestination"
-                type="text"
-                onChange={this.handleChange}
-                value={this.state.mapDestination}
-                error={this.state.errors.mapDestination.isInvalid}
-                helperText={this.state.errors.mapDestination.message} />
-            </Grid>
-            <Grid item xs={6} sm={2} className={this.props.classes.submitContainer}>
+            <Grid item xs={3} className={this.props.classes.submitContainer}>
               <Button
                 type="submit"
                 variant="contained"
@@ -144,4 +125,4 @@ class MapSearchPanel extends React.Component {
   }
 }
 
-export default withStyles(styles)(MapSearchPanel);
+export default withStyles(styles)(LocationSearchPanel);

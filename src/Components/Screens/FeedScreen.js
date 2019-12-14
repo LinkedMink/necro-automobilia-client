@@ -13,13 +13,13 @@ const styles = theme => ({
   },
 });
 
-class SavedScreen extends React.Component {
+class FeedScreen extends React.Component {
   render() {
     return (
       <Container maxWidth="lg">
         <Paper className={this.props.classes.paper}>
           <Typography variant="h3">
-            Saved Routes
+            Feed
           </Typography>
         </Paper>
       </Container>
@@ -27,4 +27,4 @@ class SavedScreen extends React.Component {
   }
 }
 
-export default withStyles(styles)(SavedScreen);
+export default withStyles(styles)(FeedScreen);

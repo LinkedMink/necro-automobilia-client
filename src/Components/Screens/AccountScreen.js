@@ -5,7 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 
 import { MIN_PASSWORD_LENGTH } from "../../Constants/Account";
 import { ValidationRule, Validator } from "../../Shared/Validator";
@@ -111,63 +110,62 @@ class AccountScreen extends React.Component {
 
   render = () => {
     return (
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <Paper className={this.props.classes.paper}>
           <Typography variant="h3">
-            Account: {this.getProfile().email}
+            Account
+          </Typography>
+          <Typography variant="body1">
+            Email: {this.getProfile().email}
           </Typography>
           <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="email"
-                  label={this.rules.email.label}
-                  name="email"
-                  autoComplete="email"
-                  type="email"
-                  onChange={this.handleChange}
-                  value={this.state.email}
-                  error={this.state.errors.email.isInvalid}
-                  helperText={this.state.errors.email.message}
-                  autoFocus />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  name="password"
-                  label={this.rules.password.label}
-                  type="password"
-                  value={this.state.password}
-                  error={this.state.errors.password.isInvalid}
-                  helperText={this.state.errors.password.message}
-                  onChange={this.handleChange}
-                  id="password" />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  name="confirmPassword"
-                  label={this.rules.confirmPassword.label}
-                  type="password"
-                  value={this.state.confirmPassword}
-                  error={this.state.errors.confirmPassword.isInvalid}
-                  helperText={this.state.errors.confirmPassword.message}
-                  onChange={this.handleChange}
-                  id="confirmPassword" />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  disabled={!this.isDirty()}
-                  className={this.props.classes.submit}>
-                  Save
-                </Button>
-
-              </Grid>
-            </Grid>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="email"
+              label={this.rules.email.label}
+              name="email"
+              autoComplete="email"
+              type="email"
+              onChange={this.handleChange}
+              value={this.state.email}
+              error={this.state.errors.email.isInvalid}
+              helperText={this.state.errors.email.message}
+              autoFocus />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="password"
+              label={this.rules.password.label}
+              type="password"
+              value={this.state.password}
+              error={this.state.errors.password.isInvalid}
+              helperText={this.state.errors.password.message}
+              onChange={this.handleChange}
+              id="password" />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="confirmPassword"
+              label={this.rules.confirmPassword.label}
+              type="password"
+              value={this.state.confirmPassword}
+              error={this.state.errors.confirmPassword.isInvalid}
+              helperText={this.state.errors.confirmPassword.message}
+              onChange={this.handleChange}
+              id="confirmPassword" />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              disabled={!this.isDirty()}
+              className={this.props.classes.submit}>
+              Save
+            </Button>
           </form>
         </Paper>
       </Container>

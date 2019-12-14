@@ -7,8 +7,10 @@ import LoginContainer from '../Containers/Screens/LoginContainer';
 import LogoutContainer from '../Containers/LogoutContainer';
 import PasswordResetContainer from '../Containers/Screens/PasswordResetContainer';
 import SetPasswordContainer from '../Containers/Screens/SetPasswordContainer';
-import RegisterSContainer from '../Containers/Screens/RegisterContainer';
-import HomeScreen from './Screens/HomeScreen';
+import RegisterContainer from '../Containers/Screens/RegisterContainer';
+import HomeContainer from '../Containers/Screens/HomeContainer';
+import LocationQueryContainer from '../Containers/Screens/LocationQueryContainer';
+import FeedScreen from './Screens/FeedScreen';
 import SavedScreen from './Screens/SavedScreen';
 import QueryContainer from '../Containers/Screens/QueryContainer';
 import AccountContainer from '../Containers/Screens/AccountContainer';
@@ -24,14 +26,20 @@ class RouterOutlet extends React.Component {
     <Switch>
       <Route exact path="/login" component={LoginContainer} />
       <Route exact path="/logout" component={LogoutContainer} />
-      <Route exact path="/register" component={RegisterSContainer} />
+      <Route exact path="/register" component={RegisterContainer} />
       <Route exact path="/password-reset" component={PasswordResetContainer} />
       <Route exact path="/set-password/:email/:token" component={SetPasswordContainer} />
       <Route exact path="/about" component={AboutScreen} />
       <Route exact path="/unauthorized/:claims" component={UnauthorizedScreen} />
       <RouteAuthContainer 
         requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
-        exact path="/home" component={HomeScreen} />
+        exact path="/home" component={HomeContainer} />
+      <RouteAuthContainer 
+        requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
+        exact path="/location" component={LocationQueryContainer} />
+      <RouteAuthContainer 
+        requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
+        exact path="/feed" component={FeedScreen} />
       <RouteAuthContainer 
         requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
         exact path="/routes" component={SavedScreen} />
