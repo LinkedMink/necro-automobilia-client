@@ -1,4 +1,4 @@
-import { ALERT_CLEAR, ALERT_ERROR, ALERT_REDIRECT } from '../Actions/Alert';
+import { ALERT_CLEAR, ALERT_ERROR, ALERT_REDIRECT, ALERT_INFO } from '../Actions/Alert';
 
 const AlertSeverity = {
   NONE: "None",
@@ -14,6 +14,10 @@ function account(state = {}, action) {
   } else if (action.type === ALERT_ERROR) {
     return Object.assign({}, state, { 
       severity: AlertSeverity.ERROR, message: action.payload, redirect: undefined
+    });
+  } else if (action.type === ALERT_INFO) {
+    return Object.assign({}, state, { 
+      severity: AlertSeverity.INFO, message: action.payload, redirect: undefined
     });
   } else if (action.type === ALERT_REDIRECT) {
     return Object.assign({}, state, { 

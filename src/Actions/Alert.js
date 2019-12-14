@@ -2,6 +2,7 @@ export const ALERT_CLEAR = 'ALERT_CLEAR';
 export const ALERT_REDIRECT = 'ALERT_REDIRECT';
 export const ALERT_CONFIRM = 'ALERT_CONFIRM';
 export const ALERT_ERROR = 'ALERT_ERROR';
+export const ALERT_INFO = 'ALERT_INFO';
 
 export function alertClear() {
   return { 
@@ -30,6 +31,13 @@ export function alertConfirm(message) {
 export function alertError(message) {
   return { 
     type: ALERT_ERROR, 
+    payload: message
+  };
+}
+
+export function alertInfo(message) {
+  return { 
+    type: ALERT_INFO, 
     payload: message
   };
 }

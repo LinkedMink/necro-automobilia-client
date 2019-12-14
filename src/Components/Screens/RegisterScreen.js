@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
+import { MIN_PASSWORD_LENGTH } from "../../Constants/Account";
 import { ValidationRule, Validator } from "../../Shared/Validator";
 
 const styles = theme => ({
@@ -37,7 +38,7 @@ class RegisterScreen extends React.Component {
       },
       password: {
         label: "Password",
-        rules: [ValidationRule.REQUIRED, [ValidationRule.LENGTH, 8]]
+        rules: [ValidationRule.REQUIRED, [ValidationRule.LENGTH, MIN_PASSWORD_LENGTH]]
       },
       confirmPassword: {
         label: "Confirm Password",

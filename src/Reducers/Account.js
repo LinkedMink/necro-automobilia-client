@@ -1,4 +1,4 @@
-import { SAVE_SESSION, DESTROY_SESSION } from '../Actions/Account';
+import { SAVE_ACCOUNT, SAVE_SESSION, DESTROY_SESSION } from '../Actions/Account';
 
 function account(state = {}, action) {
   if (action.type === SAVE_SESSION) {
@@ -6,6 +6,10 @@ function account(state = {}, action) {
   } else if (action.type === DESTROY_SESSION) {
     return Object.assign({}, state, {
       token: undefined, decodedToken: undefined
+    });
+  } else if (action.type === SAVE_ACCOUNT) { 
+    return Object.assign({}, state, {
+      profile: action.payload
     });
   } else {
     return state;

@@ -94,7 +94,7 @@ class MortRankPanel extends React.Component {
           className={isUserRank && this.props.classes.highlight}>
           <ListItemAvatar>
             <Avatar>
-              <rank.icon color={isUserRank ? "secondary" : ""} />
+              <rank.icon />
             </Avatar>
           </ListItemAvatar>
           <ListItemText 
@@ -102,7 +102,7 @@ class MortRankPanel extends React.Component {
             secondary={`Micromorts per Mile: ${rank.mmPerMile.toFixed(5)}`} />
           {isUserRank &&
             <ListItemIcon>
-              <ChevronLeftOutlinedIcon color={isUserRank && "secondary"} />
+              <ChevronLeftOutlinedIcon />
             </ListItemIcon>
           }
         </ListItem>
