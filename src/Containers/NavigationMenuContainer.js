@@ -5,6 +5,7 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import SearchIcon from '@material-ui/icons/Search';
+import StorageIcon from '@material-ui/icons/Storage';
 
 import NavigationMenu from "../Components/NavigationMenu";
 
@@ -20,6 +21,7 @@ function getGuestLinks() {
 function getAuthenticatedLinks() {
   return [
     { path: "/home", name: "Home", icon: HomeOutlinedIcon, active: false },
+    { path: "/routes", name: "Saved Routes", icon: StorageIcon, active: false },
     { path: "/query", name: "Fatality Query", icon: SearchIcon, active: false },
     { path: null, name: null, icon: null, active: null },
     { path: "/about", name: "About", icon: InfoOutlinedIcon, active: false },

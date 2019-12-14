@@ -8,12 +8,18 @@ import MortRankPanel from '../MortRankPanel';
 import StatsPanel from '../StatsPanel';
 import AnimationPanel from '../AnimationPanel';
 
+const MOCK_MM_RANKING = 1 / 37; // TODO
+
 const styles = theme => ({
 
 });
 
 class HomeScreen extends React.Component {
-  render() {
+  handleMortPanelShare = () => {
+    console.log("Share"); // TODO
+  }
+
+  render = () => {
     return (
       <Container maxWidth="xl">
         <Grid container spacing={3}>
@@ -21,7 +27,9 @@ class HomeScreen extends React.Component {
             <MapSearchContainer />
           </Grid>
           <Grid item xs={12} md={4}>
-            <MortRankPanel />
+            <MortRankPanel
+              onShare={this.handleMortPanelShare}
+              userMMPerMile={MOCK_MM_RANKING} /> 
           </Grid>
           <Grid item xs={12} md={4}>
             <StatsPanel />
