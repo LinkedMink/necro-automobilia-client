@@ -10,6 +10,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
   toolbarIcon: {
@@ -53,7 +54,7 @@ class NavigationMenu extends React.Component {
       return <Divider key={index} />
     }
 
-    return (
+    const listItem = (
       <ListItem button 
         key={index} 
         component={this.getLinkReference(link.path)} 
@@ -62,8 +63,17 @@ class NavigationMenu extends React.Component {
           <link.icon />
         </ListItemIcon>
         <ListItemText primary={link.name} />
-      </ListItem>
-    );
+      </ListItem>);
+
+    if (link.tooltip) {
+      return (
+        <Tooltip title={link.tooltip} placement="right">
+          {listItem}
+        </Tooltip>
+      );
+    } else {
+      return listItem;
+    }
   }
 
   render = () => {

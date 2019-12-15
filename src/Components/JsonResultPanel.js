@@ -20,12 +20,13 @@ const styles = theme => ({
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
-    height: '100%',
+    height: '85vh',
   },
   download: {
     textAlign: 'right',
   },
   code: {
+    height: '100%',
     width: '100%',
     overflow: 'auto',
     marginTop: theme.spacing(2),
@@ -126,12 +127,11 @@ class JsonResultPanel extends React.Component {
       )
     } else {
       return (
-        <div className={this.props.classes.code} style={{ height: this.state.height - 300 }}>
-        <pre>
-          <code>{this.getResult()}</code>
-        </pre>
+        <div className={this.props.classes.code}>
+          <pre>
+            <code>{this.getResult()}</code>
+          </pre>
         </div>
-
       )
     }
   }

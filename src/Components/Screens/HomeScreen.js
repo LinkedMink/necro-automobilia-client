@@ -16,7 +16,15 @@ const styles = theme => ({
 
 class HomeScreen extends React.Component {
   handleMortPanelShare = () => {
-    console.log("Share"); // TODO
+    if (this.props.openDialog) {
+      this.props.openDialog("Share");
+    }
+  }
+
+  handleSearchSubmit = (source, destination) => {
+    if (this.props.query) {
+      this.props.query(source, destination);
+    }
   }
 
   render = () => {
@@ -24,7 +32,9 @@ class HomeScreen extends React.Component {
       <Container maxWidth="xl">
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <RouteSearchPanel mapsApiKey={this.props.mapsApiKey} />
+            <RouteSearchPanel 
+              onSubmit={this.handleSearchSubmit}
+              mapsApiKey={this.props.mapsApiKey} />
           </Grid>
           <Grid item xs={12} md={4}>
             <MortRankPanel

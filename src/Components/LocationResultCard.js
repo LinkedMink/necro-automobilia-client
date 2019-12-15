@@ -19,13 +19,16 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { stateMap } from '../Constants/States';
+//import { stateMap } from '../Constants/States';
 import { getLongDateString } from '../Shared/DateHelper';
 
 const styles = theme => ({
   card: {
     width: "100%",
     marginBottom: theme.spacing(2),
+  },
+  highlighted: {
+    backgroundColor: 'rgba(0, 0, 0, 0.14)'
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -65,27 +68,29 @@ class LocationResultCard extends React.Component {
 
   render = () => {
     const result = this.props.result;
-    const stateCode = stateMap.get(result.stateName);
+    //const stateCode = stateMap.get(result.stateName);
     const title = `${result.firstHarmfulEventName}: ${result.numberOfFatalities} Dead`
     const date = getLongDateString(result.timestampOfCrash);
     const primaryVehicle = result.vehicleDetails[0];
     const primaryVehicleText = `${primaryVehicle.makeName} ${primaryVehicle.modelCode}`;
 
     return (
-      <Card className={this.props.classes.card}>
+      <Card className={
+        clsx(this.props.classes.card, this.props.selected && this.props.classes.highlighted)}>
         <CardHeader
           title={title}
           subheader={date}
           avatar={
             <Avatar aria-label="recipe" className={this.props.classes.avatar}>
-              {stateCode}
+              {this.props.avatar}
             </Avatar>}
           action={
             <IconButton aria-label="settings">
               <MoreVertIcon />
             </IconButton>} />
         <CardContent>
-          <List dense={true} disablePadding={true} className={this.props.classes.attributeList}>
+          <List dense={true} disablePadding={true} 
+            className={this.props.classes.attributeList}>
             <ListItem disableGutters={true}>
               <ListItemText 
                 secondary={`Road: ${result.trafficwayIdentifier}`} />

@@ -46,14 +46,31 @@ class LocationSearchPanel extends React.Component {
       mapLocation: "",
       location: null,
       isMapLoaded: false,
+      markers: null,
+      selected: null,
       errors: this.validator.getDefaultErrorState()
     };
 
-    this.address = React.createRef();
+    this.locationRef = React.createRef();
+    this.mapRef = React.createRef();
   }
 
   handleChange = (event) => {
     this.setState({[event.target.id]: event.target.value});
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    const validationState = this.validator.validate(this.state);
+    this.setState({ errors: validationState.errors });
+
+    if (validationState.isValid && this.props.onSubmit) {
+      this.props.onSubmit(this.state.location);
+      this.map.focus(this.state.location);
+      this.map.clearMarkers();
+      this.setState({ markers: null });
+    }
   }
 
   getAutocompleteHandler = (autocomplete) => {
@@ -67,17 +84,33 @@ class LocationSearchPanel extends React.Component {
         ]
       });
     }
-  } 
+  }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    const validationState = this.validator.validate(this.state);
-    this.setState({ errors: validationState.errors });
-
-    if (validationState.isValid && this.props.onSubmit) {
-      this.props.onSubmit(this.state.location);
+  getMarkerHandler = (marker) => {
+    return () => {
+      this.setState({ selected: marker.data.index });
+      this.map.focus(marker.position);
+      if (this.props.onSelected) {
+        this.props.onSelected(marker.data.index);
+      }
     }
+  }
+
+  createMarkers = () => {
+    const markers = [];
+    this.props.results.forEach((element, index) => {
+      markers.push({
+        data: {
+          index,
+        },
+        label: `${index + 1}`,
+        description: `${element.firstHarmfulEventName}: ${element.numberOfFatalities} Dead`,
+        coordinates: element.location.coordinates,
+      });
+    })
+
+    this.map.setMarkers(markers, this.getMarkerHandler);
+    this.setState({ markers });
   }
 
   componentDidMount = () => {
@@ -86,12 +119,16 @@ class LocationSearchPanel extends React.Component {
 
       const initMap = () => {
         this.setState({ isMapLoaded: true });
-        this.map.initMap("mapSurface");
+        this.map.initMap(this.mapRef.current);
 
         setTimeout(() => {
           this.map.initAutocomplete(
-            this.address.current,
+            this.locationRef.current,
             this.getAutocompleteHandler);
+
+          if (this.props.results) {
+            this.createMarkers();
+          }
         }, 100);
       };
 
@@ -105,6 +142,10 @@ class LocationSearchPanel extends React.Component {
   }
 
   render = () => {
+    if (this.map && this.props.results && !this.state.markers) {
+      this.createMarkers();
+    }
+
     return (
       <Paper className={this.props.classes.paper}>
         <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
@@ -121,7 +162,7 @@ class LocationSearchPanel extends React.Component {
                 value={this.state.mapLocation}
                 error={this.state.errors.mapLocation.isInvalid}
                 helperText={this.state.errors.mapLocation.message}
-                inputRef={this.address}
+                inputRef={this.locationRef}
                 autoFocus />
             </Grid>
             <Grid item xs={3} className={this.props.classes.submitContainer}>
@@ -135,7 +176,9 @@ class LocationSearchPanel extends React.Component {
             </Grid>
           </Grid>
         </form>
-        <div className={this.props.classes.map} id="mapSurface"></div>
+        <div ref={this.mapRef} 
+          className={this.props.classes.map} 
+          id="mapSurface"></div>
       </Paper>
     );
   }

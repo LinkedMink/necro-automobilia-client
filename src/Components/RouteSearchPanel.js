@@ -50,20 +50,20 @@ class RouteSearchPanel extends React.Component {
     this.state = {
       mapSource: "",
       mapDestination: "",
+      source: null,
+      destination: null,
       isMapLoaded: false,
       errors: this.validator.getDefaultErrorState()
     };
+
+    this.sourceRef = React.createRef();
+    this.destinationRef = React.createRef();
+    this.mapRef = React.createRef();
   }
 
   handleChange = (event) => {
     this.setState({[event.target.id]: event.target.value});
   }
-
-  handleAutocompleteChange = (inputId, autocomplete) => {
-    return () => {
-      this.setState({ [inputId]: autocomplete.getPlace() });
-    }
-  } 
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -71,19 +71,44 @@ class RouteSearchPanel extends React.Component {
     const validationState = this.validator.validate(this.state);
     this.setState({ errors: validationState.errors });
 
-    if (validationState.isValid && this.props.submit) {
-      this.props.submit(this.state.address);
+    if (validationState.isValid && this.props.onSubmit) {
+      this.props.onSubmit(this.state.source, this.state.destination);
+    }
+  }
+
+  getAutocompleteHandler = (descriptionField, locationField) => {
+    return (autocomplete) => {
+      return () => {
+        const place = autocomplete.getPlace();
+        const locationState = {};
+        locationState[descriptionField] = place.formatted_address;
+        locationState[locationField] = [
+          place.geometry.location.lng(),
+          place.geometry.location.lat()
+        ];
+
+        this.setState(locationState);
+      }
     }
   }
 
   componentDidMount = () => {
     if (!this.map) {
       this.map = new GoogleMaps(this.props.mapsApiKey)
+
       const initMap = () => {
-        this.setState({ isMapLoaded: true })
-        this.map.initMap("mapSurface")
-        //this.map.initAutocomplete("mapSource", this.handleAutocompleteChange)
-        //this.map.initAutocomplete("mapDestination", this.handleAutocompleteChange)
+        this.setState({ isMapLoaded: true });
+        this.map.initMap(this.mapRef.current);
+
+        setTimeout(() => {
+          this.map.initAutocomplete(
+            this.sourceRef.current,
+            this.getAutocompleteHandler('mapSource', 'source'));
+
+          this.map.initAutocomplete(
+            this.destinationRef.current,
+            this.getAutocompleteHandler('mapDestination', 'destination'));
+        }, 100);
       };
 
       const loadPromise = this.map.loadApiScript({ libraries: "places" });
@@ -112,6 +137,7 @@ class RouteSearchPanel extends React.Component {
                 value={this.state.mapSource}
                 error={this.state.errors.mapSource.isInvalid}
                 helperText={this.state.errors.mapSource.message}
+                inputRef={this.sourceRef}
                 autoFocus />
             </Grid>
             <Grid item xs={12} sm={5}>
@@ -125,7 +151,8 @@ class RouteSearchPanel extends React.Component {
                 onChange={this.handleChange}
                 value={this.state.mapDestination}
                 error={this.state.errors.mapDestination.isInvalid}
-                helperText={this.state.errors.mapDestination.message} />
+                helperText={this.state.errors.mapDestination.message} 
+                inputRef={this.destinationRef} />
             </Grid>
             <Grid item xs={6} sm={2} className={this.props.classes.submitContainer}>
               <Button
@@ -138,7 +165,9 @@ class RouteSearchPanel extends React.Component {
             </Grid>
           </Grid>
         </form>
-        <div className={this.props.classes.map} id="mapSurface"></div>
+        <div ref={this.mapRef} 
+          className={this.props.classes.map} 
+          id="mapSurface"></div>
       </Paper>
     );
   }

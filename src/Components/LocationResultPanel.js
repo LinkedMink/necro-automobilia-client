@@ -9,7 +9,7 @@ const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
     overflow: 'auto',
-    height: '85vh',
+    maxHeight: '85vh',
   },
 });
 
@@ -18,14 +18,20 @@ class LocationResultPanel extends React.Component {
     if (!this.props.results) {
       return (
         <Typography variant="body1">
-          Input a address to find near by accidents.
+          No results
         </Typography>
       );
     }
 
     return this.props.results.map((result, index) => {
+      const selected = this.props.selected === index;
+
       return (
-        <LocationResultCard key={index} result={result} />
+        <LocationResultCard 
+          key={index} 
+          avatar={index + 1} 
+          result={result}
+          selected={selected} />
       );
     });
   }
