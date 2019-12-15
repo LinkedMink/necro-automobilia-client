@@ -26,8 +26,20 @@ class LocationQueryScreen extends React.Component {
     }
   }
 
-  handleResultSelected = (index) => {
+  handleResultSelect = (index) => {
     this.setState({ selected: index });
+  }
+
+  handleResultFavorite = (index) => {
+    if (this.props.openDialog) {
+      this.props.openDialog("Share");
+    }
+  }
+
+  handleResultShare = (index) => {
+    if (this.props.openDialog) {
+      this.props.openDialog("Share");
+    }
   }
 
   render() {
@@ -37,14 +49,18 @@ class LocationQueryScreen extends React.Component {
           <Grid item xs={12} md={8} className={this.props.classes.fill}>
             <LocationSearchPanel 
               onSubmit={this.handleSearchSubmit}
-              onSelected={this.handleResultSelected}
+              onSelect={this.handleResultSelect}
               results={this.props.searchResult}
+              selected={this.state.selected}
               mapsApiKey={this.props.mapsApiKey} />
           </Grid>
           <Grid item xs={12} md={4} className={this.props.classes.fill}>
             <LocationResultPanel
               results={this.props.searchResult}
-              selected={this.state.selected} />
+              selected={this.state.selected} 
+              onSelect={this.handleResultSelect} 
+              onFavorite={this.handleResultFavorite} 
+              onShare={this.handleResultShare} />
           </Grid>
         </Grid>
       </Container>

@@ -18,9 +18,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
 //import { stateMap } from '../Constants/States';
 import { getLongDateString } from '../Shared/DateHelper';
+import { download } from '../Shared/FileOperations';
 
 const styles = theme => ({
   card: {
@@ -41,7 +46,12 @@ const styles = theme => ({
     transform: 'rotate(180deg)',
   },
   avatar: {
+    cursor: 'pointer',
     backgroundColor: red[500],
+    transition: 'background-color 0.2s',
+    '&:hover': {
+      backgroundColor: red[700],
+    }
   },
   attributeList: {
     "& li": {
@@ -58,13 +68,64 @@ class LocationResultCard extends React.Component {
     super(props);
 
     this.state = {
-      isExpanded: false
+      isExpanded: false,
+      isMenuOpen: false,
     };
+
+    this.menuRef = React.createRef();
   }
+
+  handleMenuClick = () => {
+    this.setState({ isMenuOpen: true });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ isMenuOpen: false });
+  };
 
   handleExpandClick = () => {
     this.setState({ isExpanded: !this.state.isExpanded });
   };
+
+  handleSelectClick = () => {
+    if (this.props.onSelect) {
+      this.props.onSelect(this.props.index)
+    }
+  };
+
+  handleFavoriteClick = () => {
+    if (this.props.onFavorite) {
+      this.props.onFavorite(this.props.index)
+    }
+  };
+  
+  handleShareClick = () => {
+    if (this.props.onShare) {
+      this.props.onShare(this.props.index)
+    }
+  };
+
+  startDownload = () => {
+    download('accident.json', JSON.stringify(this.props.result), 'application/json');
+  }
+
+  renderMenu = () => {
+    return (
+      <Menu
+        aria-controls={`settings-menu-${this.props.result.consecutiveNumber}`}
+        keepMounted
+        anchorEl={this.menuRef.current}
+        open={this.state.isMenuOpen}
+        onClose={this.handleMenuClose}>
+        <MenuItem onClick={this.startDownload}>
+          <ListItemIcon>
+            <CloudDownloadIcon fontSize="small" />
+          </ListItemIcon>
+          <Typography variant="inherit">Download</Typography>
+        </MenuItem>
+      </Menu>
+    )
+  }
 
   render = () => {
     const result = this.props.result;
@@ -75,17 +136,28 @@ class LocationResultCard extends React.Component {
     const primaryVehicleText = `${primaryVehicle.makeName} ${primaryVehicle.modelCode}`;
 
     return (
-      <Card className={
-        clsx(this.props.classes.card, this.props.selected && this.props.classes.highlighted)}>
+      <Card 
+        ref={this.props.containerRef}
+        className={clsx(
+          this.props.classes.card, 
+          this.props.selected && this.props.classes.highlighted)}>
         <CardHeader
           title={title}
           subheader={date}
           avatar={
-            <Avatar aria-label="recipe" className={this.props.classes.avatar}>
+            <Avatar 
+              aria-label="distance order"
+              className={this.props.classes.avatar}
+              onClick={this.handleSelectClick}>
               {this.props.avatar}
             </Avatar>}
           action={
-            <IconButton aria-label="settings">
+            <IconButton
+              aria-label={`settings-${result.consecutiveNumber}`}
+              aria-controls={`settings-menu-${result.consecutiveNumber}`}
+              aria-haspopup="true"
+              ref={this.menuRef}
+              onClick={this.handleMenuClick}>
               <MoreVertIcon />
             </IconButton>} />
         <CardContent>
@@ -102,10 +174,14 @@ class LocationResultCard extends React.Component {
           </List>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
+          <IconButton 
+            onClick={this.handleFavoriteClick}
+            aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
-          <IconButton aria-label="share">
+          <IconButton
+            onClick={this.handleShareClick}
+            aria-label="share">
             <ShareIcon />
           </IconButton>
           <IconButton
@@ -123,6 +199,7 @@ class LocationResultCard extends React.Component {
             <Typography paragraph>TODO</Typography>
           </CardContent>
         </Collapse>
+        {this.renderMenu()}
       </Card>
     );
   }

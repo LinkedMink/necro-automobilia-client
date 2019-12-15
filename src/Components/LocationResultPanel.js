@@ -14,6 +14,25 @@ const styles = theme => ({
 });
 
 class LocationResultPanel extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selected: null
+    };
+
+    this.containerRef = React.createRef();
+    this.selectedRef = React.createRef();
+  }
+
+  scrollToSelected = () => {
+    this.containerRef.current.scrollTo({
+      top: this.selectedRef.current.offsetTop - this.containerRef.current.offsetTop,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+  
   renderResults = () => {
     if (!this.props.results) {
       return (
@@ -24,21 +43,47 @@ class LocationResultPanel extends React.Component {
     }
 
     return this.props.results.map((result, index) => {
-      const selected = this.props.selected === index;
+      const selected = this.state.selected === index;
+
+      if (selected) {
+        return (
+          <LocationResultCard 
+            key={index}
+            index={index}
+            avatar={index + 1} 
+            result={result}
+            containerRef={this.selectedRef}
+            selected={selected}
+            onSelect={this.props.onSelect} 
+            onFavorite={this.props.onFavorite} 
+            onShare={this.props.onShare} />
+        );
+      }
 
       return (
         <LocationResultCard 
-          key={index} 
+          key={index}
+          index={index}
           avatar={index + 1} 
           result={result}
-          selected={selected} />
+          selected={selected}
+          onSelect={this.props.onSelect} 
+          onFavorite={this.props.onFavorite} 
+          onShare={this.props.onShare} />
       );
     });
   }
 
   render = () => {
+    if (this.state.selected !== this.props.selected) {
+      this.setState({selected: this.props.selected});
+      setTimeout(this.scrollToSelected.bind(this), 200);
+    }
+
     return (
-      <Paper className={this.props.classes.paper}>
+      <Paper 
+        ref={this.containerRef}
+        className={this.props.classes.paper}>
         <Typography variant="h4">
           Results
         </Typography>

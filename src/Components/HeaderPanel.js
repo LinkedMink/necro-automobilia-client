@@ -61,7 +61,6 @@ class HeaderPanel extends React.Component {
     this.setState({ menuAnchor: null });
   };
 
-
   getLinkReference = (path) => {
     return React.forwardRef((props, ref) => (
       <RouterLink innerRef={ref} to={path} {...props} />

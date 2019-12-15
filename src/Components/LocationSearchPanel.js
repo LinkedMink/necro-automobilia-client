@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import SearchIcon from '@material-ui/icons/Search';
 
 import GoogleMaps from '../Shared/GoogleMaps';
 import { ValidationRule, Validator } from "../Shared/Validator";
@@ -25,7 +26,8 @@ const styles = theme => ({
   submitContainer: {
     display: "flex",
     flexDirection: 'column',
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 
@@ -67,7 +69,6 @@ class LocationSearchPanel extends React.Component {
 
     if (validationState.isValid && this.props.onSubmit) {
       this.props.onSubmit(this.state.location);
-      this.map.focus(this.state.location);
       this.map.clearMarkers();
       this.setState({ markers: null });
     }
@@ -90,8 +91,8 @@ class LocationSearchPanel extends React.Component {
     return () => {
       this.setState({ selected: marker.data.index });
       this.map.focus(marker.position);
-      if (this.props.onSelected) {
-        this.props.onSelected(marker.data.index);
+      if (this.props.onSelect) {
+        this.props.onSelect(marker.data.index);
       }
     }
   }
@@ -111,6 +112,11 @@ class LocationSearchPanel extends React.Component {
 
     this.map.setMarkers(markers, this.getMarkerHandler);
     this.setState({ markers });
+  }
+
+  focusSelected = () => {
+    const selectedResult = this.props.results[this.state.selected];
+    this.map.focus(selectedResult.location.coordinates);
   }
 
   componentDidMount = () => {
@@ -146,6 +152,11 @@ class LocationSearchPanel extends React.Component {
       this.createMarkers();
     }
 
+    if (this.state.selected !== this.props.selected) {
+      this.setState({selected: this.props.selected});
+      setTimeout(this.focusSelected.bind(this), 100);
+    }
+
     return (
       <Paper className={this.props.classes.paper}>
         <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
@@ -170,6 +181,7 @@ class LocationSearchPanel extends React.Component {
                 type="submit"
                 variant="contained"
                 color="primary"
+                endIcon={<SearchIcon />}
                 fullWidth>
                 Submit
               </Button>

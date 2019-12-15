@@ -4,6 +4,7 @@ import LocationQueryScreen from "../../Components/Screens/LocationQueryScreen";
 import { ServiceUrl } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import { saveLocationAccidents } from "../../Actions/Accident";
+import { alertInfo } from "../../Actions/Alert";
 
 const ACCIDENTS_PATH = 'accidents';
 const MAX_DISTANCE = 10000;
@@ -18,6 +19,9 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    openDialog: (dialog) => {
+      return dispatch(alertInfo(`TODO`));
+    },
     query: (location) => {
       const locationQuery = {
         location: {

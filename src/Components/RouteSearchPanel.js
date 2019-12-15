@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import SearchIcon from '@material-ui/icons/Search';
 
 import GoogleMaps from '../Shared/GoogleMaps';
 import { ValidationRule, Validator } from "../Shared/Validator";
@@ -26,7 +27,8 @@ const styles = theme => ({
   submitContainer: {
     display: "flex",
     flexDirection: 'column',
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 
@@ -159,6 +161,7 @@ class RouteSearchPanel extends React.Component {
                 type="submit"
                 variant="contained"
                 color="primary"
+                endIcon={<SearchIcon />}
                 fullWidth>
                 Submit
               </Button>
