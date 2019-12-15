@@ -13,8 +13,7 @@ const styles = theme => ({
     padding: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
-    minHeight: 350
+    height: '85vh'
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -45,18 +44,28 @@ class LocationSearchPanel extends React.Component {
 
     this.state = {
       mapLocation: "",
+      location: null,
       isMapLoaded: false,
       errors: this.validator.getDefaultErrorState()
     };
+
+    this.address = React.createRef();
   }
 
   handleChange = (event) => {
     this.setState({[event.target.id]: event.target.value});
   }
 
-  handleAutocompleteChange = (inputId, autocomplete) => {
+  getAutocompleteHandler = (autocomplete) => {
     return () => {
-      this.setState({ [inputId]: autocomplete.getPlace() });
+      const place = autocomplete.getPlace();
+      this.setState({ 
+        mapLocation: place.formatted_address,
+        location: [
+          place.geometry.location.lng(),
+          place.geometry.location.lat()
+        ]
+      });
     }
   } 
 
@@ -67,17 +76,23 @@ class LocationSearchPanel extends React.Component {
     this.setState({ errors: validationState.errors });
 
     if (validationState.isValid && this.props.onSubmit) {
-      this.props.onSubmit(this.state.mapLocation);
+      this.props.onSubmit(this.state.location);
     }
   }
 
   componentDidMount = () => {
     if (!this.map) {
       this.map = new GoogleMaps(this.props.mapsApiKey)
+
       const initMap = () => {
-        this.setState({ isMapLoaded: true })
-        this.map.initMap("mapSurface")
-        //this.map.initAutocomplete("mapLocation", this.handleAutocompleteChange)
+        this.setState({ isMapLoaded: true });
+        this.map.initMap("mapSurface");
+
+        setTimeout(() => {
+          this.map.initAutocomplete(
+            this.address.current,
+            this.getAutocompleteHandler);
+        }, 100);
       };
 
       const loadPromise = this.map.loadApiScript({ libraries: "places" });
@@ -106,6 +121,7 @@ class LocationSearchPanel extends React.Component {
                 value={this.state.mapLocation}
                 error={this.state.errors.mapLocation.isInvalid}
                 helperText={this.state.errors.mapLocation.message}
+                inputRef={this.address}
                 autoFocus />
             </Grid>
             <Grid item xs={3} className={this.props.classes.submitContainer}>

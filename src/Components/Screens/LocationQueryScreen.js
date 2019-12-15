@@ -13,15 +13,25 @@ const styles = theme => ({
 });
 
 class LocationQueryScreen extends React.Component {
+  handleSearchSubmit = (location) => {
+    if (this.props.query) {
+      this.props.query(location);
+    }
+  }
+
   render() {
     return (
       <Container maxWidth="xl" className={this.props.classes.fill}>
         <Grid container spacing={3} className={this.props.classes.fill}>
           <Grid item xs={12} md={8} className={this.props.classes.fill}>
-            <LocationSearchPanel mapsApiKey={this.props.mapsApiKey} />
+            <LocationSearchPanel 
+              onSubmit={this.handleSearchSubmit}
+              results={this.props.searchResult}
+              mapsApiKey={this.props.mapsApiKey} />
           </Grid>
-          <Grid item xs={12} md={4}>
-            <LocationResultPanel results={this.props.searchResults} />
+          <Grid item xs={12} md={4} className={this.props.classes.fill}>
+            <LocationResultPanel
+              results={this.props.searchResult} />
           </Grid>
         </Grid>
       </Container>

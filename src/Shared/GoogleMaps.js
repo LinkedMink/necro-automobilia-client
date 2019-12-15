@@ -52,19 +52,23 @@ class GoogleMaps {
     });
   }
 
-  initAutocomplete = (inputElementId, onChangeHandler) => {
-    const inputElement = document.getElementById(inputElementId);
+  initAutocomplete = (inputElement, onPlaceChanged) => {
+    //const inputElement = document.getElementById(inputElementId);
     const autocomplete = new window.google.maps.places.Autocomplete(
       inputElement, 
-      { componentRestrictions: {country: 'us'} }
+      { 
+        componentRestrictions: { country: 'us' },
+        types: ['geocode']
+      }
     );
 
-    autocomplete.bindTo(this.boundMap);
-
-    window.google.maps.event.addListener(
-      autocomplete, 'place_changed', onChangeHandler(inputElementId, autocomplete));
+    //autocomplete.bindTo(this.boundMap);
+    //this.boundElements[inputElementId] = autocomplete
     
-    this.boundElements[inputElementId] = autocomplete
+    const handler = onPlaceChanged(autocomplete);
+    autocomplete.addListener('place_changed', handler);
+
+    return autocomplete;
   }
 }
 

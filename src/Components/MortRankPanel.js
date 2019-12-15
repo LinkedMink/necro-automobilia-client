@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -91,7 +92,7 @@ class MortRankPanel extends React.Component {
       return (
         <ListItem 
           key={index}
-          className={isUserRank && this.props.classes.highlight}>
+          className={clsx(isUserRank && this.props.classes.highlight)}>
           <ListItemAvatar>
             <Avatar>
               <rank.icon />

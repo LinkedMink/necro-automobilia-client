@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { ServiceUrl } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import QueryScreen from "../../Components/Screens/QueryScreen";
-import { saveAccidents } from "../../Actions/Accident";
+import { saveTestAccidents } from "../../Actions/Accident";
 
 const ACCIDENTS_PATH = 'accidents';
 
 function mapStateToProps (state) {
   return {
-    accidentData: state.accident.queryResult
+    accidentData: state.accident.testResult
   };
 }
 
@@ -24,7 +24,7 @@ function mapDispatchToProps(dispatch) {
       };
 
       let responseHandler = data => {
-        return dispatch(saveAccidents(data));
+        return dispatch(saveTestAccidents(data));
       }
 
       return getJsonResponse(
