@@ -2,10 +2,16 @@ import { connect } from "react-redux";
 
 import { alertInfo } from "../../Actions/Alert";
 import HomeScreen from "../../Components/Screens/HomeScreen";
+import { ServiceUrl } from "../../Constants/Service";
+import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
+import { saveActiveRoute } from "../../Actions/Route";
+
+const ROUTES_PATH = 'routes'
 
 function mapStateToProps (state) {
   return {
     mapsApiKey: state.config.googleMapsApiKey,
+    searchResult: state.route.activeRoute
   };
 }
 
@@ -15,38 +21,22 @@ function mapDispatchToProps(dispatch) {
       return dispatch(alertInfo(`TODO`));
     },
     query: (source, destination) => {
-      
-      return dispatch(alertInfo(`TODO Source: ${JSON.stringify(source)}, Destination: ${JSON.stringify(source)}`));
-      /*
-      const locationQuery = {
-        location: {
-          $nearSphere: {
-            $geometry: {
-               type : "Point",
-               coordinates : location
-            },
-            $maxDistance: MAX_DISTANCE
-          }
-        }
-      };
-
       const requestData = {
-        query: JSON.stringify(locationQuery),
-        pageSize: MAX_RESULTS
+        source: JSON.stringify(source),
+        destination: JSON.stringify(destination)
       };
 
       const responseHandler = data => {
-        return dispatch(saveLocationAccidents(data));
+        return dispatch(saveActiveRoute(data));
       }
 
       return getJsonResponse(
         dispatch, 
         ServiceUrl.NECRO_AUTOMOBILIA,
-        ACCIDENTS_PATH, 
+        ROUTES_PATH, 
         responseHandler, 
         HttpMethods.GET,
         requestData);
-        */
     }
   };
 }

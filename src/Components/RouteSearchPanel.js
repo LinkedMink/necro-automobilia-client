@@ -79,6 +79,13 @@ class RouteSearchPanel extends React.Component {
     }
   }
 
+  handleLocationKeyDown = (event) => {
+    if (event && event.keyCode === 13) {
+      event.preventDefault();
+      return false;
+    }
+  }
+
   handleRouteRetrieved = (route) => {
     console.log(route);
   }
@@ -147,6 +154,7 @@ class RouteSearchPanel extends React.Component {
                 error={this.state.errors.mapSource.isInvalid}
                 helperText={this.state.errors.mapSource.message}
                 inputRef={this.sourceRef}
+                onKeyDown={this.handleLocationKeyDown}
                 autoFocus />
             </Grid>
             <Grid item xs={12} sm={5}>
@@ -161,7 +169,8 @@ class RouteSearchPanel extends React.Component {
                 value={this.state.mapDestination}
                 error={this.state.errors.mapDestination.isInvalid}
                 helperText={this.state.errors.mapDestination.message} 
-                inputRef={this.destinationRef} />
+                inputRef={this.destinationRef} 
+                onKeyDown={this.handleLocationKeyDown} />
             </Grid>
             <Grid item xs={6} sm={2} className={this.props.classes.submitContainer}>
               <Button

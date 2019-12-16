@@ -26,6 +26,10 @@ class FilterMenu extends React.Component {
         label: "Page Size",
         rules: [[ValidationRule.RANGE, 1, 40]]
       },
+      searchDistance: {
+        label: "Search Distance (km)",
+        rules: [[ValidationRule.RANGE, 10, 50]]
+      },
     };
 
     this.validator = new Validator(this.rules);
@@ -33,6 +37,7 @@ class FilterMenu extends React.Component {
     this.state = {
       isOpen: false,
       pageSize: 5,
+      searchDistance: 25,
       errors: this.validator.getDefaultErrorState()
     };
   }
@@ -46,9 +51,18 @@ class FilterMenu extends React.Component {
   }
 
   handleClose = () => {
+    const validationState = this.validator.validate(this.state);
+    this.setState({ errors: validationState.errors });
+    if (!validationState.isValid) {
+      return;
+    }
+    
     this.setState({isOpen: false});
     if (this.props.onClose) {
-      this.props.onClose(this.state);
+      this.props.onClose({
+        pageSize: this.state.pageSize,
+        searchDistance: this.state.searchDistance * 1000,
+      });
     }
   }
 
@@ -71,6 +85,23 @@ class FilterMenu extends React.Component {
           value={this.state.pageSize} 
           error={this.state.errors.pageSize.isInvalid}
           helperText={this.state.errors.pageSize.message}
+          onChange={this.handleChange} />
+        <Typography 
+          id="filter-search-distance"
+          gutterBottom>
+          {this.rules.searchDistance.label}
+        </Typography>
+        <Slider
+          id="searchDistance"
+          aria-labelledby="filter-search-distance"
+          step={5}
+          marks
+          min={10}
+          max={50}
+          valueLabelDisplay="auto" 
+          value={this.state.searchDistance} 
+          error={this.state.errors.searchDistance.isInvalid}
+          helperText={this.state.errors.searchDistance.message}
           onChange={this.handleChange} />
       </Paper>
     )

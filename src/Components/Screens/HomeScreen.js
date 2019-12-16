@@ -5,10 +5,8 @@ import Grid from '@material-ui/core/Grid';
 
 import RouteSearchPanel from "../RouteSearchPanel";
 import MortRankPanel from '../MortRankPanel';
-import StatsPanel from '../StatsPanel';
-import AnimationPanel from '../AnimationPanel';
-
-const MOCK_MM_RANKING = 1 / 37; // TODO
+import RouteStatsPanel from '../RouteStatsPanel';
+import RouteAnimationPanel from '../RouteAnimationPanel';
 
 const styles = theme => ({
 
@@ -39,13 +37,15 @@ class HomeScreen extends React.Component {
           <Grid item xs={12} md={4}>
             <MortRankPanel
               onShare={this.handleMortPanelShare}
-              userMMPerMile={MOCK_MM_RANKING} /> 
+              result={this.props.searchResult} /> 
           </Grid>
           <Grid item xs={12} md={4}>
-            <StatsPanel />
+            <RouteStatsPanel 
+              result={this.props.searchResult} />
           </Grid>
           <Grid item xs={12} md={8}>
-            <AnimationPanel />
+            <RouteAnimationPanel 
+              result={this.props.searchResult} />
           </Grid>
         </Grid>
       </Container>

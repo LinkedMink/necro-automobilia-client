@@ -14,7 +14,7 @@ const styles = theme => ({
   },
 });
 
-class AnimmationPanel extends React.Component {
+class RouteAnimationPanel extends React.Component {
   render = () => {
     return (
       <Paper className={this.props.classes.paper}>
@@ -26,4 +26,4 @@ class AnimmationPanel extends React.Component {
   }
 }
 
-export default withStyles(styles)(AnimmationPanel);
+export default withStyles(styles)(RouteAnimationPanel);

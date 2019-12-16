@@ -7,8 +7,8 @@ import { saveLocationAccidents } from "../../Actions/Accident";
 import { alertInfo } from "../../Actions/Alert";
 
 const ACCIDENTS_PATH = 'accidents';
-const MAX_DISTANCE = 25000;
-const MAX_RESULTS = 5;
+const DEFAULT_DISTANCE = 25000;
+const DEFAULT_RESULTS = 5;
 
 function mapStateToProps (state) {
   return {
@@ -22,7 +22,7 @@ function mapDispatchToProps(dispatch) {
     openDialog: (dialog) => {
       return dispatch(alertInfo(`TODO`));
     },
-    query: (location) => {
+    query: (location, options) => {
       const locationQuery = {
         location: {
           $nearSphere: {
@@ -30,14 +30,18 @@ function mapDispatchToProps(dispatch) {
                type : "Point",
                coordinates : location
             },
-            $maxDistance: MAX_DISTANCE
+            $maxDistance: options && options.searchDistance
+              ? options.searchDistance
+              : DEFAULT_DISTANCE
           }
         }
       };
 
       const requestData = {
         query: JSON.stringify(locationQuery),
-        pageSize: MAX_RESULTS
+        pageSize: options && options.pageSize 
+          ? options.pageSize
+          : DEFAULT_RESULTS, 
       };
 
       const responseHandler = data => {

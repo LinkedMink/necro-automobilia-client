@@ -54,6 +54,7 @@ class LocationSearchPanel extends React.Component {
       isFilterVisible: false,
       markers: null,
       selected: null,
+      options: null,
       isPendingSubmit: false,
       errors: this.validator.getDefaultErrorState()
     };
@@ -76,7 +77,7 @@ class LocationSearchPanel extends React.Component {
     this.setState({ errors: validationState.errors });
 
     if (validationState.isValid && this.props.onSubmit) {
-      this.props.onSubmit(this.state.location);
+      this.props.onSubmit(this.state.location, this.state.options);
       this.map.clearMarkers();
       this.setState({ markers: null });
     }
@@ -89,6 +90,11 @@ class LocationSearchPanel extends React.Component {
   handleHideFilter = () => {
     this.setState({ isFilterVisible: false });
   };
+
+  handleSetFilter = (options) => {
+    this.setState({ options: options });
+    this.setState({ isFilterVisible: false });
+  }
 
   handleLocationKeyDown = (event) => {
     if (event && event.keyCode === 13) {
@@ -237,7 +243,7 @@ class LocationSearchPanel extends React.Component {
         <FilterMenu 
           isOpen={this.state.isFilterVisible} 
           anchorRef={this.filterRef} 
-          onClose={this.handleHideFilter} />
+          onClose={this.handleSetFilter} />
       </Paper>
     );
   }

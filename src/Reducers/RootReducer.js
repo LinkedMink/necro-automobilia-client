@@ -5,6 +5,7 @@ import account from './Account';
 import alert from './Alert';
 import config from './Config';
 import loading from './Loading';
+import route from './Route';
 
 const rootReducer = combineReducers({
   accident,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   alert,
   config,
   loading,
+  route
 });
 
 export default rootReducer;

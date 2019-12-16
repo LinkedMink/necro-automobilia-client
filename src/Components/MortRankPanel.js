@@ -67,18 +67,20 @@ class MortRankPanel extends React.Component {
 
   renderTravelRank = () => {
     let ranks;
-    if (this.props.userMMPerMile) {
+    if (this.props.result) {
+      const resultMMPerMile = this.props.result.averageMicromorts;
+
       for (let i = mortalityRanks.length - 1; i >= 0; i--) {
-        if (mortalityRanks[i].mmPerMile > this.props.userMMPerMile) {
+        if (mortalityRanks[i].mmPerMile > resultMMPerMile) {
           ranks = mortalityRanks.slice(0, i + 1);
-          ranks.push({ label: USER_TRIP_LABEL, mmPerMile: this.props.userMMPerMile, icon: LocalCarWashIcon });
+          ranks.push({ label: USER_TRIP_LABEL, mmPerMile: resultMMPerMile, icon: LocalCarWashIcon });
           ranks = ranks.concat(mortalityRanks.slice(i + 1));
           break;
         }
       }
 
       if (!ranks) {
-        ranks = [{ label: USER_TRIP_LABEL, mmPerMile: this.props.userMMPerMile, icon: LocalCarWashIcon }];
+        ranks = [{ label: USER_TRIP_LABEL, mmPerMile: resultMMPerMile, icon: LocalCarWashIcon }];
         ranks = ranks.concat(mortalityRanks.slice());
       }
     } else {

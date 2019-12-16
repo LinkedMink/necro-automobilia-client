@@ -20,9 +20,9 @@ class LocationQueryScreen extends React.Component {
     };
   }
 
-  handleSearchSubmit = (location) => {
+  handleSearchSubmit = (location, options) => {
     if (this.props.query) {
-      this.props.query(location);
+      this.props.query(location, options);
     }
   }
 
