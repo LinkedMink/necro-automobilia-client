@@ -62,22 +62,10 @@ class QueryControlPanel extends React.Component {
 
   handleChange = (event, value) => {
     if (value) {
-      this.sliderValue = value
-    } else {
-      this.setState({[event.target.id]: event.target.value});
-    }
-  }
-
-  handleChange = (event, value) => {
-    if (value) {
       this.setState({[event.target.id]: value});
     } else {
       this.setState({[event.target.id]: event.target.value});
     }
-  }
-
-  handleDragStop = (event, value) => {
-    this.setState({pageSize: this.sliderValue});
   }
 
   handleSubmit = (event) => {
@@ -163,8 +151,7 @@ class QueryControlPanel extends React.Component {
               value={this.state.pageSize} 
               error={this.state.errors.pageSize.isInvalid}
               helperText={this.state.errors.pageSize.message}
-              onChange={this.handleChange}
-              onDragStop={this.handleDragStop} />
+              onChange={this.handleChange} />
           </div>
           <Button
             type="submit"

@@ -58,7 +58,7 @@ export class Validator {
     let min, max;
     switch (ruleType) {
       case ValidationRule.REQUIRED:
-        if (value === undefined || value === "") {
+        if (value === undefined || value === null || value === "") {
           return `${label} is required`;
         }
         break;

@@ -7,7 +7,7 @@ import { saveLocationAccidents } from "../../Actions/Accident";
 import { alertInfo } from "../../Actions/Alert";
 
 const ACCIDENTS_PATH = 'accidents';
-const MAX_DISTANCE = 10000;
+const MAX_DISTANCE = 25000;
 const MAX_RESULTS = 5;
 
 function mapStateToProps (state) {

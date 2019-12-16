@@ -3,11 +3,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Grid from '@material-ui/core/Grid';
 import SearchIcon from '@material-ui/icons/Search';
 
 import GoogleMaps from '../Shared/GoogleMaps';
 import { ValidationRule, Validator } from "../Shared/Validator";
+import FilterMenu from './FilterMenu';
 
 const styles = theme => ({
   paper: {
@@ -26,8 +29,8 @@ const styles = theme => ({
   submitContainer: {
     display: "flex",
     flexDirection: 'column',
-    alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "flex-end",
   }
 });
 
@@ -36,7 +39,7 @@ class LocationSearchPanel extends React.Component {
     super(props)
 
     this.rules = {
-      mapLocation: { 
+      location: { 
         label: "Location", 
         rules: [ValidationRule.REQUIRED]
       },
@@ -48,13 +51,16 @@ class LocationSearchPanel extends React.Component {
       mapLocation: "",
       location: null,
       isMapLoaded: false,
+      isFilterVisible: false,
       markers: null,
       selected: null,
+      isPendingSubmit: false,
       errors: this.validator.getDefaultErrorState()
     };
 
     this.locationRef = React.createRef();
     this.mapRef = React.createRef();
+    this.filterRef = React.createRef();
   }
 
   handleChange = (event) => {
@@ -62,7 +68,9 @@ class LocationSearchPanel extends React.Component {
   }
 
   handleSubmit = (event) => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
 
     const validationState = this.validator.validate(this.state);
     this.setState({ errors: validationState.errors });
@@ -71,6 +79,22 @@ class LocationSearchPanel extends React.Component {
       this.props.onSubmit(this.state.location);
       this.map.clearMarkers();
       this.setState({ markers: null });
+    }
+  }
+
+  handleShowFilter = () => {
+    this.setState({ isFilterVisible: true });
+  };
+
+  handleHideFilter = () => {
+    this.setState({ isFilterVisible: false });
+  };
+
+  handleLocationKeyDown = (event) => {
+    if (event && event.keyCode === 13) {
+      this.setState({isPendingSubmit: true});
+      event.preventDefault();
+      return false;
     }
   }
 
@@ -84,6 +108,11 @@ class LocationSearchPanel extends React.Component {
           place.geometry.location.lat()
         ]
       });
+
+      if (this.state.isPendingSubmit) {
+        this.setState({isPendingSubmit: false});
+        this.handleSubmit();
+      }
     }
   }
 
@@ -166,31 +195,49 @@ class LocationSearchPanel extends React.Component {
                 required
                 fullWidth
                 id="mapLocation"
-                label={this.rules.mapLocation.label}
+                label={this.rules.location.label}
                 name="mapLocation"
                 type="text"
                 onChange={this.handleChange}
                 value={this.state.mapLocation}
-                error={this.state.errors.mapLocation.isInvalid}
-                helperText={this.state.errors.mapLocation.message}
+                error={this.state.errors.location.isInvalid}
+                helperText={this.state.errors.location.message}
                 inputRef={this.locationRef}
+                onKeyDown={this.handleLocationKeyDown}
                 autoFocus />
             </Grid>
             <Grid item xs={3} className={this.props.classes.submitContainer}>
-              <Button
-                type="submit"
-                variant="contained"
+              <ButtonGroup 
+                variant="contained" 
                 color="primary"
-                endIcon={<SearchIcon />}
-                fullWidth>
-                Submit
-              </Button>
+                className={this.props.classes.searchButton}
+                aria-label="split button">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<SearchIcon />}>
+                  Search
+                </Button>
+                <Button
+                  color="primary"
+                  ref={this.filterRef}
+                  aria-expanded={this.state.isFilterVisible ? 'true' : undefined}
+                  aria-label="filter options"
+                  aria-haspopup="menu"
+                  onClick={this.handleShowFilter}>
+                  <ArrowDropDownIcon />
+                </Button>
+              </ButtonGroup>
             </Grid>
           </Grid>
         </form>
         <div ref={this.mapRef} 
           className={this.props.classes.map} 
           id="mapSurface"></div>
+        <FilterMenu 
+          isOpen={this.state.isFilterVisible} 
+          anchorRef={this.filterRef} 
+          onClose={this.handleHideFilter} />
       </Paper>
     );
   }

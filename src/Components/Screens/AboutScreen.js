@@ -28,25 +28,51 @@ class AboutScreen extends React.Component {
             TODO. This is a work in progress.
           </Typography>
           <br/>
+          <Typography variant="body1">
+            This apps seeks to assign a mortality rating to driving a vehicle for to any particular location in the 
+            United States (see <Link href="https://en.wikipedia.org/wiki/Micromort">Micromorts</Link>). The application 
+            uses a machine learning algorithm to produce a plane of predicted risk. This risk is then used to calculate 
+            the risk or routes or locations.
+          </Typography>
+          <br/>
+          <Typography variant="h4">
+            Data Sources
+          </Typography>
+          <Typography variant="body1">
+            Currently, the application uses historical data from the NHTSA to calculate risk. There are plans to produce
+            a model that evolves with conditions (weather, traffic, etc.) that will adjust at regular intervals, so people
+            can compare there risk over time.
+          </Typography>
+          <br/>
           <Typography variant="h4">
             Related Projects
           </Typography>
           <List>
-            <ListItem>
-              <Link href="https://github.com/LinkedMink/necro-automobilia">Necro Automobilia UI</Link>
-            </ListItem>
-            <ListItem>
-              <Link href="https://github.com/LinkedMink/necro-automobilia-service">Necro Automobilia Service</Link>
-            </ListItem>
-            <ListItem>
-              <Link href="https://github.com/LinkedMink/necro-automobilia-ml">Necro Automobilia Machine Learning</Link>
-            </ListItem>
-            <ListItem>
-              <Link href="https://github.com/LinkedMink/node-user-service">User Service</Link>
-            </ListItem>
-            <ListItem>
-              <Link href="https://github.com/LinkedMink/nhtsa-fatalities-data-loader">NHTSA Fatality Data Loader</Link>
-            </ListItem>
+            <Link href="https://github.com/LinkedMink/necro-automobilia">
+              <ListItem button>
+                Necro Automobilia UI
+              </ListItem>
+            </Link>
+            <Link href="https://github.com/LinkedMink/necro-automobilia-service">
+              <ListItem button>
+                Necro Automobilia Service
+              </ListItem>
+            </Link>
+            <Link href="https://github.com/LinkedMink/necro-automobilia-ml">
+              <ListItem button>
+                Necro Automobilia Machine Learning
+              </ListItem>
+            </Link>
+            <Link href="https://github.com/LinkedMink/node-user-service">
+              <ListItem button>
+                User Service
+              </ListItem>
+            </Link>
+            <Link href="https://github.com/LinkedMink/nhtsa-fatalities-data-loader">
+              <ListItem button>
+                NHTSA Fatality Data Loader
+              </ListItem>
+            </Link>
           </List>
         </Paper>
       </Container>

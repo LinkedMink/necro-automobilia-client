@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -120,7 +119,7 @@ class MortRankPanel extends React.Component {
       <Paper className={this.props.classes.paper}>
         <div className={this.props.classes.header}>
           <Typography variant="h4" className={this.props.classes.headerText}>
-            <Link href="https://en.wikipedia.org/wiki/Micromort">Micromorts</Link>
+            Micromorts
           </Typography>
           {this.props.userMMPerMile &&
             <Button

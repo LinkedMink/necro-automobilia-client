@@ -37,7 +37,8 @@ class LocationResultPanel extends React.Component {
     if (!this.props.results) {
       return (
         <Typography variant="body1">
-          No results
+          No results:<br />
+          Find accidents within 25km of your search location
         </Typography>
       );
     }

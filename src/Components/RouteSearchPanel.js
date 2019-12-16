@@ -74,8 +74,13 @@ class RouteSearchPanel extends React.Component {
     this.setState({ errors: validationState.errors });
 
     if (validationState.isValid && this.props.onSubmit) {
+      this.map.setRoute(this.state.source, this.state.destination, this.handleRouteRetrieved);
       this.props.onSubmit(this.state.source, this.state.destination);
     }
+  }
+
+  handleRouteRetrieved = (route) => {
+    console.log(route);
   }
 
   getAutocompleteHandler = (descriptionField, locationField) => {
@@ -110,6 +115,8 @@ class RouteSearchPanel extends React.Component {
           this.map.initAutocomplete(
             this.destinationRef.current,
             this.getAutocompleteHandler('mapDestination', 'destination'));
+
+          this.map.initDirections();
         }, 100);
       };
 

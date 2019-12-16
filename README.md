@@ -1,5 +1,14 @@
 # Necro Automobilia - Client
 ## Project Overview
+This apps seeks to assign a mortality rating to driving a vehicle for to any particular location in 
+the United States (see [Micromorts](https://en.wikipedia.org/wiki/Micromort)). The application uses 
+a machine learning algorithm to produce a plane of predicted risk. This risk is then used to 
+calculate the risk or routes or locations.
+
+### Data Sources
+Currently, the application uses historical data from the NHTSA to calculate risk. There are plans 
+to produce a model that evolves with conditions (weather, traffic, etc.) that will adjust at regular 
+intervals, so people can compare there risk over time.
 
 ## Getting Started
 This client requires a number of components that are meant to run in a microservice architecture.
@@ -23,6 +32,8 @@ will be included for Azure AKS.
 ### Internal Prerequisites
 * [Node User Service](https://github.com/LinkedMink/node-user-service)
 * [Necro Automobilia Service](https://github.com/LinkedMink/necro-automobilia-service)
+* [Necro Automobilia Machine Learning](https://github.com/LinkedMink/necro-automobilia-ml)
+* [NHTSA Fatality Data Loader](https://github.com/LinkedMink/nhtsa-fatalities-data-loader)
 
 After setting up the prerequisites, install the npm packages.
 

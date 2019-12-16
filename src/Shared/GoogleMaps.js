@@ -57,6 +57,12 @@ class GoogleMaps {
     });
   }
 
+  initDirections = () => {
+    this.directionsService = new maps.DirectionsService();
+    this.directionsRenderer = new maps.DirectionsRenderer();
+    this.directionsRenderer.setMap(this.map);
+  }
+
   initAutocomplete = (inputElement, onPlaceChanged) => {
     let initElement = inputElement
     if (typeof inputElement === 'string') {
@@ -87,7 +93,7 @@ class GoogleMaps {
       return;
     }
 
-    let centerPoint = coordinates.length
+    const centerPoint = coordinates.length
       ? { lat: coordinates[1], lng: coordinates[0] }
       : coordinates;
 
@@ -174,6 +180,31 @@ class GoogleMaps {
       const bounds = this.getMarkerBounds();
       this.map.fitBounds(bounds);
     }
+  }
+
+  setRoute = (source, destination, onRouteRetrieved) => {
+    const sourcePoint = source.length
+      ? { lat: source[1], lng: source[0] }
+      : source;
+
+    const destinationPoint = destination.length
+      ? { lat: destination[1], lng: destination[0] }
+      : destination;
+
+    const routeRequest = {
+      origin: sourcePoint,
+      destination: destinationPoint,
+      travelMode: maps.TravelMode["DRIVING"]
+    };
+
+    this.directionsService.route(routeRequest, (response, status) => {
+      if (status === 'OK') {
+        this.directionsRenderer.setDirections(response);
+        if (onRouteRetrieved) {
+          onRouteRetrieved(response);
+        }
+      }
+    });
   }
 }
 
