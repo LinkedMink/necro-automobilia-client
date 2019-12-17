@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import { connect } from "react-redux";
 
 import { StorageKey } from "../Constants/Storage";
-import { destroySession } from "../Actions/Account";
+import { destroySession } from "../Actions/AccountAction";
 
 function mapStateToProps (state) {
   return {

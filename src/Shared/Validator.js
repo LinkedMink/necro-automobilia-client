@@ -1,10 +1,23 @@
+import { LogService } from "../Shared/LogService";
+
+const logger = LogService.get("Validator");
+
 export const ValidationRule = {
   REQUIRED: "REQUIRED",
   EMAIL: "EMAIL",
   LENGTH: "LENGTH",
   RANGE: "RANGE",
-  MATCH: "MATCH",
-  JSON: "JSON"
+  COMPARE: "COMPARE",
+  JSON: "JSON",
+  FUNCTION: "FUNCTION",
+}
+
+export const Comparison = {
+  GREATER: 0,
+  GREATER_OR_EQUAL: 1,
+  EQUAL: 2,
+  LESS_OR_EQUAL: 3,
+  LESS: 4
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -61,7 +74,7 @@ export class Validator {
         if (value === undefined || value === null || value === "") {
           return `${label} is required`;
         }
-        break;
+        return;
       case ValidationRule.EMAIL:
         if (typeof value !== 'string' || value.trim() === '') return;
         if (!EMAIL_REGEX.test(value)) {
@@ -90,10 +103,25 @@ export class Validator {
           return `${label} must be less than ${max}`;
         }
         return;
-      case ValidationRule.MATCH:
-        const matchProperty = rule[1];
-        if (value !== state[matchProperty]) {
-          return `${label} must match ${this.rules[matchProperty].label}`;
+      case ValidationRule.COMPARE:
+        const compareProperty = rule[1];
+        const order = rule[2] ? rule[2] : Comparison.EQUAL;
+        const compareTo = state[compareProperty];
+
+        if (value !== compareTo) {
+          if (order === Comparison.EQUAL) {
+            return `${label} must match ${this.rules[compareProperty].label}`;
+          } else if (order === Comparison.GREATER_OR_EQUAL && value < compareTo) {
+            return `${label} must be greater than or equal ${this.rules[compareProperty].label}`;
+          } else if (order === Comparison.LESS_OR_EQUAL && value > compareTo) {
+            return `${label} must be less than or equal ${this.rules[compareProperty].label}`;
+          }
+        } else {
+          if (order === Comparison.GREATER && value <= compareTo) {
+            return `${label} must be greater than ${this.rules[compareProperty].label}`;
+          } else if (order === Comparison.LESS && value >= compareTo) {
+            return `${label} must be less than ${this.rules[compareProperty].label}`;
+          }
         }
         return;
       case ValidationRule.JSON:
@@ -104,8 +132,11 @@ export class Validator {
           return `${label} must be valid JSON`;
         }
         return;
+      case ValidationRule.FUNCTION:
+        const validateFunction = rule[1];
+        return validateFunction();
       default:
-        console.warn(`Validation rule not supported: ${ruleType}`);
+        logger.warn(`Validation rule not supported: ${ruleType}`);
         return;
     }
   }

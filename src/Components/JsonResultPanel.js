@@ -1,5 +1,5 @@
-import Prism from "prismjs";
-import 'prismjs/themes/prism-okaidia.css'
+//import Prism from "prismjs";
+//import 'prismjs/themes/prism-okaidia.css'
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -47,27 +47,14 @@ class JsonResultPanel extends React.Component {
     };
   }
 
-  componentDidMount = () => {
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
-  }
-  
-  componentWillUnmount = () => {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-  }
-  
-  updateWindowDimensions = () => {
-    this.setState({ width: window.innerWidth, height: window.innerHeight });
-  }
-
   getResult = () => {
     if (this.props.result) {
       const jsonString = JSON.stringify(this.props.result, null, JSON_SPACING);
       if (jsonString !== this.state.jsonString) {
         this.setState({  jsonString });
-        if (this.state.isPrettyPrinting) {
-          setTimeout(() => Prism.highlightAll(), 100);
-        }
+        //if (this.state.isPrettyPrinting) {
+        //  setTimeout(() => Prism.highlightAll(), 100);
+        //}
       }
 
       return jsonString;
@@ -75,14 +62,14 @@ class JsonResultPanel extends React.Component {
 
     return '';
   }
-
+/*
   handlePrettyPrint = () => {
     this.setState({ isPrettyPrinting: !this.state.isPrettyPrinting })
     if (this.state.isPrettyPrinting) {
       setTimeout(() => Prism.highlightAll(), 100);
     }
   }
-
+*/
   startDownload = () => {
     download('accidents.json', JSON.stringify(this.props.result), 'application/json');
   }

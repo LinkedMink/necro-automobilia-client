@@ -1,6 +1,6 @@
-import { SAVE_CONFIG } from '../Actions/Config';
+import { SAVE_CONFIG } from '../Actions/ConfigAction';
 
-function config(state = {}, action) {
+const configReducer = (state = {}, action) => {
   if (action.type === SAVE_CONFIG) {
     const config = Object.assign({}, state, action.payload);
     return config;
@@ -9,4 +9,4 @@ function config(state = {}, action) {
   }
 }
 
-export default config;
+export default configReducer;

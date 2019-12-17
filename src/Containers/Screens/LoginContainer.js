@@ -1,21 +1,19 @@
 import { connect } from "react-redux";
 
 import { StorageKey } from "../../Constants/Storage";
-import { ServiceUrl } from "../../Constants/Service";
+import { Routes, Service } from "../../Constants/Service";
 import { decodeToken } from "../../Shared/DecodeToken";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import LoginScreen from "../../Components/Screens/LoginScreen";
-import { saveSession } from "../../Actions/Account";
+import { saveSession } from "../../Actions/AccountAction";
 
-const AUTHENTICATE_PATH = 'authenticate';
-
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.account.token ? true : false
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     login: (email, password, rememberMe) => {
       let requestData = { 
@@ -34,8 +32,8 @@ function mapDispatchToProps(dispatch) {
 
       return getJsonResponse(
         dispatch, 
-        ServiceUrl.USER,
-        AUTHENTICATE_PATH, 
+        Service.USER,
+        Routes[Service.USER].AUTHENTICATE, 
         responseHandler, 
         HttpMethods.POST,
         requestData);

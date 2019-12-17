@@ -1,31 +1,30 @@
 import { connect } from "react-redux";
 import urlJoin from "url-join";
 
-import { ServiceUrl } from "../../Constants/Service";
+import { Routes, Service } from "../../Constants/Service";
 import { getJsonResponse } from "../../Shared/RequestFactory";
 import PasswordResetScreen from "../../Components/Screens/PasswordResetScreen";
-import { alertRedirect } from "../../Actions/Alert";
+import { alertRedirect } from "../../Actions/AlertAction";
 
-const PASSWORD_RESET_PATH = 'password';
+const SUCCESS_MESSAGE = "A reset link has been sent. Check your email.";
 
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.account.token ? true : false
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     getResetLink: email => {
       let responseHandler = data => {
-        return dispatch(alertRedirect(
-          "A reset link has been sent. Check your email.", "/login"));
+        return dispatch(alertRedirect(SUCCESS_MESSAGE, "/login"));
       }
 
       return getJsonResponse(
         dispatch, 
-        ServiceUrl.USER,
-        urlJoin(PASSWORD_RESET_PATH, encodeURIComponent(email)), 
+        Service.USER,
+        urlJoin(Routes[Service.USER].PASSWORD, encodeURIComponent(email)), 
         responseHandler);
     }
   };

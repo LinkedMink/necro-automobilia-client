@@ -3,7 +3,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import AlertDialogContainer from './Containers/AlertDialogContainer';
+import AlertContainer from './Containers/Dialogs/AlertContainer';
+import ConfirmContainer from './Containers/Dialogs/ConfirmContainer';
 import LoadingOverlayContainer from './Containers/LoadingOverlayContainer';
 import NavigationMenuContainer from './Containers/NavigationMenuContainer';
 import HeaderPanel from './Components/HeaderPanel';
@@ -66,7 +67,8 @@ class App extends React.Component {
       <BrowserRouter>
         <CssBaseline />
         <LoadingOverlayContainer />
-        <AlertDialogContainer />
+        <AlertContainer />
+        <ConfirmContainer />
         <div className={this.props.classes.root}>
           <HeaderPanel 
             isLoggedIn={this.props.isLoggedIn}

@@ -112,10 +112,6 @@ class MortRankPanel extends React.Component {
     });
   }
 
-  renderDailyComparison = () => {
-
-  }
-
   render = () => {
     return (
       <Paper className={this.props.classes.paper}>
@@ -136,7 +132,6 @@ class MortRankPanel extends React.Component {
         <List>
           {this.renderTravelRank()}
         </List>
-        {this.renderDailyComparison()}
       </Paper>
     );
   }

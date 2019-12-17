@@ -39,7 +39,7 @@ class AccountScreen extends React.Component {
       },
       confirmPassword: {
         label: "Confirm Password",
-        rules: [[ValidationRule.MATCH, 'password']]
+        rules: [[ValidationRule.COMPARE, 'password']]
       }
     };
 
@@ -82,6 +82,13 @@ class AccountScreen extends React.Component {
     }
   }
 
+  handleDelete = (event) => {
+    event.preventDefault();
+    if (this.props.deleteConfirm) {
+      this.props.deleteConfirm();
+    }
+  }
+
   isDirty = () => {
     return this.props.profile && (
       this.state.email !== this.props.profile.email ||
@@ -106,6 +113,20 @@ class AccountScreen extends React.Component {
     }
 
     return this.props.profile;
+  }
+
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    if (this.props.deleteConfirmResult !== undefined) {
+      if (this.props.deleteConfirmResult === true) {
+        if (this.props.deleteAccountData) {
+          this.props.deleteAccountData();
+        }
+      } else {
+        if (this.props.deleteConfirm) {
+          this.props.deleteConfirm();
+        }
+      }
+    }
   }
 
   render = () => {
@@ -167,6 +188,17 @@ class AccountScreen extends React.Component {
               Save
             </Button>
           </form>
+          <Typography variant="h4">
+            Delete
+          </Typography>
+          <Button
+            variant="contained"
+            color="secondary"
+            fullWidth
+            onClick={this.handleDelete}
+            className={this.props.classes.submit}>
+            Delete Account
+          </Button>
         </Paper>
       </Container>
     );

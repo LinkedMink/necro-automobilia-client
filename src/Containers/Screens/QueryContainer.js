@@ -1,19 +1,17 @@
 import { connect } from "react-redux";
 
-import { ServiceUrl } from "../../Constants/Service";
+import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import QueryScreen from "../../Components/Screens/QueryScreen";
-import { saveTestAccidents } from "../../Actions/Accident";
+import { saveTestAccidents } from "../../Actions/AccidentAction";
 
-const ACCIDENTS_PATH = 'accidents';
-
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   return {
     accidentData: state.accident.testResult
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     query: (query, sort, pageNumber, pageSize) => {
       let requestData = { 
@@ -29,8 +27,8 @@ function mapDispatchToProps(dispatch) {
 
       return getJsonResponse(
         dispatch, 
-        ServiceUrl.NECRO_AUTOMOBILIA,
-        ACCIDENTS_PATH, 
+        Service.NECRO_AUTOMOBILIA,
+        Routes[Service.NECRO_AUTOMOBILIA].ACCIDENTS, 
         responseHandler, 
         HttpMethods.GET,
         requestData);

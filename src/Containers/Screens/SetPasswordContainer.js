@@ -1,19 +1,19 @@
 import { connect } from "react-redux";
 
-import { ServiceUrl } from "../../Constants/Service";
+import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import SetPasswordScreen from "../../Components/Screens/SetPasswordScreen";
-import { alertRedirect } from "../../Actions/Alert";
+import { alertRedirect } from "../../Actions/AlertAction";
 
-const PASSWORD_RESET_PATH = 'password';
+const SUCCESS_MESSAGE = "Your password has been reset.";
 
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.account.token ? true : false
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     resetPassword: (email, resetToken, password) => {
       let requestData = { 
@@ -23,14 +23,13 @@ function mapDispatchToProps(dispatch) {
       };
 
       let responseHandler = data => {
-        return dispatch(alertRedirect(
-          "Your password has been reset.", "/login"));
+        return dispatch(alertRedirect(SUCCESS_MESSAGE, "/login"));
       }
 
       return getJsonResponse(
         dispatch, 
-        ServiceUrl.USER,
-        PASSWORD_RESET_PATH, 
+        Service.USER,
+        Routes[Service.USER].PASSWORD, 
         responseHandler, 
         HttpMethods.PUT,
         requestData);
@@ -38,6 +37,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(SetPasswordScreen);
+const SetPasswordContainer = connect(mapStateToProps, mapDispatchToProps)(SetPasswordScreen);
 
-export default LoginContainer
+export default SetPasswordContainer

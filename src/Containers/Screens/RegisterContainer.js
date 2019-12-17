@@ -1,19 +1,19 @@
 import { connect } from "react-redux";
 
-import { ServiceUrl } from "../../Constants/Service";
+import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import RegisterScreen from "../../Components/Screens/RegisterScreen";
-import { alertRedirect } from "../../Actions/Alert";
+import { alertRedirect } from "../../Actions/AlertAction";
 
-const REGISTER_PATH = 'register';
+const SUCCESS_MESSAGE = "Your account has been created. Verify your email address to login.";
 
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.account.token ? true : false
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     register: (email, password) => {
       let requestData = { 
@@ -22,14 +22,13 @@ function mapDispatchToProps(dispatch) {
       };
 
       let responseHandler = data => {
-        return dispatch(alertRedirect(
-          "Your account has been created. Verify your email address to login.", "/login"));
+        return dispatch(alertRedirect(SUCCESS_MESSAGE, "/login"));
       }
 
       return getJsonResponse(
         dispatch, 
-        ServiceUrl.USER,
-        REGISTER_PATH, 
+        Service.USER,
+        Routes[Service.USER].REGISTER, 
         responseHandler, 
         HttpMethods.POST,
         requestData);
@@ -37,6 +36,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
+const RegisterContainer = connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
 
-export default LoginContainer
+export default RegisterContainer

@@ -1,6 +1,6 @@
-import { LOADING_START, LOADING_REPORT, LOADING_END } from '../Actions/Loading';
+import { LOADING_START, LOADING_REPORT, LOADING_END } from '../Actions/LoadingAction';
 
-function loading(state = {}, action) {
+const loadingReducer = (state = {}, action) => {
   if (action.type === LOADING_START) {
     if (state && state.isLoading) {
       return state;
@@ -26,4 +26,4 @@ function loading(state = {}, action) {
   }
 }
 
-export default loading;
+export default loadingReducer;

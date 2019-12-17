@@ -1,21 +1,19 @@
 import { connect } from "react-redux";
 
-import { alertInfo } from "../../Actions/Alert";
+import { alertInfo } from "../../Actions/AlertAction";
 import HomeScreen from "../../Components/Screens/HomeScreen";
-import { ServiceUrl } from "../../Constants/Service";
+import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
-import { saveActiveRoute } from "../../Actions/Route";
+import { saveActiveRoute } from "../../Actions/RouteAction";
 
-const ROUTES_PATH = 'routes'
-
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   return {
     mapsApiKey: state.config.googleMapsApiKey,
     searchResult: state.route.activeRoute
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     openDialog: (dialog) => {
       return dispatch(alertInfo(`TODO`));
@@ -32,8 +30,8 @@ function mapDispatchToProps(dispatch) {
 
       return getJsonResponse(
         dispatch, 
-        ServiceUrl.NECRO_AUTOMOBILIA,
-        ROUTES_PATH, 
+        Service.NECRO_AUTOMOBILIA,
+        Routes[Service.NECRO_AUTOMOBILIA].ROUTES, 
         responseHandler, 
         HttpMethods.GET,
         requestData);

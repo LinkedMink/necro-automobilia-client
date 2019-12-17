@@ -1,4 +1,6 @@
+import 'date-fns';
 import React from 'react';
+import DateFnsUtils from '@date-io/date-fns';
 import { withStyles } from '@material-ui/core/styles';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -6,6 +8,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 import { ValidationRule, Validator } from "../Shared/Validator";
 
@@ -30,6 +33,14 @@ class FilterMenu extends React.Component {
         label: "Search Distance (km)",
         rules: [[ValidationRule.RANGE, 10, 50]]
       },
+      startDate: {
+        label: "Start Date",
+        rules: [[ValidationRule.RANGE, new Date(), new Date()]]
+      },
+      endDate: {
+        label: "End Date",
+        rules: [[ValidationRule.RANGE, new Date(), new Date()]]
+      },
     };
 
     this.validator = new Validator(this.rules);
@@ -38,6 +49,8 @@ class FilterMenu extends React.Component {
       isOpen: false,
       pageSize: 5,
       searchDistance: 25,
+      startDate: new Date(),
+      endDate: new Date(),
       errors: this.validator.getDefaultErrorState()
     };
   }
@@ -47,6 +60,14 @@ class FilterMenu extends React.Component {
       this.setState({[event.target.id]: value});
     } else {
       this.setState({[event.target.id]: event.target.value});
+    }
+  }
+
+  handleDateChange = (fieldName) => {
+    return (date) => {
+      const dateState = {};
+      dateState[fieldName] = date;
+      this.setState(dateState);
     }
   }
 
@@ -63,6 +84,12 @@ class FilterMenu extends React.Component {
         pageSize: this.state.pageSize,
         searchDistance: this.state.searchDistance * 1000,
       });
+    }
+  }
+
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    if (this.state.isOpen !== this.props.isOpen) {
+      this.setState({isOpen: this.props.isOpen});
     }
   }
 
@@ -103,15 +130,37 @@ class FilterMenu extends React.Component {
           error={this.state.errors.searchDistance.isInvalid}
           helperText={this.state.errors.searchDistance.message}
           onChange={this.handleChange} />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="startDate"
+            label={this.rules.startDate.label}
+            value={this.startDate}
+            onChange={this.handleDateChange("startDate")}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }} />
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="endDate"
+            label={this.rules.endDate.label}
+            value={this.endDate}
+            onChange={this.handleDateChange("endDate")}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }} />
+        </MuiPickersUtilsProvider>
       </Paper>
     )
   }
 
   render() {
-    if (this.state.isOpen !== this.props.isOpen) {
-      this.setState({isOpen: this.props.isOpen});
-    }
-
     return (
       <Popper open={this.state.isOpen} 
         anchorEl={this.props.anchorRef.current} 

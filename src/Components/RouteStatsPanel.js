@@ -20,12 +20,13 @@ const styles = theme => ({
 
 class RouteStatsPanel extends React.Component {
   render = () => {
-    let calculateDate, distance;
+    let calculateDate, distance, micromorts;
     if (this.props.result) {
       const result = this.props.result;
       distance = `Distance: ${result.distance.toFixed(3)} km`;
       const date = getDateTimeString(result.modelCalculatedOn);
       calculateDate = `Calculated On: ${date}`;
+      micromorts = `Micromorts: ${result.totalMicromorts}`;
     }
 
     return (
@@ -37,6 +38,10 @@ class RouteStatsPanel extends React.Component {
           <ListItem>
             <ListItemText 
               primary={distance} />
+          </ListItem>
+          <ListItem>
+            <ListItemText 
+              primary={micromorts} />
           </ListItem>
           <ListItem>
             <ListItemText 

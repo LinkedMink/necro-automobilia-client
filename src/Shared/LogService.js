@@ -44,7 +44,7 @@ export class LogService {
     }
 
     if (this.levelPersist <= LogLevel.DEBUG) {
-      this.logToBuffer(contextMessage);
+      this.logToBuffer(contextMessage, 'DEBUG');
     }
   }
 
@@ -55,7 +55,7 @@ export class LogService {
     }
 
     if (this.levelPersist <= LogLevel.INFO) {
-      this.logToBuffer(contextMessage);
+      this.logToBuffer(contextMessage, 'INFO');
     }
   }
 
@@ -66,7 +66,7 @@ export class LogService {
     }
 
     if (this.levelPersist <= LogLevel.WARN) {
-      this.logToBuffer(contextMessage);
+      this.logToBuffer(contextMessage, 'WARN');
     }
   }
 
@@ -77,7 +77,7 @@ export class LogService {
     }
 
     if (this.levelPersist <= LogLevel.ERROR) {
-      this.logToBuffer(contextMessage);
+      this.logToBuffer(contextMessage, 'ERROR');
     }
   }
 
@@ -94,9 +94,9 @@ export class LogService {
     return `${this.context} - ${output}`;
   }
 
-  logToBuffer = (message) => {
+  logToBuffer = (message, level) => {
     const dateString = new Date(Date.UTC())
       .toLocaleString(LOG_ENTRY_DATE_LOCALE);
-    logEntryBuffer.push(`${dateString} ${message}`);
+    logEntryBuffer.push(`${dateString}: ${level} - ${message}`);
   }
 }

@@ -32,6 +32,13 @@ class LocationResultPanel extends React.Component {
       behavior: 'smooth'
     });
   }
+
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    if (this.state.selected !== this.props.selected) {
+      this.setState({selected: this.props.selected});
+      setTimeout(this.scrollToSelected.bind(this), 200);
+    }
+  }
   
   renderResults = () => {
     if (!this.props.results) {
@@ -76,11 +83,6 @@ class LocationResultPanel extends React.Component {
   }
 
   render = () => {
-    if (this.state.selected !== this.props.selected) {
-      this.setState({selected: this.props.selected});
-      setTimeout(this.scrollToSelected.bind(this), 200);
-    }
-
     return (
       <Paper 
         ref={this.containerRef}

@@ -1,4 +1,4 @@
-import { ALERT_CLEAR, ALERT_ERROR, ALERT_REDIRECT, ALERT_INFO } from '../Actions/Alert';
+import { ALERT_CLEAR, ALERT_ERROR, ALERT_REDIRECT, ALERT_INFO } from '../Actions/AlertAction';
 
 const AlertSeverity = {
   NONE: "None",
@@ -6,7 +6,7 @@ const AlertSeverity = {
   ERROR: "Error",
 }
 
-function account(state = {}, action) {
+const alertReducer = (state = {}, action) => {
   if (action.type === ALERT_CLEAR) {
     return Object.assign({}, state, { 
       severity: undefined, message: undefined, redirect: undefined
@@ -30,4 +30,4 @@ function account(state = {}, action) {
   }
 }
 
-export default account;
+export default alertReducer;

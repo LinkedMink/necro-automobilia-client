@@ -1,4 +1,5 @@
 const GOOGLE_MAPS_BASE_URL = 'https://maps.googleapis.com/maps/api/js?';
+const TEMP_ON_LOAD_FUNCTION = 'onGoogleMapsApiLoaded';
 const INITIAL_MAP_CENTER = { lat: 39.8283, lng: -98.5795 }; // Center of US
 const INITIAL_ZOOM = 4;
 const FOCUS_ZOOM = 11;
@@ -16,10 +17,10 @@ class GoogleMaps {
     if (!this.loadingPromise && !maps) {
       this.loadingPromise  = new Promise((resolve, reject) => {
         try {
-          window.onGoogleMapsApiLoaded = resolve;
+          window[TEMP_ON_LOAD_FUNCTION] = resolve;
   
           options.key = this.apiKey;
-          options.callback = "onGoogleMapsApiLoaded";
+          options.callback = TEMP_ON_LOAD_FUNCTION;
           const optionsQuery = Object.keys(options)
             .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(options[k])}`)
             .join('&');

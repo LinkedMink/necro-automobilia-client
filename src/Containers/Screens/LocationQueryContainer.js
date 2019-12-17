@@ -1,23 +1,22 @@
 import { connect } from "react-redux";
 
 import LocationQueryScreen from "../../Components/Screens/LocationQueryScreen";
-import { ServiceUrl } from "../../Constants/Service";
+import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
-import { saveLocationAccidents } from "../../Actions/Accident";
-import { alertInfo } from "../../Actions/Alert";
+import { saveLocationAccidents } from "../../Actions/AccidentAction";
+import { alertInfo } from "../../Actions/AlertAction";
 
-const ACCIDENTS_PATH = 'accidents';
 const DEFAULT_DISTANCE = 25000;
 const DEFAULT_RESULTS = 5;
 
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   return {
     mapsApiKey: state.config.googleMapsApiKey,
     searchResult: state.accident.locationResult
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     openDialog: (dialog) => {
       return dispatch(alertInfo(`TODO`));
@@ -50,8 +49,8 @@ function mapDispatchToProps(dispatch) {
 
       return getJsonResponse(
         dispatch, 
-        ServiceUrl.NECRO_AUTOMOBILIA,
-        ACCIDENTS_PATH, 
+        Service.NECRO_AUTOMOBILIA,
+        Routes[Service.NECRO_AUTOMOBILIA].ACCIDENTS, 
         responseHandler, 
         HttpMethods.GET,
         requestData);

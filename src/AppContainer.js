@@ -4,19 +4,18 @@ import App from "./App";
 import { StorageKey } from "./Constants/Storage";
 import { getJsonResponse } from "./Shared/RequestFactory";
 import { decodeToken } from "./Shared/DecodeToken";
-import { saveConfig } from "./Actions/Config";
-import { saveSession } from "./Actions/Account";
+import { saveConfig } from "./Actions/ConfigAction";
+import { saveSession } from "./Actions/AccountAction";
+import { Routes, Service } from "./Constants/Service";
 
-const CONFIG_PATH = 'config';
-
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
   return {
-    isConfigLoaded: state.config.userServiceUrl ? true : false,
+    isConfigLoaded: state.config.urls ? true : false,
     isLoggedIn: state.account.token ? true : false
   };
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     getConfig: () => {
       if (process.env.LOCAL_CONFIG) {
@@ -31,8 +30,8 @@ function mapDispatchToProps(dispatch) {
 
       return getJsonResponse(
         dispatch, 
-        '',
-        CONFIG_PATH, 
+        Service.SELF,
+        Routes[Service.SELF].CONFIG, 
         responseHandler);
     },
     getAccount: () => {

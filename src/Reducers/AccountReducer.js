@@ -1,6 +1,6 @@
-import { SAVE_ACCOUNT, SAVE_SESSION, DESTROY_SESSION } from '../Actions/Account';
+import { SAVE_ACCOUNT, SAVE_SESSION, DESTROY_SESSION } from '../Actions/AccountAction';
 
-function account(state = {}, action) {
+const accountReducer = (state = {}, action) => {
   if (action.type === SAVE_SESSION) {
     return Object.assign({}, state, action.payload);
   } else if (action.type === DESTROY_SESSION) {
@@ -16,4 +16,4 @@ function account(state = {}, action) {
   }
 }
 
-export default account;
+export default accountReducer;

@@ -1,6 +1,6 @@
-import { SAVE_LOCATION_QUERY, SAVE_TEST_QUERY } from '../Actions/Accident';
+import { SAVE_LOCATION_QUERY, SAVE_TEST_QUERY } from '../Actions/AccidentAction';
 
-function accident(state = {}, action) {
+const accidentReducer = (state = {}, action) => {
   if (action.type === SAVE_LOCATION_QUERY) {
     return Object.assign({}, state, action.payload);
   } else if (action.type === SAVE_TEST_QUERY) {
@@ -10,4 +10,4 @@ function accident(state = {}, action) {
   }
 }
 
-export default accident;
+export default accidentReducer;

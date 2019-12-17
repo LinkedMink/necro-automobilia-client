@@ -182,8 +182,8 @@ class LocationSearchPanel extends React.Component {
     }
   }
 
-  render = () => {
-    if (this.map && this.props.results && !this.state.markers) {
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    if (this.map && this.props.results !== prevProps.results) {
       this.createMarkers();
     }
 
@@ -191,7 +191,9 @@ class LocationSearchPanel extends React.Component {
       this.setState({selected: this.props.selected});
       setTimeout(this.focusSelected.bind(this), 100);
     }
+  }
 
+  render = () => {
     return (
       <Paper className={this.props.classes.paper}>
         <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
@@ -221,6 +223,7 @@ class LocationSearchPanel extends React.Component {
                 <Button
                   variant="contained"
                   color="primary"
+                  type="submit"
                   endIcon={<SearchIcon />}>
                   Search
                 </Button>

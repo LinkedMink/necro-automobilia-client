@@ -27,8 +27,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/config', function (req, res) {
   res.send({
-    userServiceUrl: process.env.USER_SERVICE_URL,
-    necroAutomobiliaUrl: process.env.NECRO_AUTOMOBILIA_URL,
+    urls: {
+      user: process.env.USER_SERVICE_URL,
+      necroAutomobilia: process.env.NECRO_AUTOMOBILIA_URL,
+    },
     jwtPublicKey: jwtPublicKey,
     googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
     logLevelConsole,

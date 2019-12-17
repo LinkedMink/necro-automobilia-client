@@ -42,7 +42,7 @@ class RegisterScreen extends React.Component {
       },
       confirmPassword: {
         label: "Confirm Password",
-        rules: [ValidationRule.REQUIRED, [ValidationRule.MATCH, 'password']]
+        rules: [ValidationRule.REQUIRED, [ValidationRule.COMPARE, 'password']]
       }
     };
 

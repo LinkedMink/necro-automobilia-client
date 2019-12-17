@@ -1,6 +1,6 @@
-import { SAVE_ACTIVE_ROUTE } from '../Actions/Route';
+import { SAVE_ACTIVE_ROUTE } from '../Actions/RouteAction';
 
-function route(state = {}, action) {
+const routeReducer = (state = {}, action) => {
   if (action.type === SAVE_ACTIVE_ROUTE) {
     return Object.assign({}, state, { activeRoute: action.payload });
   } else {
@@ -8,4 +8,4 @@ function route(state = {}, action) {
   }
 }
 
-export default route;
+export default routeReducer;
