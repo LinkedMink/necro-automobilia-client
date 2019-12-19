@@ -60,6 +60,9 @@ const styles = theme => ({
     "& div": {
       margin: '0'
     },
+  },
+  menuIcon: {
+    minWidth: 20 + theme.spacing(2)
   }
 });
 
@@ -112,13 +115,13 @@ class LocationResultCard extends React.Component {
   renderMenu = () => {
     return (
       <Menu
-        aria-controls={`settings-menu-${this.props.result.consecutiveNumber}`}
+        aria-controls={`location-card-menu-${this.props.result.id}`}
         keepMounted
         anchorEl={this.menuRef.current}
         open={this.state.isMenuOpen}
         onClose={this.handleMenuClose}>
         <MenuItem onClick={this.startDownload}>
-          <ListItemIcon>
+          <ListItemIcon className={this.props.classes.menuIcon}>
             <CloudDownloadIcon fontSize="small" />
           </ListItemIcon>
           <Typography variant="inherit">Download</Typography>
@@ -153,8 +156,8 @@ class LocationResultCard extends React.Component {
             </Avatar>}
           action={
             <IconButton
-              aria-label={`settings-${result.consecutiveNumber}`}
-              aria-controls={`settings-menu-${result.consecutiveNumber}`}
+              aria-label={`location-card-${result.id}`}
+              aria-controls={`location-card-menu-${result.id}`}
               aria-haspopup="true"
               ref={this.menuRef}
               onClick={this.handleMenuClick}>

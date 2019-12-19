@@ -85,7 +85,7 @@ export const getJsonResponse = (
     
   const state = store.getState();
   let url;
-  if (state.config.urls[targetService]) {
+  if (state.config.urls && state.config.urls[targetService]) {
     url = urlJoin(state.config.urls[targetService], path);
   } else {
     url = path;

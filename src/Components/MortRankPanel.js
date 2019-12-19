@@ -119,7 +119,7 @@ class MortRankPanel extends React.Component {
           <Typography variant="h4" className={this.props.classes.headerText}>
             Micromorts
           </Typography>
-          {this.props.userMMPerMile &&
+          {this.props.result &&
             <Button
               variant="contained"
               color="primary"

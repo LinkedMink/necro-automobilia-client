@@ -6,7 +6,7 @@ export const Service = {
 
 export const Routes = {
   [Service.SELF]: {
-    CONFIG: '',
+    CONFIG: 'config',
   },
   [Service.USER]: {
     ACCOUNT: 'account',

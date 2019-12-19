@@ -93,7 +93,7 @@ export class Validator {
         }
         return;
       case ValidationRule.RANGE:
-        if (value.trim && value.trim() === '') return;
+        if (typeof value !== 'string' || value.trim() === '') return;
         min = rule[1];
         max = rule[2];
         if (min !== undefined && Number(value) < min) {

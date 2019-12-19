@@ -18,10 +18,11 @@ const mapDispatchToProps = (dispatch) => {
     openDialog: (dialog) => {
       return dispatch(alertInfo(`TODO`));
     },
-    query: (source, destination) => {
+    query: (source, destination, route) => {
       const requestData = {
-        source: JSON.stringify(source),
-        destination: JSON.stringify(destination)
+        source,
+        destination,
+        route
       };
 
       const responseHandler = data => {
@@ -33,7 +34,7 @@ const mapDispatchToProps = (dispatch) => {
         Service.NECRO_AUTOMOBILIA,
         Routes[Service.NECRO_AUTOMOBILIA].ROUTES, 
         responseHandler, 
-        HttpMethods.GET,
+        HttpMethods.POST,
         requestData);
     }
   };

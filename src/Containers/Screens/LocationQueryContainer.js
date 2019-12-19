@@ -36,6 +36,13 @@ const mapDispatchToProps = (dispatch) => {
         }
       };
 
+      if (options && options.startDate && options.endDate) {
+        locationQuery.timestampOfCrash = {
+          "$gt": options.startDate,
+          "$lt": options.endDate,
+        }
+      }
+
       const requestData = {
         query: JSON.stringify(locationQuery),
         pageSize: options && options.pageSize 

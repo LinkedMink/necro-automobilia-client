@@ -19,9 +19,9 @@ class HomeScreen extends React.Component {
     }
   }
 
-  handleSearchSubmit = (source, destination) => {
+  handleSearchSubmit = (source, destination, route) => {
     if (this.props.query) {
-      this.props.query(source, destination);
+      this.props.query(source, destination, route);
     }
   }
 

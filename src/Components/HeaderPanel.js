@@ -42,6 +42,9 @@ const styles = theme => ({
   title: {
     flexGrow: 1,
   },
+  menuIcon: {
+    minWidth: 20 + theme.spacing(2)
+  }
 });
 
 class HeaderPanel extends React.Component {
@@ -103,13 +106,13 @@ class HeaderPanel extends React.Component {
           open={Boolean(this.state.menuAnchor)}
           onClose={this.handleMenuClose}>
           <MenuItem component={this.getLinkReference("/account")}>
-            <ListItemIcon>
+            <ListItemIcon className={this.props.classes.menuIcon}>
               <SettingsOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">Settings</Typography>
           </MenuItem>
           <MenuItem component={this.getLinkReference("/logout")}>
-            <ListItemIcon>
+            <ListItemIcon className={this.props.classes.menuIcon}>
               <ExitToAppIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">Logout</Typography>

@@ -24,6 +24,9 @@ const styles = theme => ({
 class FilterMenu extends React.Component {
   constructor(props) {
     super(props);
+    this.minDate = new Date('2014-12-31');
+    this.maxDate = new Date('2017-01-02');
+
     this.rules = {
       pageSize: {
         label: "Page Size",
@@ -35,11 +38,11 @@ class FilterMenu extends React.Component {
       },
       startDate: {
         label: "Start Date",
-        rules: [[ValidationRule.RANGE, new Date(), new Date()]]
+        rules: [[ValidationRule.RANGE, this.minDate, this.maxDate]]
       },
       endDate: {
         label: "End Date",
-        rules: [[ValidationRule.RANGE, new Date(), new Date()]]
+        rules: [[ValidationRule.RANGE, this.minDate, this.maxDate]]
       },
     };
 
@@ -49,8 +52,8 @@ class FilterMenu extends React.Component {
       isOpen: false,
       pageSize: 5,
       searchDistance: 25,
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: undefined,
+      endDate: undefined,
       errors: this.validator.getDefaultErrorState()
     };
   }
@@ -65,9 +68,7 @@ class FilterMenu extends React.Component {
 
   handleDateChange = (fieldName) => {
     return (date) => {
-      const dateState = {};
-      dateState[fieldName] = date;
-      this.setState(dateState);
+      this.setState({[fieldName]: date});
     }
   }
 
@@ -83,6 +84,8 @@ class FilterMenu extends React.Component {
       this.props.onClose({
         pageSize: this.state.pageSize,
         searchDistance: this.state.searchDistance * 1000,
+        startDate: this.startDate,
+        endDate: this.endDate,
       });
     }
   }
@@ -132,28 +135,34 @@ class FilterMenu extends React.Component {
           onChange={this.handleChange} />
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
-            disableToolbar
+            clearable={true}
+            initialFocusedDate="2016-01-01"
             variant="inline"
             format="MM/dd/yyyy"
             margin="normal"
             id="startDate"
             label={this.rules.startDate.label}
+            minDate={this.minDate}
+            maxDate={this.maxDate}
             value={this.startDate}
             onChange={this.handleDateChange("startDate")}
             KeyboardButtonProps={{
-              'aria-label': 'change date',
+              'aria-label': 'change start date',
             }} />
           <KeyboardDatePicker
-            disableToolbar
+            clearable={true}
+            initialFocusedDate="2016-01-01"
             variant="inline"
             format="MM/dd/yyyy"
             margin="normal"
             id="endDate"
             label={this.rules.endDate.label}
+            minDate={this.minDate}
+            maxDate={this.maxDate}
             value={this.endDate}
             onChange={this.handleDateChange("endDate")}
             KeyboardButtonProps={{
-              'aria-label': 'change date',
+              'aria-label': 'change end date',
             }} />
         </MuiPickersUtilsProvider>
       </Paper>

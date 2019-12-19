@@ -48,6 +48,9 @@ const styles = theme => ({
       backgroundColor: red[700],
     }
   },
+  menuIcon: {
+    minWidth: 20 + theme.spacing(2)
+  }
 });
 
 class FeedEventCard extends React.Component {
@@ -89,7 +92,7 @@ class FeedEventCard extends React.Component {
         open={this.state.isMenuOpen}
         onClose={this.handleMenuClose}>
         <MenuItem>
-          <ListItemIcon>
+          <ListItemIcon className={this.props.classes.menuIcon}>
             <CloudDownloadIcon fontSize="small" />
           </ListItemIcon>
           <Typography variant="inherit">TODO</Typography>

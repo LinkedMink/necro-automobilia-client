@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import SearchIcon from '@material-ui/icons/Search';
+import DirectionsIcon from '@material-ui/icons/Directions';
 
 import GoogleMaps from '../Shared/GoogleMaps';
 import { ValidationRule, Validator } from "../Shared/Validator";
@@ -73,9 +73,8 @@ class RouteSearchPanel extends React.Component {
     const validationState = this.validator.validate(this.state);
     this.setState({ errors: validationState.errors });
 
-    if (validationState.isValid && this.props.onSubmit) {
+    if (validationState.isValid) {
       this.map.setRoute(this.state.source, this.state.destination, this.handleRouteRetrieved);
-      this.props.onSubmit(this.state.source, this.state.destination);
     }
   }
 
@@ -86,8 +85,21 @@ class RouteSearchPanel extends React.Component {
     }
   }
 
-  handleRouteRetrieved = (route) => {
-    console.log(route);
+  handleRouteRetrieved = (result) => {
+    if (result.status !== "OK") {
+      // TODO Add Error Message
+      return;
+    }
+
+    // TODO possibly add route selection if > 1
+    const routePath = result.routes[0].overview_path;
+    const geoJsonPath = routePath.map((point) => {
+      return [point.lng(), point.lat()]
+    });
+
+    if (this.props.onSubmit) {
+      this.props.onSubmit(this.state.source, this.state.destination, geoJsonPath);
+    }
   }
 
   getAutocompleteHandler = (descriptionField, locationField) => {
@@ -177,9 +189,9 @@ class RouteSearchPanel extends React.Component {
                 type="submit"
                 variant="contained"
                 color="primary"
-                endIcon={<SearchIcon />}
+                endIcon={<DirectionsIcon />}
                 fullWidth>
-                Submit
+                Route
               </Button>
             </Grid>
           </Grid>

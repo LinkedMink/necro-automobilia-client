@@ -26,7 +26,7 @@ class RouteStatsPanel extends React.Component {
       distance = `Distance: ${result.distance.toFixed(3)} km`;
       const date = getDateTimeString(result.modelCalculatedOn);
       calculateDate = `Calculated On: ${date}`;
-      micromorts = `Micromorts: ${result.totalMicromorts}`;
+      micromorts = `Micromorts: ${result.totalMicromorts.toFixed(6)}`;
     }
 
     return (
