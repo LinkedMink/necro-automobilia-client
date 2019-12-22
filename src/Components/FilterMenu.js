@@ -1,6 +1,6 @@
 import 'date-fns';
 import React from 'react';
-import DateFnsUtils from '@date-io/date-fns';
+//import DateFnsUtils from '@date-io/date-fns';
 import { withStyles } from '@material-ui/core/styles';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -8,7 +8,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+//import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 import { ValidationRule, Validator } from "../Shared/Validator";
 
@@ -51,7 +51,7 @@ class FilterMenu extends React.Component {
     this.state = {
       isOpen: false,
       pageSize: 5,
-      searchDistance: 25,
+      searchDistance: 30,
       startDate: undefined,
       endDate: undefined,
       errors: this.validator.getDefaultErrorState()
@@ -124,15 +124,16 @@ class FilterMenu extends React.Component {
         <Slider
           id="searchDistance"
           aria-labelledby="filter-search-distance"
-          step={5}
+          step={10}
           marks
           min={10}
-          max={50}
+          max={100}
           valueLabelDisplay="auto" 
           value={this.state.searchDistance} 
           error={this.state.errors.searchDistance.isInvalid}
           helperText={this.state.errors.searchDistance.message}
           onChange={this.handleChange} />
+        {/*
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             clearable={true}
@@ -165,6 +166,7 @@ class FilterMenu extends React.Component {
               'aria-label': 'change end date',
             }} />
         </MuiPickersUtilsProvider>
+          */}
       </Paper>
     )
   }

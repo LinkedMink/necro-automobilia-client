@@ -7,7 +7,8 @@ import { saveTestAccidents } from "../../Actions/AccidentAction";
 
 const mapStateToProps = (state) => {
   return {
-    accidentData: state.accident.testResult
+    searchResult: state.accident.testResult,
+    searchParams: state.accident.testParams,
   };
 }
 

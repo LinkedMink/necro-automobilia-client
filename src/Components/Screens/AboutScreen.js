@@ -29,10 +29,10 @@ class AboutScreen extends React.Component {
           </Typography>
           <br/>
           <Typography variant="body1">
-            This apps seeks to assign a mortality rating to driving a vehicle for to any particular location in the 
-            United States (see <Link href="https://en.wikipedia.org/wiki/Micromort">Micromorts</Link>). The application 
-            uses a machine learning algorithm to produce a plane of predicted risk. This risk is then used to calculate 
-            the risk or routes or locations.
+            This application seeks to assign a mortality rating to any location in the United States while operating a 
+            motor vehicle (see <Link href="https://en.wikipedia.org/wiki/Micromort">Micromorts</Link>). The app uses a 
+            machine learning algorithm to produce a plane of predicted risk. This risk is then used to calculate the 
+            risk of routes or locations. The app shows graphical comparisons to illustrate how risky a particular trip will be.
           </Typography>
           <br/>
           <Typography variant="h4">

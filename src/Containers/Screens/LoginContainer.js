@@ -22,8 +22,9 @@ const mapDispatchToProps = (dispatch) => {
       };
 
       let responseHandler = data => {
+        localStorage.removeItem(StorageKey.JWT_TOKEN);
         if (rememberMe) {
-          localStorage.setItem(StorageKey.JWT_TOKEN, data.token)
+          localStorage.setItem(StorageKey.JWT_TOKEN, data.token);
         }
 
         var decoded = decodeToken(data.token);

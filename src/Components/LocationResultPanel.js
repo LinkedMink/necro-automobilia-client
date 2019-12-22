@@ -36,7 +36,7 @@ class LocationResultPanel extends React.Component {
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     if (this.state.selected !== this.props.selected) {
       this.setState({selected: this.props.selected});
-      setTimeout(this.scrollToSelected.bind(this), 200);
+      setTimeout(this.scrollToSelected.bind(this), 100);
     }
   }
   
@@ -45,7 +45,6 @@ class LocationResultPanel extends React.Component {
       return (
         <Typography variant="body1">
           No results:<br />
-          Find accidents within 25km of your search location
         </Typography>
       );
     }

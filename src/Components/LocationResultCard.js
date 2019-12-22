@@ -31,6 +31,7 @@ const styles = theme => ({
   card: {
     width: "100%",
     marginBottom: theme.spacing(2),
+    transition: 'background-color 0.2s'
   },
   highlighted: {
     backgroundColor: 'rgba(0, 0, 0, 0.14)'

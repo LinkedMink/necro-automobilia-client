@@ -27,7 +27,7 @@ class QueryScreen extends React.Component {
             <QueryControlPanel onSubmit={this.handleControlPanelSubmit} />
           </Grid>
           <Grid item xs={12} md={9}>
-            <JsonResultPanel result={this.props.accidentData} />
+            <JsonResultPanel result={this.props.searchResult} />
           </Grid>
         </Grid>
       </Container>

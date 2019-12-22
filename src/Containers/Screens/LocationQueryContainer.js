@@ -6,13 +6,14 @@ import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import { saveLocationAccidents } from "../../Actions/AccidentAction";
 import { alertInfo } from "../../Actions/AlertAction";
 
-const DEFAULT_DISTANCE = 25000;
+const DEFAULT_DISTANCE = 30000;
 const DEFAULT_RESULTS = 5;
 
 const mapStateToProps = (state) => {
   return {
     mapsApiKey: state.config.googleMapsApiKey,
-    searchResult: state.accident.locationResult
+    searchResult: state.accident.locationResult,
+    searchParams: state.accident.locationParams
   };
 }
 
@@ -21,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
     openDialog: (dialog) => {
       return dispatch(alertInfo(`TODO`));
     },
-    query: (location, options) => {
+    query: (location, options, params) => {
       const locationQuery = {
         location: {
           $nearSphere: {
@@ -51,7 +52,7 @@ const mapDispatchToProps = (dispatch) => {
       };
 
       const responseHandler = data => {
-        return dispatch(saveLocationAccidents(data));
+        return dispatch(saveLocationAccidents(data, params));
       }
 
       return getJsonResponse(

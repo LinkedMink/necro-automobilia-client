@@ -9,7 +9,8 @@ import { saveActiveRoute } from "../../Actions/RouteAction";
 const mapStateToProps = (state) => {
   return {
     mapsApiKey: state.config.googleMapsApiKey,
-    searchResult: state.route.activeRoute
+    searchResult: state.route.activeRoute,
+    searchParams: state.route.activeParams
   };
 }
 
