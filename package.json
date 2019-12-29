@@ -17,7 +17,8 @@
     "test": "jest",
     "lint": "eslint --fix src/**/*.js",
     "startProduction": "node ./server.js",
-    "containerize": "npm run build && docker build -t linkedmink/necro-automobilia ."
+    "containerize": "npm run build && docker build -t linkedmink/necro-automobilia .",
+    "containerizeMulti": "npm run build && docker buildx build --platform linux/amd64,linux/arm/v7 -t linkedmink/necro-automobilia ."
   },
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",

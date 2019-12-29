@@ -13,6 +13,7 @@ export const Routes = {
     AUTHENTICATE: 'authenticate',
     PASSWORD: 'password',
     REGISTER: 'register',
+    SETTINGS: 'settings',
   },
   [Service.NECRO_AUTOMOBILIA]: {
     ACCIDENTS: 'accidents',

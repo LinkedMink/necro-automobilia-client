@@ -13,7 +13,7 @@ import LocationQueryContainer from '../Containers/Screens/LocationQueryContainer
 import FeedScreen from './Screens/FeedScreen';
 import SavedScreen from './Screens/SavedScreen';
 import QueryContainer from '../Containers/Screens/QueryContainer';
-import AccountContainer from '../Containers/Screens/AccountContainer';
+import SettingsContainer from '../Containers/Screens/SettingsContainer';
 import AboutScreen from './Screens/AboutScreen';
 import UnauthorizedScreen from './Screens/UnauthorizedScreen';
 
@@ -48,7 +48,7 @@ class RouterOutlet extends React.Component {
         exact path="/query" component={QueryContainer} />
       <RouteAuthContainer 
         requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
-        exact path="/account" component={AccountContainer} />
+        exact path="/account" component={SettingsContainer} />
       <Redirect from="/" to={this.getDefaultRedirect()} />
     </Switch>
   )
