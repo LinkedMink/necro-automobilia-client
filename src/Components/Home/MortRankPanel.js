@@ -12,6 +12,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Tooltip from '@material-ui/core/Tooltip';
+import Grid from '@material-ui/core/Grid';
 
 import LocalCarWashIcon from '@material-ui/icons/LocalCarWash';
 import MotorcycleIcon from '@material-ui/icons/Motorcycle';
@@ -42,6 +43,12 @@ const styles = theme => ({
   },
   headerText: {
     flex: '1 1 auto'
+  },
+  proportionLine: {
+    display: "flex",
+    flexDirection: 'column',
+    justifyContent: "center",
+
   }
 });
 
@@ -97,8 +104,8 @@ class MortRankPanel extends React.Component {
     return ranks.map((rank, index) => {
       const isUserRank = rank.label === USER_TRIP_LABEL;
       const micromortsPer100 = (rank.mmPerMile * 100).toFixed(3);
+      const riskTooltip = `Micromorts per 100 Mile: ${micromortsPer100}`;
       const proportion = (rank.mmPerMile - min) / max * 100;
-      const proportionTooltip = `Micromorts per 100 Mile: ${micromortsPer100}`;
 
       return (
         <ListItem 
@@ -109,12 +116,15 @@ class MortRankPanel extends React.Component {
               <rank.icon />
             </Avatar>
           </ListItemAvatar>
-          <Tooltip title={proportionTooltip} placement="bottom">
+          <Tooltip title={riskTooltip} placement="bottom">
             <ListItemText 
               primary={rank.label} 
-              secondary={
-                <LinearProgress variant="determinate" value={proportion} color="secondary" />
-              } />
+              secondary={<Grid container>
+                <Grid item xs={1}>{Math.round(proportion)}%</Grid>
+                <Grid item xs={11} className={this.props.classes.proportionLine}>
+                  <LinearProgress variant="determinate" value={proportion} color="secondary" />
+                </Grid>
+              </Grid>} />
           </Tooltip>
         </ListItem>
       );
