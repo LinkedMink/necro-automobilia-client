@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 //import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
-import { ValidationRule, Validator } from "../Shared/Validator";
+import { ValidationRule, Validator } from "../../Shared/Validator";
 
 const styles = theme => ({
   paper: {
@@ -21,7 +21,7 @@ const styles = theme => ({
   },
 });
 
-class FilterMenu extends React.Component {
+class LocationFilterMenu extends React.Component {
   constructor(props) {
     super(props);
     this.minDate = new Date('2014-12-31');
@@ -192,4 +192,4 @@ class FilterMenu extends React.Component {
   }
 }
 
-export default withStyles(styles)(FilterMenu);
+export default withStyles(styles)(LocationFilterMenu);

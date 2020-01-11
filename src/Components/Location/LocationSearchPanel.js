@@ -8,9 +8,9 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Grid from '@material-ui/core/Grid';
 import SearchIcon from '@material-ui/icons/Search';
 
-import GoogleMaps from '../Shared/GoogleMaps';
-import { ValidationRule, Validator } from "../Shared/Validator";
-import FilterMenu from './FilterMenu';
+import GoogleMaps from '../../Shared/GoogleMaps';
+import { ValidationRule, Validator } from "../../Shared/Validator";
+import LocationFilterMenu from './LocationFilterMenu';
 
 const styles = theme => ({
   paper: {
@@ -218,7 +218,6 @@ class LocationSearchPanel extends React.Component {
               <ButtonGroup 
                 variant="contained" 
                 color="primary"
-                className={this.props.classes.searchButton}
                 aria-label="split button">
                 <Button
                   variant="contained"
@@ -243,7 +242,7 @@ class LocationSearchPanel extends React.Component {
         <div ref={this.mapRef} 
           className={this.props.classes.map} 
           id="mapSurface"></div>
-        <FilterMenu 
+        <LocationFilterMenu 
           isOpen={this.state.isFilterVisible} 
           anchorRef={this.filterRef} 
           onClose={this.handleSetFilter} />

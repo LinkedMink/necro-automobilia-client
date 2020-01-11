@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/core/Slider';
 
-import { ValidationRule, Validator } from "../Shared/Validator";
+import { ValidationRule, Validator } from "../../Shared/Validator";
 
 const styles = theme => ({
   paper: {

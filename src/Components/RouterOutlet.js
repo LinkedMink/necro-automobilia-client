@@ -9,8 +9,8 @@ import PasswordResetContainer from '../Containers/Screens/PasswordResetContainer
 import SetPasswordContainer from '../Containers/Screens/SetPasswordContainer';
 import RegisterContainer from '../Containers/Screens/RegisterContainer';
 import HomeContainer from '../Containers/Screens/HomeContainer';
-import LocationQueryContainer from '../Containers/Screens/LocationQueryContainer';
-import FeedScreen from './Screens/FeedScreen';
+import LocationContainer from '../Containers/Screens/LocationContainer';
+import FeedScreen from '../Containers/Screens/FeedContainer';
 import SavedScreen from './Screens/SavedScreen';
 import QueryContainer from '../Containers/Screens/QueryContainer';
 import SettingsContainer from '../Containers/Screens/SettingsContainer';
@@ -36,7 +36,7 @@ class RouterOutlet extends React.Component {
         exact path="/home" component={HomeContainer} />
       <RouteAuthContainer 
         requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
-        exact path="/location" component={LocationQueryContainer} />
+        exact path="/location" component={LocationContainer} />
       <RouteAuthContainer 
         requiredClaim={Claim.NECRO_AUTOMOBILIA_USER} 
         exact path="/feed" component={FeedScreen} />

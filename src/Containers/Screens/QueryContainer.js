@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
-import QueryScreen from "../../Components/Screens/QueryScreen";
+import QueryScreen from "../../Components/Query/QueryScreen";
 import { saveTestAccidents } from "../../Actions/AccidentAction";
 
 const mapStateToProps = (state) => {

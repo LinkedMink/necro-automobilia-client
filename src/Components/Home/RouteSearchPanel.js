@@ -3,11 +3,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Grid from '@material-ui/core/Grid';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-import GoogleMaps from '../Shared/GoogleMaps';
-import { ValidationRule, Validator } from "../Shared/Validator";
+import RouteOptionsMenu from './RouteOptionsMenu';
+import GoogleMaps from '../../Shared/GoogleMaps';
+import { ValidationRule, Validator } from "../../Shared/Validator";
 
 const styles = theme => ({
   paper: {
@@ -15,7 +18,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    minHeight: 350
+    minHeight: 400
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -27,8 +30,8 @@ const styles = theme => ({
   submitContainer: {
     display: "flex",
     flexDirection: 'column',
-    alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "flex-end",
   }
 });
 
@@ -55,12 +58,28 @@ class RouteSearchPanel extends React.Component {
       source: null,
       destination: null,
       isMapLoaded: false,
+      isOptionsVisible: false,
+      options: null,
       errors: this.validator.getDefaultErrorState()
     };
 
     this.sourceRef = React.createRef();
     this.destinationRef = React.createRef();
     this.mapRef = React.createRef();
+    this.optionsRef = React.createRef();
+  }
+
+  handleShowOptions = () => {
+    this.setState({ isOptionsVisible: true });
+  };
+
+  handleHideOptions = () => {
+    this.setState({ isOptionsVisible: false });
+  };
+
+  handleSetOptions = (options) => {
+    this.setState({ options: options });
+    this.setState({ isOptionsVisible: false });
   }
 
   handleChange = (event) => {
@@ -98,7 +117,7 @@ class RouteSearchPanel extends React.Component {
     });
 
     if (this.props.onSubmit) {
-      this.props.onSubmit(this.state.source, this.state.destination, geoJsonPath);
+      this.props.onSubmit(this.state.source, this.state.destination, geoJsonPath, this.state.options);
     }
   }
 
@@ -185,20 +204,37 @@ class RouteSearchPanel extends React.Component {
                 onKeyDown={this.handleLocationKeyDown} />
             </Grid>
             <Grid item xs={6} sm={2} className={this.props.classes.submitContainer}>
-              <Button
-                type="submit"
-                variant="contained"
+              <ButtonGroup 
+                variant="contained" 
                 color="primary"
-                endIcon={<DirectionsIcon />}
-                fullWidth>
-                Route
-              </Button>
+                aria-label="split button">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  endIcon={<DirectionsIcon />}>
+                  Route
+                </Button>
+                <Button
+                  color="primary"
+                  ref={this.optionsRef}
+                  aria-expanded={this.state.isOptionsVisible ? 'true' : undefined}
+                  aria-label="route options"
+                  aria-haspopup="menu"
+                  onClick={this.handleShowOptions}>
+                  <ArrowDropDownIcon />
+                </Button>
+              </ButtonGroup>
             </Grid>
           </Grid>
         </form>
         <div ref={this.mapRef} 
           className={this.props.classes.map} 
           id="mapSurface"></div>
+        <RouteOptionsMenu 
+          isOpen={this.state.isOptionsVisible}
+          anchorRef={this.optionsRef} 
+          onClose={this.handleSetOptions} />
       </Paper>
     );
   }

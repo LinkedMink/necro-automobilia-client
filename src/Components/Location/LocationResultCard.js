@@ -11,21 +11,27 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
 //import { stateMap } from '../Constants/States';
-import { getLongDateString } from '../Shared/DateHelper';
+import { getLongDateString } from '../../Shared/DateHelper';
+import { download } from '../../Shared/FileOperations';
 
 const styles = theme => ({
   card: {
     width: "100%",
     marginBottom: theme.spacing(2),
+    transition: 'background-color 0.2s'
   },
   highlighted: {
     backgroundColor: 'rgba(0, 0, 0, 0.14)'
@@ -48,12 +54,20 @@ const styles = theme => ({
       backgroundColor: red[700],
     }
   },
+  attributeList: {
+    "& li": {
+      padding: '0'
+    },
+    "& div": {
+      margin: '0'
+    },
+  },
   menuIcon: {
     minWidth: 20 + theme.spacing(2)
   }
 });
 
-class FeedEventCard extends React.Component {
+class LocationResultCard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -77,61 +91,98 @@ class FeedEventCard extends React.Component {
     this.setState({ isExpanded: !this.state.isExpanded });
   };
 
+  handleSelectClick = () => {
+    if (this.props.onSelect) {
+      this.props.onSelect(this.props.index)
+    }
+  };
+
+  handleFavoriteClick = () => {
+    if (this.props.onFavorite) {
+      this.props.onFavorite(this.props.index)
+    }
+  };
+  
   handleShareClick = () => {
     if (this.props.onShare) {
       this.props.onShare(this.props.index)
     }
   };
 
+  startDownload = () => {
+    download('accident.json', JSON.stringify(this.props.result), 'application/json');
+  }
+
   renderMenu = () => {
     return (
       <Menu
-        aria-controls={`feed-card-menu-${this.props.event.id}`}
+        aria-controls={`location-card-menu-${this.props.result.id}`}
         keepMounted
         anchorEl={this.menuRef.current}
         open={this.state.isMenuOpen}
         onClose={this.handleMenuClose}>
-        <MenuItem>
+        <MenuItem onClick={this.startDownload}>
           <ListItemIcon className={this.props.classes.menuIcon}>
             <CloudDownloadIcon fontSize="small" />
           </ListItemIcon>
-          <Typography variant="inherit">TODO</Typography>
+          <Typography variant="inherit">Download</Typography>
         </MenuItem>
       </Menu>
     )
   }
 
   render = () => {
-    const event = this.props.event;
-    const date = getLongDateString(event.releaseDate);
+    const result = this.props.result;
+    //const stateCode = stateMap.get(result.stateName);
+    const title = `${result.firstHarmfulEventName}: ${result.numberOfFatalities} Dead`
+    const date = getLongDateString(result.timestampOfCrash);
+    const primaryVehicle = result.vehicleDetails[0];
+    const primaryVehicleText = `${primaryVehicle.makeName} ${primaryVehicle.modelCode}`;
 
     return (
       <Card 
+        ref={this.props.containerRef}
         className={clsx(
           this.props.classes.card, 
           this.props.selected && this.props.classes.highlighted)}>
         <CardHeader
-          title={event.title}
+          title={title}
           subheader={date}
           avatar={
             <Avatar 
-              aria-label="short title"
-              className={this.props.classes.avatar}>
+              aria-label="distance order"
+              className={this.props.classes.avatar}
+              onClick={this.handleSelectClick}>
               {this.props.avatar}
             </Avatar>}
           action={
             <IconButton
-              aria-label={`feed-card-${event.id}`}
-              aria-controls={`feed-card-menu-${event.id}`}
+              aria-label={`location-card-${result.id}`}
+              aria-controls={`location-card-menu-${result.id}`}
               aria-haspopup="true"
               ref={this.menuRef}
               onClick={this.handleMenuClick}>
               <MoreVertIcon />
             </IconButton>} />
         <CardContent>
-          <Typography variant="body1">TODO</Typography>
+          <List dense={true} disablePadding={true} 
+            className={this.props.classes.attributeList}>
+            <ListItem disableGutters={true}>
+              <ListItemText 
+                secondary={`Road: ${result.trafficwayIdentifier}`} />
+            </ListItem>
+            <ListItem disableGutters={true}>
+              <ListItemText 
+                secondary={`Vehicle: ${primaryVehicleText}`} />
+            </ListItem>
+          </List>
         </CardContent>
         <CardActions disableSpacing>
+          <IconButton 
+            onClick={this.handleFavoriteClick}
+            aria-label="add to favorites">
+            <FavoriteIcon />
+          </IconButton>
           <IconButton
             onClick={this.handleShareClick}
             aria-label="share">
@@ -158,4 +209,4 @@ class FeedEventCard extends React.Component {
   }
 }
 
-export default withStyles(styles)(FeedEventCard);
+export default withStyles(styles)(LocationResultCard);

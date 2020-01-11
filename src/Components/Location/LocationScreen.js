@@ -3,8 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
-import LocationSearchPanel from "../LocationSearchPanel";
-import LocationResultPanel from "../LocationResultPanel";
+import LocationSearchPanel from "./LocationSearchPanel";
+import LocationResultPanel from "./LocationResultPanel";
 
 const styles = theme => ({
   fill: {

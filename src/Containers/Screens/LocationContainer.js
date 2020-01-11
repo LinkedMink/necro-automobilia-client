@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import LocationQueryScreen from "../../Components/Screens/LocationQueryScreen";
+import LocationScreen from "../../Components/Location/LocationScreen";
 import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import { saveLocationAccidents } from "../../Actions/AccidentAction";
@@ -66,6 +66,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-const LocationQueryContainer = connect(mapStateToProps, mapDispatchToProps)(LocationQueryScreen);
+const LocationContainer = connect(mapStateToProps, mapDispatchToProps)(LocationScreen);
 
-export default LocationQueryContainer;
+export default LocationContainer;

@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { alertInfo } from "../../Actions/AlertAction";
-import HomeScreen from "../../Components/Screens/HomeScreen";
+import HomeScreen from "../../Components/Home/HomeScreen";
 import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import { saveActiveRoute } from "../../Actions/RouteAction";
@@ -19,11 +19,12 @@ const mapDispatchToProps = (dispatch) => {
     openDialog: (dialog) => {
       return dispatch(alertInfo(`TODO`));
     },
-    query: (source, destination, route) => {
+    query: (source, destination, route, options) => {
       const requestData = {
         source,
         destination,
-        route
+        route,
+        options
       };
 
       const responseHandler = data => {

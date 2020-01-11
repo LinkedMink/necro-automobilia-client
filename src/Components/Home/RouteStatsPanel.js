@@ -6,7 +6,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { getDateTimeString } from '../Shared/DateHelper';
+import { getDateTimeString } from '../../Shared/DateHelper';
 
 const styles = theme => ({
   paper: {
@@ -23,10 +23,10 @@ class RouteStatsPanel extends React.Component {
     let calculateDate, distance, micromorts;
     if (this.props.result) {
       const result = this.props.result;
-      distance = `Distance: ${result.distance.toFixed(3)} km`;
+      distance = `Distance: ${result.distance.toFixed(2)} km`;
       const date = getDateTimeString(result.modelCalculatedOn);
       calculateDate = `Calculated On: ${date}`;
-      micromorts = `Micromorts: ${result.totalMicromorts.toFixed(6)}`;
+      micromorts = `Micromorts: ${result.totalMicromorts.toFixed(2)}`;
     }
 
     return (

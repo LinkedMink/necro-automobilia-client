@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import { Routes, Service } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
-import FeedScreen from "../../Components/Screens/FeedScreen";
+import FeedScreen from "../../Components/Feed/FeedScreen";
 import { saveFeedEvents } from "../../Actions/FeedAction";
 
 const mapStateToProps = (state) => {

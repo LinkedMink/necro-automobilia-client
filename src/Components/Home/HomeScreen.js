@@ -3,10 +3,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
-import RouteSearchPanel from "../RouteSearchPanel";
-import MortRankPanel from '../MortRankPanel';
-import RouteStatsPanel from '../RouteStatsPanel';
-import RouteAnimationPanel from '../RouteAnimationPanel';
+import RouteSearchPanel from "./RouteSearchPanel";
+import MortRankPanel from './MortRankPanel';
+import RouteStatsPanel from './RouteStatsPanel';
+import RouteAnimationPanel from './RouteAnimationPanel';
 
 const styles = theme => ({
 

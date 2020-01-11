@@ -6,10 +6,12 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+//import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import LocalCarWashIcon from '@material-ui/icons/LocalCarWash';
 import MotorcycleIcon from '@material-ui/icons/Motorcycle';
@@ -18,8 +20,8 @@ import DirectionsWalkIcon from '@material-ui/icons/DirectionsWalk';
 import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
 import FlightIcon from '@material-ui/icons/Flight';
 import TrainIcon from '@material-ui/icons/Train';
-import FlightLandIcon from '@material-ui/icons/FlightLand';
-import ChevronLeftOutlinedIcon from '@material-ui/icons/ChevronLeftOutlined';
+//import FlightLandIcon from '@material-ui/icons/FlightLand';
+//import ChevronLeftOutlinedIcon from '@material-ui/icons/ChevronLeftOutlined';
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 
 const styles = theme => ({
@@ -28,6 +30,8 @@ const styles = theme => ({
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
+    height: '100%',
+    minHeight: 500
   },
   highlight: {
     backgroundColor: "rgba(0, 0, 0, 0.14)"
@@ -55,7 +59,7 @@ const mortalityRanks = [
   { label: "Car", mmPerMile: 1 / 230, icon: DirectionsCarIcon },
   { label: "Jet", mmPerMile: 1 / 1000, icon: FlightIcon },
   { label: "Train", mmPerMile: 1 / 6000, icon: TrainIcon },
-  { label: "Jet (Terrorism)", mmPerMile: 1 / 12000, icon: FlightLandIcon },
+  //{ label: "Jet (Terrorism)", mmPerMile: 1 / 12000, icon: FlightLandIcon },
 ]
 
 class MortRankPanel extends React.Component {
@@ -87,8 +91,14 @@ class MortRankPanel extends React.Component {
       ranks = mortalityRanks.slice();
     }
 
+    const max = ranks[0].mmPerMile;
+    const min = ranks[ranks.length - 1].mmPerMile;
+
     return ranks.map((rank, index) => {
       const isUserRank = rank.label === USER_TRIP_LABEL;
+      const micromortsPer100 = (rank.mmPerMile * 100).toFixed(3);
+      const proportion = (rank.mmPerMile - min) / max * 100;
+      const proportionTooltip = `Micromorts per 100 Mile: ${micromortsPer100}`;
 
       return (
         <ListItem 
@@ -99,14 +109,13 @@ class MortRankPanel extends React.Component {
               <rank.icon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText 
-            primary={rank.label} 
-            secondary={`Micromorts per Mile: ${rank.mmPerMile.toFixed(5)}`} />
-          {isUserRank &&
-            <ListItemIcon>
-              <ChevronLeftOutlinedIcon />
-            </ListItemIcon>
-          }
+          <Tooltip title={proportionTooltip} placement="bottom">
+            <ListItemText 
+              primary={rank.label} 
+              secondary={
+                <LinearProgress variant="determinate" value={proportion} color="secondary" />
+              } />
+          </Tooltip>
         </ListItem>
       );
     });

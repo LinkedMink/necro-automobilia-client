@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import FeedEventCard from '../FeedEventCard';
+import FeedEventCard from './FeedEventCard';
 
 const styles = theme => ({
   paper: {

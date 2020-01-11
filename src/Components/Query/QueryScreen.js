@@ -3,8 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
-import JsonResultPanel from '../JsonResultPanel';
-import QueryControlPanel from '../QueryControlPanel';
+import JsonResultPanel from './JsonResultPanel';
+import QueryControlPanel from './QueryControlPanel';
 
 const styles = theme => ({
   fill: {

@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 //import FormControlLabel from '@material-ui/core/FormControlLabel';
 //import Switch from '@material-ui/core/Switch';
 
-import { download } from '../Shared/FileOperations';
+import { download } from '../../Shared/FileOperations';
 
 const JSON_SPACING = 2;
 
