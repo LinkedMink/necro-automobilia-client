@@ -13,6 +13,7 @@ import Avatar from '@material-ui/core/Avatar';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Tooltip from '@material-ui/core/Tooltip';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 import LocalCarWashIcon from '@material-ui/icons/LocalCarWash';
 import MotorcycleIcon from '@material-ui/icons/Motorcycle';
@@ -48,7 +49,9 @@ const styles = theme => ({
     display: "flex",
     flexDirection: 'column',
     justifyContent: "center",
-
+  },
+  proportionText: {
+    marginLeft: theme.spacing(1)
   }
 });
 
@@ -120,9 +123,11 @@ class MortRankPanel extends React.Component {
             <ListItemText 
               primary={rank.label} 
               secondary={<Grid container>
-                <Grid item xs={1}>{Math.round(proportion)}%</Grid>
-                <Grid item xs={11} className={this.props.classes.proportionLine}>
+                <Grid item xs={10} className={this.props.classes.proportionLine}>
                   <LinearProgress variant="determinate" value={proportion} color="secondary" />
+                </Grid>
+                <Grid item xs={2}>
+                  <Box className={this.props.classes.proportionText}>{Math.round(proportion)}%</Box>
                 </Grid>
               </Grid>} />
           </Tooltip>
@@ -136,7 +141,7 @@ class MortRankPanel extends React.Component {
       <Paper className={this.props.classes.paper}>
         <div className={this.props.classes.header}>
           <Typography variant="h4" className={this.props.classes.headerText}>
-            Micromorts
+            Micromorts by Distance
           </Typography>
           {this.props.result &&
             <Button

@@ -38,7 +38,7 @@ will be included for Azure AKS.
 After setting up the prerequisites, install the npm packages.
 
 ```sh
-cd ./necro-automobilia
+cd ./necro-automobilia-client
 npm install
 ```
 
@@ -52,7 +52,7 @@ locally or on a server. Locally, webpack bundles the parameters with the deploye
 webpack.local.config.sample.js to webpack.local.config.js then edit as necessary:
 
 ```sh
-cd ./necro-automobilia
+cd ./necro-automobilia-client
 cp ./webpack.local.config.sample.js ./webpack.local.config.js
 ```
 
@@ -78,9 +78,9 @@ Docker isn't required to run this service, but in a microservice architecture, u
 has become ubiquitous. Create the Docker image and push it up to a Docker registry.
 
 ```sh
-cd ./necro-automobilia
+cd ./necro-automobilia-client
 npm run containerize
-docker push linkedmink/necro-automobilia
+docker push linkedmink/necro-automobilia-client
 ```
 
 You can run the images directly for testing or simplicity.
@@ -93,8 +93,8 @@ docker run -d \
   -e NECRO_AUTOMOBILIA_URL=... \
   -e GOOGLE_MAPS_API_KEY=... \
   -e JWT_PUBLIC_KEY=... \
-  --name necro-automobilia \
-  linkedmink/necro-automobilia
+  --name necro-automobilia-client \
+  linkedmink/necro-automobilia-client
 ```
 
 The project contains a sample deployment.yaml file for deploying to a Kubernetes cluster. Edit the 

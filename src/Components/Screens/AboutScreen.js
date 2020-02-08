@@ -48,7 +48,7 @@ class AboutScreen extends React.Component {
             Related Projects
           </Typography>
           <List>
-            <Link href="https://github.com/LinkedMink/necro-automobilia">
+            <Link href="https://github.com/LinkedMink/necro-automobilia-client">
               <ListItem button>
                 Necro Automobilia UI
               </ListItem>

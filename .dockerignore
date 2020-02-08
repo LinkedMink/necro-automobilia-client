@@ -4,10 +4,11 @@ node_modules
 src
 tests
 .env
-.eslintrc.json
+.eslintrc.js
 .gitignoore
+build.sh
+deployment.yaml
 jest.config.js
+*.key.pub
 README.md
-webpack.config.js
-
-npm-debug.log
+webpack.*
