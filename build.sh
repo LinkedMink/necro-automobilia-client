@@ -8,7 +8,11 @@ if [ -z "$DOCKER_SCOPE" ]; then
 fi
 
 if [ -z "$DOCKER_REGISTRY" ]; then
-  DOCKER_REGISTRY="linkedmink.azurecr.io/" 
+  DOCKER_REGISTRY="registry.linkedmink.space/" 
+fi
+
+if [ -z "$KUBERNETES_NAMESPACE" ]; then
+  KUBERNETES_NAMESPACE="necro-automobilia" 
 fi
 
 npm run build
@@ -16,7 +20,8 @@ npm run build
 if [ "$1" == "deploy" ]; then
   kubectl set image \
     "deployment/${IMAGE_NAME}" \
-    $IMAGE_NAME="${DOCKER_REGISTRY}${DOCKER_SCOPE}${IMAGE_NAME}"
+    $IMAGE_NAME="${DOCKER_REGISTRY}${DOCKER_SCOPE}${IMAGE_NAME}" \
+    --namespace="${KUBERNETES_NAMESPACE}"
 fi
 
 docker buildx build \
@@ -30,7 +35,10 @@ if [ "$1" == "deploy" ]; then
   kubectl set image \
     "deployment/${IMAGE_NAME}" \
     $IMAGE_NAME="${DOCKER_REGISTRY}${DOCKER_SCOPE}${IMAGE_NAME}:latest" \
+    --namespace="${KUBERNETES_NAMESPACE}" \
     --record
 
-  kubectl rollout status "deployment/${IMAGE_NAME}"
+  kubectl rollout status \
+    "deployment/${IMAGE_NAME}" \
+    --namespace="${KUBERNETES_NAMESPACE}"
 fi

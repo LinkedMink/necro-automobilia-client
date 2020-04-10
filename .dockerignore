@@ -9,6 +9,5 @@ tests
 build.sh
 deployment.yaml
 jest.config.js
-*.key.pub
 README.md
 webpack.*
