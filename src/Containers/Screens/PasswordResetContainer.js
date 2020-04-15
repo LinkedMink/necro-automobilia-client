@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import urlJoin from "url-join";
 
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { getJsonResponse } from "../../Shared/RequestFactory";
 import PasswordResetScreen from "../../Components/Screens/PasswordResetScreen";
 import { alertRedirect } from "../../Actions/AlertAction";
@@ -23,8 +23,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        urlJoin(Routes[Service.USER].PASSWORD, encodeURIComponent(email)), 
+        Services.USER,
+        urlJoin(Routes[Services.USER].PASSWORD, encodeURIComponent(email)), 
         responseHandler);
     }
   };

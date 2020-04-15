@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import QueryScreen from "../../Components/Query/QueryScreen";
 import { saveTestAccidents } from "../../Actions/AccidentAction";
@@ -28,8 +28,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.NECRO_AUTOMOBILIA,
-        Routes[Service.NECRO_AUTOMOBILIA].ACCIDENTS, 
+        Services.NECRO_AUTOMOBILIA,
+        Routes[Services.NECRO_AUTOMOBILIA].ACCIDENTS, 
         responseHandler, 
         HttpMethods.GET,
         requestData);

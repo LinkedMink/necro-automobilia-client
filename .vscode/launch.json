@@ -19,9 +19,12 @@
             "protocol": "inspector",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-            "env": { "CI": "true" },
+            "env": { 
+              "CI": "true",
+              "NODE_ENV": "unitTest"
+            },
             "disableOptimisticBPs": true
-          },
+        },
         {
             "type": "chrome",
             "request": "launch",

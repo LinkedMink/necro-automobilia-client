@@ -6,7 +6,7 @@ import { getJsonResponse } from "./Shared/RequestFactory";
 import { decodeToken } from "./Shared/DecodeToken";
 import { saveConfig } from "./Actions/ConfigAction";
 import { saveSession } from "./Actions/AccountAction";
-import { Routes, Service } from "./Constants/Service";
+import { Routes, Services } from "./Constants/Service";
 
 const mapStateToProps = (state) => {
   return {
@@ -30,8 +30,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.SELF,
-        Routes[Service.SELF].CONFIG, 
+        Services.SELF,
+        Routes[Services.SELF].CONFIG, 
         responseHandler);
     },
     getAccount: () => {

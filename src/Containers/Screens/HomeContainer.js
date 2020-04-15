@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import { alertInfo } from "../../Actions/AlertAction";
 import HomeScreen from "../../Components/Home/HomeScreen";
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import { saveActiveRoute } from "../../Actions/RouteAction";
 
@@ -33,8 +33,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.NECRO_AUTOMOBILIA,
-        Routes[Service.NECRO_AUTOMOBILIA].ROUTES, 
+        Services.NECRO_AUTOMOBILIA,
+        Routes[Services.NECRO_AUTOMOBILIA].ROUTES, 
         responseHandler, 
         HttpMethods.POST,
         requestData);

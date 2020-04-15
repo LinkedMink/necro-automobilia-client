@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import AccountScreen from "../../Components/Screens/AccountScreen";
 import { saveAccount } from "../../Actions/AccountAction";
@@ -29,8 +29,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].ACCOUNT, 
+        Services.USER,
+        Routes[Services.USER].ACCOUNT, 
         responseHandler, 
         HttpMethods.GET);
     },
@@ -46,8 +46,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].ACCOUNT, 
+        Services.USER,
+        Routes[Services.USER].ACCOUNT, 
         responseHandler, 
         HttpMethods.PUT,
         properties);
@@ -61,8 +61,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].ACCOUNT, 
+        Services.USER,
+        Routes[Services.USER].ACCOUNT, 
         responseHandler, 
         HttpMethods.DELETE);
     },

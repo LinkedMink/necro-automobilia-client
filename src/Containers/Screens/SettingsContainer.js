@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import urlJoin from "url-join";
 
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import SettingsScreen from "../../Components/Settings/SettingsScreen";
 import { saveAccount } from "../../Actions/AccountAction";
@@ -32,8 +32,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].ACCOUNT, 
+        Services.USER,
+        Routes[Services.USER].ACCOUNT, 
         responseHandler, 
         HttpMethods.GET);
     },
@@ -49,8 +49,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].ACCOUNT, 
+        Services.USER,
+        Routes[Services.USER].ACCOUNT, 
         responseHandler, 
         HttpMethods.PUT,
         properties);
@@ -64,8 +64,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].ACCOUNT, 
+        Services.USER,
+        Routes[Services.USER].ACCOUNT, 
         responseHandler, 
         HttpMethods.DELETE);
     },
@@ -81,7 +81,7 @@ const mapDispatchToProps = (dispatch) => {
         data: properties
       }
 
-      let path = Routes[Service.USER].SETTINGS;
+      let path = Routes[Services.USER].SETTINGS;
       let method = HttpMethods.POST;
       if (id) {
         path = urlJoin(path, id);
@@ -94,7 +94,7 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
+        Services.USER,
         path, 
         responseHandler, 
         method,

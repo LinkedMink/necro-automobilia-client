@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import FeedScreen from "../../Components/Feed/FeedScreen";
 import { saveFeedEvents } from "../../Actions/FeedAction";
@@ -20,8 +20,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.NECRO_AUTOMOBILIA,
-        Routes[Service.NECRO_AUTOMOBILIA].FEED_EVENTS,
+        Services.NECRO_AUTOMOBILIA,
+        Routes[Services.NECRO_AUTOMOBILIA].FEED_EVENTS,
         responseHandler, 
         HttpMethods.GET);
     }

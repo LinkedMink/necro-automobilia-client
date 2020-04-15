@@ -5,6 +5,7 @@ import store from "../Store";
 import { alertError } from "../Actions/AlertAction";
 import { loadingStart, loadingEnd } from "../Actions/LoadingAction";
 import { LogService } from "../Shared/LogService";
+import { ResponseCodes } from "../Constants/Service"
 
 const logger = LogService.get("RequestFactory");
 const GENERIC_REQUEST_ERROR = "An error occurred while processing your request. If the problem persist, contact the administrator."
@@ -60,9 +61,9 @@ const handleRawResponse = (dispatch, url, options) => {
 
 const handleServiceResponse = (dispatch, requestSuccessFunc) => {
   return (json) => {
-    if (json && json.status === 0) {
+    if (json && json.status === ResponseCodes.SUCCESS) {
       dispatch(requestSuccessFunc(json.data));
-    } else if (json && json.status === 1) {
+    } else if (json && json.status !== ResponseCodes.SUCCESS) {
       dispatch(alertError(json.data));
     } else if (json) {
       dispatch(requestSuccessFunc(json));
@@ -80,16 +81,20 @@ const handleGenericCatch = (dispatch, url, options) => {
   }
 }
 
+export const getServiceActionUrl = (targetService, path) => {
+  const state = store.getState();
+
+  if (state.config.urls && state.config.urls[targetService]) {
+    return urlJoin(state.config.urls[targetService], path);
+  } else {
+    return path;
+  }
+}
+
 export const getJsonResponse = (
   dispatch, targetService, path, requestSuccessFunc, method = HttpMethods.GET, requestData = null, isAuthorized = true) => {
     
-  const state = store.getState();
-  let url;
-  if (state.config.urls && state.config.urls[targetService]) {
-    url = urlJoin(state.config.urls[targetService], path);
-  } else {
-    url = path;
-  }
+  let url = getServiceActionUrl(targetService, path);
 
   if (requestData && method === HttpMethods.GET) {
     for (const [key, value] of Object.entries(requestData)) {

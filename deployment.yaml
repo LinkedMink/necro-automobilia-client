@@ -13,7 +13,7 @@ spec:
         app: necro-automobilia-client
     spec:
       nodeSelector:
-        "beta.kubernetes.io/os": linux
+        "kubernetes.io/os": linux
       containers:
       - name: necro-automobilia-client
         image: linkedmink/necro-automobilia-client
@@ -29,6 +29,7 @@ spec:
           value: "[Base64(PEM) If empty, the JWT token will be decoded without verification]"
         - name: GOOGLE_MAPS_API_KEY
           value: "[See https://developers.google.com/maps/gmp-get-started]"
+
 ---
 apiVersion: v1
 kind: Service

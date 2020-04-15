@@ -14,8 +14,9 @@
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "test": "jest",
-    "lint": "eslint -c .eslintrc.js --ext .js --fix ./src",
+    "test": "cross-env NODE_ENV=unitTest jest",
+    "lint": "eslint -c .eslintrc.js --ext .js ./src ./tests",
+    "lintFix": "eslint -c .eslintrc.js --ext .js --fix ./src ./tests",
     "startProduction": "node ./server.js",
     "containerize": "npm run build && docker build -t linkedmink/necro-automobilia-client ."
   },

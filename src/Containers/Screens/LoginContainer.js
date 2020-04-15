@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import { StorageKey } from "../../Constants/Storage";
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { decodeToken } from "../../Shared/DecodeToken";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import LoginScreen from "../../Components/Screens/LoginScreen";
@@ -33,8 +33,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].AUTHENTICATE, 
+        Services.USER,
+        Routes[Services.USER].AUTHENTICATE, 
         responseHandler, 
         HttpMethods.POST,
         requestData);

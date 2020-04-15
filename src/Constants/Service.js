@@ -1,23 +1,30 @@
-export const Service = {
+export const Services = {
   SELF: "",
   USER: "user",
   NECRO_AUTOMOBILIA: "necroAutomobilia",
 }
 
 export const Routes = {
-  [Service.SELF]: {
+  [Services.SELF]: {
     CONFIG: 'config',
   },
-  [Service.USER]: {
+  [Services.USER]: {
     ACCOUNT: 'account',
     AUTHENTICATE: 'authenticate',
     PASSWORD: 'password',
     REGISTER: 'register',
     SETTINGS: 'settings',
   },
-  [Service.NECRO_AUTOMOBILIA]: {
+  [Services.NECRO_AUTOMOBILIA]: {
     ACCIDENTS: 'accidents',
     FEED_EVENTS: 'feed-events',
     ROUTES: 'routes',
   },
+}
+
+export const ResponseCodes = {
+  SUCCESS: 0,
+  FAILED: 1,
+  REQUEST_VALIDATION: 10,
+  DATA_VALIDATION: 11,
 }

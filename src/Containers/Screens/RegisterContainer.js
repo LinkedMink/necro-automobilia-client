@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import RegisterScreen from "../../Components/Screens/RegisterScreen";
 import { alertRedirect } from "../../Actions/AlertAction";
@@ -27,8 +27,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].REGISTER, 
+        Services.USER,
+        Routes[Services.USER].REGISTER, 
         responseHandler, 
         HttpMethods.POST,
         requestData);

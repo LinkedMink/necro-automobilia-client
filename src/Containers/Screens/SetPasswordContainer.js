@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { Routes, Service } from "../../Constants/Service";
+import { Routes, Services } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import SetPasswordScreen from "../../Components/Screens/SetPasswordScreen";
 import { alertRedirect } from "../../Actions/AlertAction";
@@ -28,8 +28,8 @@ const mapDispatchToProps = (dispatch) => {
 
       return getJsonResponse(
         dispatch, 
-        Service.USER,
-        Routes[Service.USER].PASSWORD, 
+        Services.USER,
+        Routes[Services.USER].PASSWORD, 
         responseHandler, 
         HttpMethods.PUT,
         requestData);
