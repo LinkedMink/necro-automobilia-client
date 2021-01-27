@@ -4,16 +4,15 @@ const path = require('path');
 
 const app = express();
 
-let jwtPublicKey = process.env.JWT_PUBLIC_KEY;
-if (!jwtPublicKey) {
-  const jwtPublicKeyFile = process.env.JWT_PUBLIC_KEY_FILE 
-    ? process.env.JWT_PUBLIC_KEY_FILE 
-    : 'jwtRS256.key.pub';
+const jwtPublicKeyFile = process.env.JWT_PUBLIC_KEY_FILE 
+  ? process.env.JWT_PUBLIC_KEY_FILE 
+  : 'jwtRS256.key.pub';
 
-  if (fs.existsSync(jwtPublicKeyFile)) {
-    jwtPublicKey = btoa(fs.readFileSync(jwtPublicKeyFile, 'utf8'));
-  }
-}
+const jwtPublicKey = Buffer
+  .from(fs.readFileSync(jwtPublicKeyFile, 'utf8'))
+  .toString('base64');
+
+console.log(`${jwtPublicKeyFile}:  ${jwtPublicKey}`)
 
 const logLevelConsole = process.env.LOG_LEVEL_CONSOLE 
   ? process.env.LOG_LEVEL_CONSOLE.toUpperCase() 

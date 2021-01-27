@@ -11,3 +11,5 @@ deployment.yaml
 jest.config.js
 README.md
 webpack.*
+*.key
+*.key.pub
