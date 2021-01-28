@@ -10,15 +10,15 @@ export const ValidationRule = {
   COMPARE: "COMPARE",
   JSON: "JSON",
   FUNCTION: "FUNCTION",
-}
+};
 
 export const Comparison = {
   GREATER: 0,
   GREATER_OR_EQUAL: 1,
   EQUAL: 2,
   LESS_OR_EQUAL: 3,
-  LESS: 4
-}
+  LESS: 4,
+};
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -28,19 +28,19 @@ export class Validator {
   }
 
   getDefaultErrorState = () => {
-    const errorState = {}
-    for (const [property, ] of Object.entries(this.rules)) {
+    const errorState = {};
+    for (const [property] of Object.entries(this.rules)) {
       errorState[property] = {
         isInvalid: false,
-        message: ''
-      }
+        message: "",
+      };
     }
     return errorState;
-  }
+  };
 
-  validate = (state) => {
+  validate = state => {
     let isValid = true;
-    const errors = {}
+    const errors = {};
 
     for (const [property, ruleSet] of Object.entries(this.rules)) {
       for (let i = 0; i < ruleSet.rules.length; i++) {
@@ -53,19 +53,19 @@ export class Validator {
       }
 
       if (!errors[property]) {
-        errors[property] = { isInvalid: false, message: '' };
+        errors[property] = { isInvalid: false, message: "" };
       }
     }
 
     return { isValid, errors };
-  }
+  };
 
   validateRule = (property, rule, state) => {
     const label = this.rules[property].label;
     const value = state[property];
     let ruleType = rule;
     if (Array.isArray(rule)) {
-      ruleType = rule[0]
+      ruleType = rule[0];
     }
 
     let min, max;
@@ -76,13 +76,13 @@ export class Validator {
         }
         return;
       case ValidationRule.EMAIL:
-        if (typeof value !== 'string' || value.trim() === '') return;
+        if (typeof value !== "string" || value.trim() === "") return;
         if (!EMAIL_REGEX.test(value)) {
           return `${label} must be an email address`;
         }
         return;
       case ValidationRule.LENGTH:
-        if (typeof value !== 'string' || value.trim() === '') return;
+        if (typeof value !== "string" || value.trim() === "") return;
         min = rule[1];
         max = rule[2];
         if (min !== undefined && value.length < min) {
@@ -93,7 +93,7 @@ export class Validator {
         }
         return;
       case ValidationRule.RANGE:
-        if (typeof value !== 'string' || value.trim() === '') return;
+        if (typeof value !== "string" || value.trim() === "") return;
         min = rule[1];
         max = rule[2];
         if (min !== undefined && Number(value) < min) {
@@ -111,7 +111,10 @@ export class Validator {
         if (value !== compareTo) {
           if (order === Comparison.EQUAL) {
             return `${label} must match ${this.rules[compareProperty].label}`;
-          } else if (order === Comparison.GREATER_OR_EQUAL && value < compareTo) {
+          } else if (
+            order === Comparison.GREATER_OR_EQUAL &&
+            value < compareTo
+          ) {
             return `${label} must be greater than or equal ${this.rules[compareProperty].label}`;
           } else if (order === Comparison.LESS_OR_EQUAL && value > compareTo) {
             return `${label} must be less than or equal ${this.rules[compareProperty].label}`;
@@ -125,7 +128,7 @@ export class Validator {
         }
         return;
       case ValidationRule.JSON:
-        if (value.trim() === '') return;
+        if (value.trim() === "") return;
         try {
           JSON.parse(value);
         } catch (e) {
@@ -139,5 +142,5 @@ export class Validator {
         logger.warn(`Validation rule not supported: ${ruleType}`);
         return;
     }
-  }
+  };
 }

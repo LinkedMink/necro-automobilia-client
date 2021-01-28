@@ -14,12 +14,21 @@ spec:
     spec:
       nodeSelector:
         "kubernetes.io/os": linux
+      volumes:
+      - name: jwt-public-key
+        secret:
+          secretName: jwt-public-key
       containers:
       - name: necro-automobilia-client
         image: linkedmink/necro-automobilia-client
         imagePullPolicy: "Always"
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: jwt-public-key
+          mountPath: /usr/src/app/jwtRS256.key.pub
+          subPath: jwtRS256.key.pub
+          readOnly: true
         env:
         - name: USER_SERVICE_URL
           value: "https://[Your Host]"

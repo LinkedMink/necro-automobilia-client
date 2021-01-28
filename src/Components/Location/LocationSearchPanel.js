@@ -1,26 +1,26 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import Grid from '@material-ui/core/Grid';
-import SearchIcon from '@material-ui/icons/Search';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import Grid from "@material-ui/core/Grid";
+import SearchIcon from "@material-ui/icons/Search";
 
-import GoogleMaps from '../../Shared/GoogleMaps';
+import GoogleMaps from "../../Shared/GoogleMaps";
 import { ValidationRule, Validator } from "../../Shared/Validator";
-import LocationFilterMenu from './LocationFilterMenu';
+import LocationFilterMenu from "./LocationFilterMenu";
 
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    height: '85vh'
+    display: "flex",
+    flexDirection: "column",
+    height: "85vh",
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
   },
   map: {
     flexGrow: 1,
@@ -28,20 +28,20 @@ const styles = theme => ({
   },
   submitContainer: {
     display: "flex",
-    flexDirection: 'column',
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "flex-end",
-  }
+  },
 });
 
 class LocationSearchPanel extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.rules = {
-      location: { 
-        label: "Location", 
-        rules: [ValidationRule.REQUIRED]
+      location: {
+        label: "Location",
+        rules: [ValidationRule.REQUIRED],
       },
     };
 
@@ -56,7 +56,7 @@ class LocationSearchPanel extends React.Component {
       selected: null,
       options: null,
       isPendingSubmit: false,
-      errors: this.validator.getDefaultErrorState()
+      errors: this.validator.getDefaultErrorState(),
     };
 
     this.locationRef = React.createRef();
@@ -64,11 +64,11 @@ class LocationSearchPanel extends React.Component {
     this.filterRef = React.createRef();
   }
 
-  handleChange = (event) => {
-    this.setState({[event.target.id]: event.target.value});
-  }
+  handleChange = event => {
+    this.setState({ [event.target.id]: event.target.value });
+  };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     if (event) {
       event.preventDefault();
     }
@@ -81,7 +81,7 @@ class LocationSearchPanel extends React.Component {
       this.map.clearMarkers();
       this.setState({ markers: null });
     }
-  }
+  };
 
   handleShowFilter = () => {
     this.setState({ isFilterVisible: true });
@@ -91,46 +91,46 @@ class LocationSearchPanel extends React.Component {
     this.setState({ isFilterVisible: false });
   };
 
-  handleSetFilter = (options) => {
+  handleSetFilter = options => {
     this.setState({ options: options });
     this.setState({ isFilterVisible: false });
-  }
+  };
 
-  handleLocationKeyDown = (event) => {
+  handleLocationKeyDown = event => {
     if (event && event.keyCode === 13) {
-      this.setState({isPendingSubmit: true});
+      this.setState({ isPendingSubmit: true });
       event.preventDefault();
       return false;
     }
-  }
+  };
 
-  getAutocompleteHandler = (autocomplete) => {
+  getAutocompleteHandler = autocomplete => {
     return () => {
       const place = autocomplete.getPlace();
-      this.setState({ 
+      this.setState({
         mapLocation: place.formatted_address,
         location: [
           place.geometry.location.lng(),
-          place.geometry.location.lat()
-        ]
+          place.geometry.location.lat(),
+        ],
       });
 
       if (this.state.isPendingSubmit) {
-        this.setState({isPendingSubmit: false});
+        this.setState({ isPendingSubmit: false });
         this.handleSubmit();
       }
-    }
-  }
+    };
+  };
 
-  getMarkerHandler = (marker) => {
+  getMarkerHandler = marker => {
     return () => {
       this.setState({ selected: marker.data.index });
       this.map.focus(marker.position);
       if (this.props.onSelect) {
         this.props.onSelect(marker.data.index);
       }
-    }
-  }
+    };
+  };
 
   createMarkers = () => {
     const markers = [];
@@ -143,20 +143,20 @@ class LocationSearchPanel extends React.Component {
         description: `${element.firstHarmfulEventName}: ${element.numberOfFatalities} Dead`,
         coordinates: element.location.coordinates,
       });
-    })
+    });
 
     this.map.setMarkers(markers, this.getMarkerHandler);
     this.setState({ markers });
-  }
+  };
 
   focusSelected = () => {
     const selectedResult = this.props.results[this.state.selected];
     this.map.focus(selectedResult.location.coordinates);
-  }
+  };
 
   componentDidMount = () => {
     if (!this.map) {
-      this.map = new GoogleMaps(this.props.mapsApiKey)
+      this.map = new GoogleMaps(this.props.mapsApiKey);
 
       const initMap = () => {
         this.setState({ isMapLoaded: true });
@@ -165,7 +165,8 @@ class LocationSearchPanel extends React.Component {
         setTimeout(() => {
           this.map.initAutocomplete(
             this.locationRef.current,
-            this.getAutocompleteHandler);
+            this.getAutocompleteHandler
+          );
 
           if (this.props.results) {
             this.createMarkers();
@@ -180,7 +181,7 @@ class LocationSearchPanel extends React.Component {
         initMap();
       }
     }
-  }
+  };
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     if (this.map && this.props.results !== prevProps.results) {
@@ -188,15 +189,19 @@ class LocationSearchPanel extends React.Component {
     }
 
     if (this.state.selected !== this.props.selected) {
-      this.setState({selected: this.props.selected});
+      this.setState({ selected: this.props.selected });
       setTimeout(this.focusSelected.bind(this), 100);
     }
-  }
+  };
 
   render = () => {
     return (
       <Paper className={this.props.classes.paper}>
-        <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
+        <form
+          className={this.props.classes.form}
+          onSubmit={this.handleSubmit}
+          noValidate
+        >
           <Grid container spacing={1}>
             <Grid item xs={9}>
               <TextField
@@ -212,43 +217,52 @@ class LocationSearchPanel extends React.Component {
                 helperText={this.state.errors.location.message}
                 inputRef={this.locationRef}
                 onKeyDown={this.handleLocationKeyDown}
-                autoFocus />
+                autoFocus
+              />
             </Grid>
             <Grid item xs={3} className={this.props.classes.submitContainer}>
-              <ButtonGroup 
-                variant="contained" 
+              <ButtonGroup
+                variant="contained"
                 color="primary"
-                aria-label="split button">
+                aria-label="split button"
+              >
                 <Button
                   variant="contained"
                   color="primary"
                   type="submit"
-                  endIcon={<SearchIcon />}>
+                  endIcon={<SearchIcon />}
+                >
                   Search
                 </Button>
                 <Button
                   color="primary"
                   ref={this.filterRef}
-                  aria-expanded={this.state.isFilterVisible ? 'true' : undefined}
+                  aria-expanded={
+                    this.state.isFilterVisible ? "true" : undefined
+                  }
                   aria-label="filter options"
                   aria-haspopup="menu"
-                  onClick={this.handleShowFilter}>
+                  onClick={this.handleShowFilter}
+                >
                   <ArrowDropDownIcon />
                 </Button>
               </ButtonGroup>
             </Grid>
           </Grid>
         </form>
-        <div ref={this.mapRef} 
-          className={this.props.classes.map} 
-          id="mapSurface"></div>
-        <LocationFilterMenu 
-          isOpen={this.state.isFilterVisible} 
-          anchorRef={this.filterRef} 
-          onClose={this.handleSetFilter} />
+        <div
+          ref={this.mapRef}
+          className={this.props.classes.map}
+          id="mapSurface"
+        ></div>
+        <LocationFilterMenu
+          isOpen={this.state.isFilterVisible}
+          anchorRef={this.filterRef}
+          onClose={this.handleSetFilter}
+        />
       </Paper>
     );
-  }
+  };
 }
 
 export default withStyles(styles)(LocationSearchPanel);

@@ -1,10 +1,10 @@
-import clsx from 'clsx';
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import clsx from "clsx";
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   overlay: {
@@ -18,7 +18,7 @@ const styles = theme => ({
   },
   overlayVisible: {
     zIndex: 100,
-    opacity: 0.6
+    opacity: 0.6,
   },
   animationContainer: {
     display: "flex",
@@ -29,10 +29,10 @@ const styles = theme => ({
     width: "100%",
     padding: theme.spacing(2),
     textAlign: "center",
-    lineHeight: "3em"
+    lineHeight: "3em",
   },
   loadingText: {
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
 });
 
@@ -40,25 +40,30 @@ class LoadingOverlay extends React.Component {
   renderLoadingAnimation() {
     if (Number.isInteger(this.props.percentComplete)) {
       return (
-        <LinearProgress variant="determinate" value={this.props.percentComplete} />
+        <LinearProgress
+          variant="determinate"
+          value={this.props.percentComplete}
+        />
       );
     } else {
-      return (
-        <LinearProgress />
-      );
+      return <LinearProgress />;
     }
   }
 
   render() {
     return (
-      <div className={clsx(
-        this.props.classes.overlay, 
-        this.props.isLoading && this.props.classes.overlayVisible)}>
-        <Container maxWidth="md" className={this.props.classes.animationContainer}>
+      <div
+        className={clsx(
+          this.props.classes.overlay,
+          this.props.isLoading && this.props.classes.overlayVisible
+        )}
+      >
+        <Container
+          maxWidth="md"
+          className={this.props.classes.animationContainer}
+        >
           <Paper className={this.props.classes.animationSurface}>
-            <Typography 
-              className={this.props.classes.loadingText} 
-              variant="h4">
+            <Typography className={this.props.classes.loadingText} variant="h4">
               {this.props.message}
             </Typography>
             {this.renderLoadingAnimation()}

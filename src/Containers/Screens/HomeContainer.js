@@ -6,17 +6,17 @@ import { Routes, Services } from "../../Constants/Service";
 import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import { saveActiveRoute } from "../../Actions/RouteAction";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     mapsApiKey: state.config.googleMapsApiKey,
     searchResult: state.route.activeRoute,
-    searchParams: state.route.activeParams
+    searchParams: state.route.activeParams,
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    openDialog: (dialog) => {
+    openDialog: dialog => {
       return dispatch(alertInfo(`TODO`));
     },
     query: (source, destination, route, options) => {
@@ -24,23 +24,24 @@ const mapDispatchToProps = (dispatch) => {
         source,
         destination,
         route,
-        options
+        options,
       };
 
       const responseHandler = data => {
         return dispatch(saveActiveRoute(data));
-      }
+      };
 
       return getJsonResponse(
-        dispatch, 
+        dispatch,
         Services.NECRO_AUTOMOBILIA,
-        Routes[Services.NECRO_AUTOMOBILIA].ROUTES, 
-        responseHandler, 
+        Routes[Services.NECRO_AUTOMOBILIA].ROUTES,
+        responseHandler,
         HttpMethods.POST,
-        requestData);
-    }
+        requestData
+      );
+    },
   };
-}
+};
 
 const HomeContainer = connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 

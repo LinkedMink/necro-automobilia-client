@@ -1,12 +1,12 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
 import { DistanceUnit } from "../../Constants/Settings";
 import { getMenuItems } from "../../Shared/JsxHelper";
@@ -15,12 +15,12 @@ import { ValidationRule, Validator } from "../../Shared/Validator";
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -39,9 +39,9 @@ class UnitsSettingsPanel extends React.Component {
   constructor(props) {
     super(props);
     this.rules = {
-      distance: { 
-        label: "Distance", 
-        rules: [ValidationRule.REQUIRED]
+      distance: {
+        label: "Distance",
+        rules: [ValidationRule.REQUIRED],
       },
     };
 
@@ -49,23 +49,23 @@ class UnitsSettingsPanel extends React.Component {
 
     this.state = {
       distance: "",
-      errors: this.validator.getDefaultErrorState()
+      errors: this.validator.getDefaultErrorState(),
     };
   }
 
-  handleChange = (stateKey) => {
-    return (event) => {
-      this.setState({[stateKey]: event.target.value});
-    }
-  }
+  handleChange = stateKey => {
+    return event => {
+      this.setState({ [stateKey]: event.target.value });
+    };
+  };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     if (!this.isDirty()) {
       return;
     }
 
-    const dirtyProperties = {}
+    const dirtyProperties = {};
     if (this.state.distance !== this.props.settings.distance) {
       dirtyProperties.distance = this.state.distance;
     }
@@ -76,13 +76,14 @@ class UnitsSettingsPanel extends React.Component {
     if (validationState.isValid && this.props.saveAccountData) {
       this.props.saveAccountData(dirtyProperties);
     }
-  }
+  };
 
   isDirty = () => {
-    return !this.props.settings || (
+    return (
+      !this.props.settings ||
       this.state.distance !== this.props.settings.distance
     );
-  }
+  };
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     if (this.props.settings !== prevProps.settings) {
@@ -90,18 +91,21 @@ class UnitsSettingsPanel extends React.Component {
         distance: this.props.settings.distance,
       });
     }
-  }
+  };
 
   render = () => {
     return (
       <Paper className={this.props.classes.paper}>
-        <Typography variant="h4">
-          Units of Measure
-        </Typography>
-        <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
-          <FormControl 
+        <Typography variant="h4">Units of Measure</Typography>
+        <form
+          className={this.props.classes.form}
+          onSubmit={this.handleSubmit}
+          noValidate
+        >
+          <FormControl
             className={this.props.classes.formControl}
-            error={this.state.errors.distance.isInvalid}>
+            error={this.state.errors.distance.isInvalid}
+          >
             <InputLabel shrink id="unit-settings-panel-distance-label">
               {this.rules.distance.label}
             </InputLabel>
@@ -110,10 +114,13 @@ class UnitsSettingsPanel extends React.Component {
               id="unit-settings-panel-distance"
               value={this.state.distance}
               onChange={this.handleChange("distance")}
-              className={this.props.classes.selectEmpty}>
+              className={this.props.classes.selectEmpty}
+            >
               {getMenuItems(DistanceUnit)}
             </Select>
-            <FormHelperText>{this.state.errors.distance.message}</FormHelperText>
+            <FormHelperText>
+              {this.state.errors.distance.message}
+            </FormHelperText>
           </FormControl>
           <Button
             type="submit"
@@ -121,13 +128,14 @@ class UnitsSettingsPanel extends React.Component {
             color="primary"
             fullWidth
             disabled={!this.isDirty()}
-            className={this.props.classes.submit}>
+            className={this.props.classes.submit}
+          >
             Save
           </Button>
         </form>
       </Paper>
     );
-  }
+  };
 }
 
 export default withStyles(styles)(UnitsSettingsPanel);

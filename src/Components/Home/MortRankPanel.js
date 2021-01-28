@@ -1,58 +1,58 @@
-import clsx from 'clsx';
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import clsx from "clsx";
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 //import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Tooltip from '@material-ui/core/Tooltip';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Tooltip from "@material-ui/core/Tooltip";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 
-import LocalCarWashIcon from '@material-ui/icons/LocalCarWash';
-import MotorcycleIcon from '@material-ui/icons/Motorcycle';
-import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
-import DirectionsWalkIcon from '@material-ui/icons/DirectionsWalk';
-import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
-import FlightIcon from '@material-ui/icons/Flight';
-import TrainIcon from '@material-ui/icons/Train';
+import LocalCarWashIcon from "@material-ui/icons/LocalCarWash";
+import MotorcycleIcon from "@material-ui/icons/Motorcycle";
+import DirectionsBikeIcon from "@material-ui/icons/DirectionsBike";
+import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+import DirectionsCarIcon from "@material-ui/icons/DirectionsCar";
+import FlightIcon from "@material-ui/icons/Flight";
+import TrainIcon from "@material-ui/icons/Train";
 //import FlightLandIcon from '@material-ui/icons/FlightLand';
 //import ChevronLeftOutlinedIcon from '@material-ui/icons/ChevronLeftOutlined';
-import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
+import ShareOutlinedIcon from "@material-ui/icons/ShareOutlined";
 
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-    height: '100%',
-    minHeight: 500
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
+    height: "100%",
+    minHeight: 500,
   },
   highlight: {
-    backgroundColor: "rgba(0, 0, 0, 0.14)"
+    backgroundColor: "rgba(0, 0, 0, 0.14)",
   },
   header: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
   },
   headerText: {
-    flex: '1 1 auto'
+    flex: "1 1 auto",
   },
   proportionLine: {
     display: "flex",
-    flexDirection: 'column',
+    flexDirection: "column",
     justifyContent: "center",
   },
   proportionText: {
-    marginLeft: theme.spacing(1)
-  }
+    marginLeft: theme.spacing(1),
+  },
 });
 
 //const micromortsPerDay = 22;
@@ -70,14 +70,14 @@ const mortalityRanks = [
   { label: "Jet", mmPerMile: 1 / 1000, icon: FlightIcon },
   { label: "Train", mmPerMile: 1 / 6000, icon: TrainIcon },
   //{ label: "Jet (Terrorism)", mmPerMile: 1 / 12000, icon: FlightLandIcon },
-]
+];
 
 class MortRankPanel extends React.Component {
   handleShare = () => {
     if (this.props.onShare) {
       this.props.onShare();
     }
-  }
+  };
 
   renderTravelRank = () => {
     let ranks;
@@ -87,14 +87,24 @@ class MortRankPanel extends React.Component {
       for (let i = mortalityRanks.length - 1; i >= 0; i--) {
         if (mortalityRanks[i].mmPerMile > resultMMPerMile) {
           ranks = mortalityRanks.slice(0, i + 1);
-          ranks.push({ label: USER_TRIP_LABEL, mmPerMile: resultMMPerMile, icon: LocalCarWashIcon });
+          ranks.push({
+            label: USER_TRIP_LABEL,
+            mmPerMile: resultMMPerMile,
+            icon: LocalCarWashIcon,
+          });
           ranks = ranks.concat(mortalityRanks.slice(i + 1));
           break;
         }
       }
 
       if (!ranks) {
-        ranks = [{ label: USER_TRIP_LABEL, mmPerMile: resultMMPerMile, icon: LocalCarWashIcon }];
+        ranks = [
+          {
+            label: USER_TRIP_LABEL,
+            mmPerMile: resultMMPerMile,
+            icon: LocalCarWashIcon,
+          },
+        ];
         ranks = ranks.concat(mortalityRanks.slice());
       }
     } else {
@@ -108,33 +118,47 @@ class MortRankPanel extends React.Component {
       const isUserRank = rank.label === USER_TRIP_LABEL;
       const micromortsPer100 = (rank.mmPerMile * 100).toFixed(3);
       const riskTooltip = `Micromorts per 100 Mile: ${micromortsPer100}`;
-      const proportion = (rank.mmPerMile - min) / max * 100;
+      const proportion = ((rank.mmPerMile - min) / max) * 100;
 
       return (
-        <ListItem 
+        <ListItem
           key={index}
-          className={clsx(isUserRank && this.props.classes.highlight)}>
+          className={clsx(isUserRank && this.props.classes.highlight)}
+        >
           <ListItemAvatar>
             <Avatar>
               <rank.icon />
             </Avatar>
           </ListItemAvatar>
           <Tooltip title={riskTooltip} placement="bottom">
-            <ListItemText 
-              primary={rank.label} 
-              secondary={<Grid container>
-                <Grid item xs={10} className={this.props.classes.proportionLine}>
-                  <LinearProgress variant="determinate" value={proportion} color="secondary" />
+            <ListItemText
+              primary={rank.label}
+              secondary={
+                <Grid container>
+                  <Grid
+                    item
+                    xs={10}
+                    className={this.props.classes.proportionLine}
+                  >
+                    <LinearProgress
+                      variant="determinate"
+                      value={proportion}
+                      color="secondary"
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Box className={this.props.classes.proportionText}>
+                      {Math.round(proportion)}%
+                    </Box>
+                  </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                  <Box className={this.props.classes.proportionText}>{Math.round(proportion)}%</Box>
-                </Grid>
-              </Grid>} />
+              }
+            />
           </Tooltip>
         </ListItem>
       );
     });
-  }
+  };
 
   render = () => {
     return (
@@ -143,22 +167,21 @@ class MortRankPanel extends React.Component {
           <Typography variant="h4" className={this.props.classes.headerText}>
             Micromorts by Distance
           </Typography>
-          {this.props.result &&
+          {this.props.result && (
             <Button
               variant="contained"
               color="primary"
               onClick={this.handleShare}
-              endIcon={<ShareOutlinedIcon />}>
+              endIcon={<ShareOutlinedIcon />}
+            >
               Share
             </Button>
-          }
+          )}
         </div>
-        <List>
-          {this.renderTravelRank()}
-        </List>
+        <List>{this.renderTravelRank()}</List>
       </Paper>
     );
-  }
+  };
 }
 
 export default withStyles(styles)(MortRankPanel);

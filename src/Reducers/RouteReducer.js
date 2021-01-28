@@ -1,4 +1,4 @@
-import { SAVE_ACTIVE_ROUTE } from '../Actions/RouteAction';
+import { SAVE_ACTIVE_ROUTE } from "../Actions/RouteAction";
 
 const routeReducer = (state = {}, action) => {
   if (action.type === SAVE_ACTIVE_ROUTE) {
@@ -6,6 +6,6 @@ const routeReducer = (state = {}, action) => {
   } else {
     return state;
   }
-}
+};
 
 export default routeReducer;

@@ -1,4 +1,4 @@
-import { SAVE_CONFIG } from '../Actions/ConfigAction';
+import { SAVE_CONFIG } from "../Actions/ConfigAction";
 
 const configReducer = (state = {}, action) => {
   if (action.type === SAVE_CONFIG) {
@@ -7,6 +7,6 @@ const configReducer = (state = {}, action) => {
   } else {
     return state;
   }
-}
+};
 
 export default configReducer;

@@ -1,13 +1,13 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
-import accident from './AccidentReducer';
-import account from './AccountReducer';
-import alert from './AlertReducer';
-import config from './ConfigReducer';
-import confirm from './ConfirmReducer';
-import feed from './FeedReducer';
-import loading from './LoadingReducer';
-import route from './RouteReducer';
+import accident from "./AccidentReducer";
+import account from "./AccountReducer";
+import alert from "./AlertReducer";
+import config from "./ConfigReducer";
+import confirm from "./ConfirmReducer";
+import feed from "./FeedReducer";
+import loading from "./LoadingReducer";
+import route from "./RouteReducer";
 
 const rootReducer = combineReducers({
   accident,
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   confirm,
   feed,
   loading,
-  route
+  route,
 });
 
 export default rootReducer;

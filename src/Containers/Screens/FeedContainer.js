@@ -5,29 +5,30 @@ import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import FeedScreen from "../../Components/Feed/FeedScreen";
 import { saveFeedEvents } from "../../Actions/FeedAction";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    events: state.feed.latest
+    events: state.feed.latest,
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     query: () => {
       let responseHandler = data => {
         return dispatch(saveFeedEvents(data));
-      }
+      };
 
       return getJsonResponse(
-        dispatch, 
+        dispatch,
         Services.NECRO_AUTOMOBILIA,
         Routes[Services.NECRO_AUTOMOBILIA].FEED_EVENTS,
-        responseHandler, 
-        HttpMethods.GET);
-    }
+        responseHandler,
+        HttpMethods.GET
+      );
+    },
   };
-}
+};
 
 const FeedContainer = connect(mapStateToProps, mapDispatchToProps)(FeedScreen);
 
-export default FeedContainer
+export default FeedContainer;

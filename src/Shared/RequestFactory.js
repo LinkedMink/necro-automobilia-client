@@ -5,28 +5,33 @@ import store from "../Store";
 import { alertError } from "../Actions/AlertAction";
 import { loadingStart, loadingEnd } from "../Actions/LoadingAction";
 import { LogService } from "../Shared/LogService";
-import { ResponseCodes } from "../Constants/Service"
+import { ResponseCodes } from "../Constants/Service";
 
 const logger = LogService.get("RequestFactory");
-const GENERIC_REQUEST_ERROR = "An error occurred while processing your request. If the problem persist, contact the administrator."
+const GENERIC_REQUEST_ERROR =
+  "An error occurred while processing your request. If the problem persist, contact the administrator.";
 
 export const HttpMethods = {
   GET: "GET",
   POST: "POST",
   PUT: "PUT",
   DELETE: "DELETE",
-}
+};
 
-const getOptions = (method = HttpMethods.GET, requestData = null, isAuthorized = true) => {
-  const headers = { 
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
+const getOptions = (
+  method = HttpMethods.GET,
+  requestData = null,
+  isAuthorized = true
+) => {
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
   };
-  
+
   if (isAuthorized) {
     const state = store.getState();
     if (state.account.token) {
-      headers['Authorization'] = `Bearer ${state.account.token}`
+      headers["Authorization"] = `Bearer ${state.account.token}`;
     }
   }
 
@@ -36,18 +41,18 @@ const getOptions = (method = HttpMethods.GET, requestData = null, isAuthorized =
   };
 
   if (requestData) {
-    options.body = JSON.stringify(requestData)
+    options.body = JSON.stringify(requestData);
   }
 
-  return options
-}
+  return options;
+};
 
 const handleRawResponse = (dispatch, url, options) => {
-  return (response) => {
+  return response => {
     if (response.status === 500) {
       logger.error({
         url,
-        verb: options.method, 
+        verb: options.method,
         body: options.body,
         response: `${response.status}: ${response.body}`,
       });
@@ -56,11 +61,11 @@ const handleRawResponse = (dispatch, url, options) => {
     }
 
     return response.json();
-  }
-}
+  };
+};
 
 const handleServiceResponse = (dispatch, requestSuccessFunc) => {
-  return (json) => {
+  return json => {
     if (json && json.status === ResponseCodes.SUCCESS) {
       dispatch(requestSuccessFunc(json.data));
     } else if (json && json.status !== ResponseCodes.SUCCESS) {
@@ -69,17 +74,22 @@ const handleServiceResponse = (dispatch, requestSuccessFunc) => {
       dispatch(requestSuccessFunc(json));
     }
 
-    dispatch(loadingEnd())
-  }
-}
+    dispatch(loadingEnd());
+  };
+};
 
 const handleGenericCatch = (dispatch, url, options) => {
-  return (error) => {
-    logger.error({ url, verb: options.method, body: options.body, stack: error.stack });
+  return error => {
+    logger.error({
+      url,
+      verb: options.method,
+      body: options.body,
+      stack: error.stack,
+    });
     dispatch(loadingEnd());
     dispatch(alertError(GENERIC_REQUEST_ERROR));
-  }
-}
+  };
+};
 
 export const getServiceActionUrl = (targetService, path) => {
   const state = store.getState();
@@ -89,11 +99,17 @@ export const getServiceActionUrl = (targetService, path) => {
   } else {
     return path;
   }
-}
+};
 
 export const getJsonResponse = (
-  dispatch, targetService, path, requestSuccessFunc, method = HttpMethods.GET, requestData = null, isAuthorized = true) => {
-    
+  dispatch,
+  targetService,
+  path,
+  requestSuccessFunc,
+  method = HttpMethods.GET,
+  requestData = null,
+  isAuthorized = true
+) => {
   let url = getServiceActionUrl(targetService, path);
 
   if (requestData && method === HttpMethods.GET) {
@@ -104,15 +120,19 @@ export const getJsonResponse = (
     }
 
     const query = queryString.stringify(requestData);
-    url += '?' + query
+    url += "?" + query;
   }
 
-  const options = getOptions(method, method === HttpMethods.GET ? null : requestData, isAuthorized);
+  const options = getOptions(
+    method,
+    method === HttpMethods.GET ? null : requestData,
+    isAuthorized
+  );
 
-  dispatch(loadingStart())
+  dispatch(loadingStart());
 
   return fetch(url, options)
     .then(handleRawResponse(dispatch, url, options))
     .then(handleServiceResponse(dispatch, requestSuccessFunc))
     .catch(handleGenericCatch(dispatch, url, options));
-}
+};

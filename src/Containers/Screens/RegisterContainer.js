@@ -5,37 +5,42 @@ import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import RegisterScreen from "../../Components/Screens/RegisterScreen";
 import { alertRedirect } from "../../Actions/AlertAction";
 
-const SUCCESS_MESSAGE = "Your account has been created. Verify your email address to login.";
+const SUCCESS_MESSAGE =
+  "Your account has been created. Verify your email address to login.";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    isLoggedIn: state.account.token ? true : false
+    isLoggedIn: state.account.token ? true : false,
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     register: (email, password) => {
-      let requestData = { 
+      let requestData = {
         email,
         password,
       };
 
       let responseHandler = data => {
         return dispatch(alertRedirect(SUCCESS_MESSAGE, "/login"));
-      }
+      };
 
       return getJsonResponse(
-        dispatch, 
+        dispatch,
         Services.USER,
-        Routes[Services.USER].REGISTER, 
-        responseHandler, 
+        Routes[Services.USER].REGISTER,
+        responseHandler,
         HttpMethods.POST,
-        requestData);
-    }
+        requestData
+      );
+    },
   };
-}
+};
 
-const RegisterContainer = connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
+const RegisterContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RegisterScreen);
 
-export default RegisterContainer
+export default RegisterContainer;

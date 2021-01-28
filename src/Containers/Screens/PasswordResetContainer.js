@@ -8,28 +8,32 @@ import { alertRedirect } from "../../Actions/AlertAction";
 
 const SUCCESS_MESSAGE = "A reset link has been sent. Check your email.";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    isLoggedIn: state.account.token ? true : false
+    isLoggedIn: state.account.token ? true : false,
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     getResetLink: email => {
       let responseHandler = data => {
         return dispatch(alertRedirect(SUCCESS_MESSAGE, "/login"));
-      }
+      };
 
       return getJsonResponse(
-        dispatch, 
+        dispatch,
         Services.USER,
-        urlJoin(Routes[Services.USER].PASSWORD, encodeURIComponent(email)), 
-        responseHandler);
-    }
+        urlJoin(Routes[Services.USER].PASSWORD, encodeURIComponent(email)),
+        responseHandler
+      );
+    },
   };
-}
+};
 
-const PasswordResetContainer = connect(mapStateToProps, mapDispatchToProps)(PasswordResetScreen);
+const PasswordResetContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PasswordResetScreen);
 
-export default PasswordResetContainer
+export default PasswordResetContainer;

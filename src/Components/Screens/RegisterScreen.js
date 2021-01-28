@@ -1,13 +1,13 @@
-import React from 'react';
-import { Redirect, Link as RouterLink } from 'react-router-dom'
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
+import React from "react";
+import { Redirect, Link as RouterLink } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
 
 import { MIN_PASSWORD_LENGTH } from "../../Constants/Account";
 import { ValidationRule, Validator } from "../../Shared/Validator";
@@ -15,12 +15,12 @@ import { ValidationRule, Validator } from "../../Shared/Validator";
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -32,18 +32,21 @@ class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
     this.rules = {
-      email: { 
-        label: "Email Address", 
-        rules: [ValidationRule.REQUIRED, ValidationRule.EMAIL]
+      email: {
+        label: "Email Address",
+        rules: [ValidationRule.REQUIRED, ValidationRule.EMAIL],
       },
       password: {
         label: "Password",
-        rules: [ValidationRule.REQUIRED, [ValidationRule.LENGTH, MIN_PASSWORD_LENGTH]]
+        rules: [
+          ValidationRule.REQUIRED,
+          [ValidationRule.LENGTH, MIN_PASSWORD_LENGTH],
+        ],
       },
       confirmPassword: {
         label: "Confirm Password",
-        rules: [ValidationRule.REQUIRED, [ValidationRule.COMPARE, 'password']]
-      }
+        rules: [ValidationRule.REQUIRED, [ValidationRule.COMPARE, "password"]],
+      },
     };
 
     this.validator = new Validator(this.rules);
@@ -52,21 +55,21 @@ class RegisterScreen extends React.Component {
       email: "",
       password: "",
       confirmPassword: "",
-      errors: this.validator.getDefaultErrorState()
+      errors: this.validator.getDefaultErrorState(),
     };
   }
 
-  getLinkReference = (path) => {
+  getLinkReference = path => {
     return React.forwardRef((props, ref) => (
       <RouterLink innerRef={ref} to={path} {...props} />
     ));
-  }
+  };
 
-  handleChange = (event) => {
-    this.setState({[event.target.id]: event.target.value});
-  }
+  handleChange = event => {
+    this.setState({ [event.target.id]: event.target.value });
+  };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
 
     const validationState = this.validator.validate(this.state);
@@ -75,20 +78,22 @@ class RegisterScreen extends React.Component {
     if (validationState.isValid && this.props.register) {
       this.props.register(this.state.email, this.state.password);
     }
-  }
+  };
 
   render() {
     if (this.props.isLoggedIn) {
-      return <Redirect to='/' />
+      return <Redirect to="/" />;
     }
 
     return (
       <Container maxWidth="md">
         <Paper className={this.props.classes.paper}>
-          <Typography variant="h3">
-            Register
-          </Typography>
-          <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
+          <Typography variant="h3">Register</Typography>
+          <form
+            className={this.props.classes.form}
+            onSubmit={this.handleSubmit}
+            noValidate
+          >
             <TextField
               variant="outlined"
               margin="normal"
@@ -103,7 +108,8 @@ class RegisterScreen extends React.Component {
               value={this.state.email}
               error={this.state.errors.email.isInvalid}
               helperText={this.state.errors.email.message}
-              autoFocus />
+              autoFocus
+            />
             <TextField
               variant="outlined"
               margin="normal"
@@ -116,7 +122,8 @@ class RegisterScreen extends React.Component {
               error={this.state.errors.password.isInvalid}
               helperText={this.state.errors.password.message}
               onChange={this.handleChange}
-              id="password" />
+              id="password"
+            />
             <TextField
               variant="outlined"
               margin="normal"
@@ -129,18 +136,23 @@ class RegisterScreen extends React.Component {
               error={this.state.errors.confirmPassword.isInvalid}
               helperText={this.state.errors.confirmPassword.message}
               onChange={this.handleChange}
-              id="confirmPassword" />
+              id="confirmPassword"
+            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              className={this.props.classes.submit}>
+              className={this.props.classes.submit}
+            >
               Register
             </Button>
             <Grid container>
               <Grid item>
-                <Link component={this.getLinkReference("/login")} variant="body2">
+                <Link
+                  component={this.getLinkReference("/login")}
+                  variant="body2"
+                >
                   {"Already have an account? Login"}
                 </Link>
               </Grid>

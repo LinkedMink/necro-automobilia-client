@@ -1,13 +1,13 @@
-import 'date-fns';
-import React from 'react';
+import "date-fns";
+import React from "react";
 //import DateFnsUtils from '@date-io/date-fns';
-import { withStyles } from '@material-ui/core/styles';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
+import { withStyles } from "@material-ui/core/styles";
+import Popper from "@material-ui/core/Popper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Slider from "@material-ui/core/Slider";
 //import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 import { ValidationRule, Validator } from "../../Shared/Validator";
@@ -15,8 +15,8 @@ import { ValidationRule, Validator } from "../../Shared/Validator";
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     minWidth: 300,
   },
 });
@@ -24,25 +24,25 @@ const styles = theme => ({
 class LocationFilterMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.minDate = new Date('2014-12-31');
-    this.maxDate = new Date('2017-01-02');
+    this.minDate = new Date("2014-12-31");
+    this.maxDate = new Date("2017-01-02");
 
     this.rules = {
       pageSize: {
         label: "Page Size",
-        rules: [[ValidationRule.RANGE, 1, 40]]
+        rules: [[ValidationRule.RANGE, 1, 40]],
       },
       searchDistance: {
         label: "Search Distance (km)",
-        rules: [[ValidationRule.RANGE, 10, 50]]
+        rules: [[ValidationRule.RANGE, 10, 50]],
       },
       startDate: {
         label: "Start Date",
-        rules: [[ValidationRule.RANGE, this.minDate, this.maxDate]]
+        rules: [[ValidationRule.RANGE, this.minDate, this.maxDate]],
       },
       endDate: {
         label: "End Date",
-        rules: [[ValidationRule.RANGE, this.minDate, this.maxDate]]
+        rules: [[ValidationRule.RANGE, this.minDate, this.maxDate]],
       },
     };
 
@@ -54,23 +54,23 @@ class LocationFilterMenu extends React.Component {
       searchDistance: 30,
       startDate: undefined,
       endDate: undefined,
-      errors: this.validator.getDefaultErrorState()
+      errors: this.validator.getDefaultErrorState(),
     };
   }
 
   handleChange = (event, value) => {
     if (value) {
-      this.setState({[event.target.id]: value});
+      this.setState({ [event.target.id]: value });
     } else {
-      this.setState({[event.target.id]: event.target.value});
+      this.setState({ [event.target.id]: event.target.value });
     }
-  }
+  };
 
-  handleDateChange = (fieldName) => {
-    return (date) => {
-      this.setState({[fieldName]: date});
-    }
-  }
+  handleDateChange = fieldName => {
+    return date => {
+      this.setState({ [fieldName]: date });
+    };
+  };
 
   handleClose = () => {
     const validationState = this.validator.validate(this.state);
@@ -78,8 +78,8 @@ class LocationFilterMenu extends React.Component {
     if (!validationState.isValid) {
       return;
     }
-    
-    this.setState({isOpen: false});
+
+    this.setState({ isOpen: false });
     if (this.props.onClose) {
       this.props.onClose({
         pageSize: this.state.pageSize,
@@ -88,20 +88,18 @@ class LocationFilterMenu extends React.Component {
         endDate: this.endDate,
       });
     }
-  }
+  };
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     if (this.state.isOpen !== this.props.isOpen) {
-      this.setState({isOpen: this.props.isOpen});
+      this.setState({ isOpen: this.props.isOpen });
     }
-  }
+  };
 
   renderControls = () => {
     return (
       <Paper className={this.props.classes.paper}>
-        <Typography 
-          id="filter-page-size"
-          gutterBottom>
+        <Typography id="filter-page-size" gutterBottom>
           {this.rules.pageSize.label}
         </Typography>
         <Slider
@@ -111,14 +109,13 @@ class LocationFilterMenu extends React.Component {
           marks
           min={1}
           max={10}
-          valueLabelDisplay="auto" 
-          value={this.state.pageSize} 
+          valueLabelDisplay="auto"
+          value={this.state.pageSize}
           error={this.state.errors.pageSize.isInvalid}
           helperText={this.state.errors.pageSize.message}
-          onChange={this.handleChange} />
-        <Typography 
-          id="filter-search-distance"
-          gutterBottom>
+          onChange={this.handleChange}
+        />
+        <Typography id="filter-search-distance" gutterBottom>
           {this.rules.searchDistance.label}
         </Typography>
         <Slider
@@ -128,11 +125,12 @@ class LocationFilterMenu extends React.Component {
           marks
           min={10}
           max={100}
-          valueLabelDisplay="auto" 
-          value={this.state.searchDistance} 
+          valueLabelDisplay="auto"
+          value={this.state.searchDistance}
           error={this.state.errors.searchDistance.isInvalid}
           helperText={this.state.errors.searchDistance.message}
-          onChange={this.handleChange} />
+          onChange={this.handleChange}
+        />
         {/*
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
@@ -168,20 +166,25 @@ class LocationFilterMenu extends React.Component {
         </MuiPickersUtilsProvider>
           */}
       </Paper>
-    )
-  }
+    );
+  };
 
   render() {
     return (
-      <Popper open={this.state.isOpen} 
-        anchorEl={this.props.anchorRef.current} 
-        role={undefined} transition>
+      <Popper
+        open={this.state.isOpen}
+        anchorEl={this.props.anchorRef.current}
+        role={undefined}
+        transition
+      >
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
             style={{
-              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-            }}>
+              transformOrigin:
+                placement === "bottom" ? "center top" : "center bottom",
+            }}
+          >
             <ClickAwayListener onClickAway={this.handleClose}>
               {this.renderControls()}
             </ClickAwayListener>

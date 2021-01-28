@@ -1,15 +1,15 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 
-import JsonResultPanel from './JsonResultPanel';
-import QueryControlPanel from './QueryControlPanel';
+import JsonResultPanel from "./JsonResultPanel";
+import QueryControlPanel from "./QueryControlPanel";
 
 const styles = theme => ({
   fill: {
-    height: "100%"
-  }
+    height: "100%",
+  },
 });
 
 class QueryScreen extends React.Component {
@@ -17,7 +17,7 @@ class QueryScreen extends React.Component {
     if (this.props.query) {
       this.props.query(query, sort, pageNumber, pageSize);
     }
-  }
+  };
 
   render = () => {
     return (
@@ -32,7 +32,7 @@ class QueryScreen extends React.Component {
         </Grid>
       </Container>
     );
-  }
+  };
 }
 
 export default withStyles(styles)(QueryScreen);

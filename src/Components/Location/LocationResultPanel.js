@@ -1,15 +1,15 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
-import LocationResultCard from './LocationResultCard';
+import LocationResultCard from "./LocationResultCard";
 
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
-    overflow: 'auto',
-    maxHeight: '85vh',
+    overflow: "auto",
+    maxHeight: "85vh",
   },
 });
 
@@ -18,7 +18,7 @@ class LocationResultPanel extends React.Component {
     super(props);
 
     this.state = {
-      selected: null
+      selected: null,
     };
 
     this.containerRef = React.createRef();
@@ -27,24 +27,27 @@ class LocationResultPanel extends React.Component {
 
   scrollToSelected = () => {
     this.containerRef.current.scrollTo({
-      top: this.selectedRef.current.offsetTop - this.containerRef.current.offsetTop,
+      top:
+        this.selectedRef.current.offsetTop -
+        this.containerRef.current.offsetTop,
       left: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
-  }
+  };
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     if (this.state.selected !== this.props.selected) {
-      this.setState({selected: this.props.selected});
+      this.setState({ selected: this.props.selected });
       setTimeout(this.scrollToSelected.bind(this), 100);
     }
-  }
-  
+  };
+
   renderResults = () => {
     if (!this.props.results) {
       return (
         <Typography variant="body1">
-          No results:<br />
+          No results:
+          <br />
         </Typography>
       );
     }
@@ -54,45 +57,43 @@ class LocationResultPanel extends React.Component {
 
       if (selected) {
         return (
-          <LocationResultCard 
+          <LocationResultCard
             key={index}
             index={index}
-            avatar={index + 1} 
+            avatar={index + 1}
             result={result}
             containerRef={this.selectedRef}
             selected={selected}
-            onSelect={this.props.onSelect} 
-            onFavorite={this.props.onFavorite} 
-            onShare={this.props.onShare} />
+            onSelect={this.props.onSelect}
+            onFavorite={this.props.onFavorite}
+            onShare={this.props.onShare}
+          />
         );
       }
 
       return (
-        <LocationResultCard 
+        <LocationResultCard
           key={index}
           index={index}
-          avatar={index + 1} 
+          avatar={index + 1}
           result={result}
           selected={selected}
-          onSelect={this.props.onSelect} 
-          onFavorite={this.props.onFavorite} 
-          onShare={this.props.onShare} />
+          onSelect={this.props.onSelect}
+          onFavorite={this.props.onFavorite}
+          onShare={this.props.onShare}
+        />
       );
     });
-  }
+  };
 
   render = () => {
     return (
-      <Paper 
-        ref={this.containerRef}
-        className={this.props.classes.paper}>
-        <Typography variant="h4">
-          Results
-        </Typography>
+      <Paper ref={this.containerRef} className={this.props.classes.paper}>
+        <Typography variant="h4">Results</Typography>
         {this.renderResults()}
       </Paper>
     );
-  }
+  };
 }
 
 export default withStyles(styles)(LocationResultPanel);

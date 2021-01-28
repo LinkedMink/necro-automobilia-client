@@ -8,14 +8,14 @@ import { saveConfig } from "./Actions/ConfigAction";
 import { saveSession } from "./Actions/AccountAction";
 import { Routes, Services } from "./Constants/Service";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     isConfigLoaded: state.config.urls ? true : false,
-    isLoggedIn: state.account.token ? true : false
+    isLoggedIn: state.account.token ? true : false,
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     getConfig: () => {
       if (process.env.LOCAL_CONFIG) {
@@ -23,16 +23,17 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(saveConfig(localConfig));
         return;
       }
-      
+
       let responseHandler = data => {
         return dispatch(saveConfig(data));
-      }
+      };
 
       return getJsonResponse(
-        dispatch, 
+        dispatch,
         Services.SELF,
-        Routes[Services.SELF].CONFIG, 
-        responseHandler);
+        Routes[Services.SELF].CONFIG,
+        responseHandler
+      );
     },
     getAccount: () => {
       const token = localStorage.getItem(StorageKey.JWT_TOKEN);
@@ -40,9 +41,9 @@ const mapDispatchToProps = (dispatch) => {
         var decoded = decodeToken(token);
         return dispatch(saveSession(token, decoded));
       }
-    }
+    },
   };
-}
+};
 
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
 

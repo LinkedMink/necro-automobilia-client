@@ -2,11 +2,11 @@ import { connect } from "react-redux";
 
 import LoadingOverlay from "../Components/LoadingOverlay";
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isLoading: state.loading.isLoading,
     percentComplete: state.loading.percentComplete,
-    message: state.loading.message
+    message: state.loading.message,
   };
 }
 

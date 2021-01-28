@@ -7,16 +7,16 @@ import { alertRedirect } from "../../Actions/AlertAction";
 
 const SUCCESS_MESSAGE = "Your password has been reset.";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    isLoggedIn: state.account.token ? true : false
+    isLoggedIn: state.account.token ? true : false,
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     resetPassword: (email, resetToken, password) => {
-      let requestData = { 
+      let requestData = {
         email,
         resetToken,
         password,
@@ -24,19 +24,23 @@ const mapDispatchToProps = (dispatch) => {
 
       let responseHandler = data => {
         return dispatch(alertRedirect(SUCCESS_MESSAGE, "/login"));
-      }
+      };
 
       return getJsonResponse(
-        dispatch, 
+        dispatch,
         Services.USER,
-        Routes[Services.USER].PASSWORD, 
-        responseHandler, 
+        Routes[Services.USER].PASSWORD,
+        responseHandler,
         HttpMethods.PUT,
-        requestData);
-    }
+        requestData
+      );
+    },
   };
-}
+};
 
-const SetPasswordContainer = connect(mapStateToProps, mapDispatchToProps)(SetPasswordScreen);
+const SetPasswordContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SetPasswordScreen);
 
-export default SetPasswordContainer
+export default SetPasswordContainer;

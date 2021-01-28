@@ -1,5 +1,5 @@
-const GOOGLE_MAPS_BASE_URL = 'https://maps.googleapis.com/maps/api/js?';
-const TEMP_ON_LOAD_FUNCTION = 'onGoogleMapsApiLoaded';
+const GOOGLE_MAPS_BASE_URL = "https://maps.googleapis.com/maps/api/js?";
+const TEMP_ON_LOAD_FUNCTION = "onGoogleMapsApiLoaded";
 const INITIAL_MAP_CENTER = { lat: 39.8283, lng: -98.5795 }; // Center of US
 const INITIAL_ZOOM = 4;
 const FOCUS_ZOOM = 11;
@@ -12,27 +12,29 @@ class GoogleMaps {
     this.loadingPromise = null;
     this.mapElements = {};
   }
-  
+
   loadApiScript = (options = {}) => {
     if (!this.loadingPromise && !maps) {
-      this.loadingPromise  = new Promise((resolve, reject) => {
+      this.loadingPromise = new Promise((resolve, reject) => {
         try {
           window[TEMP_ON_LOAD_FUNCTION] = resolve;
-  
+
           options.key = this.apiKey;
           options.callback = TEMP_ON_LOAD_FUNCTION;
           const optionsQuery = Object.keys(options)
-            .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(options[k])}`)
-            .join('&');
-        
+            .map(
+              k => `${encodeURIComponent(k)}=${encodeURIComponent(options[k])}`
+            )
+            .join("&");
+
           const url = GOOGLE_MAPS_BASE_URL + optionsQuery;
-        
-          const script = document.createElement('script');
-        
-          script.setAttribute('src', url);
-          script.setAttribute('async', '');
-          script.setAttribute('defer', '');
-        
+
+          const script = document.createElement("script");
+
+          script.setAttribute("src", url);
+          script.setAttribute("async", "");
+          script.setAttribute("defer", "");
+
           document.head.appendChild(script);
         } catch (error) {
           reject(error);
@@ -42,52 +44,49 @@ class GoogleMaps {
         maps = window.google.maps;
       });
     }
-  
+
     return this.loadingPromise;
   };
 
-  initMap = (mapElement) => {
-    let initElement = mapElement
-    if (typeof mapElement === 'string') {
+  initMap = mapElement => {
+    let initElement = mapElement;
+    if (typeof mapElement === "string") {
       initElement = document.getElementById(mapElement);
     }
 
     this.map = new maps.Map(initElement, {
       center: INITIAL_MAP_CENTER,
-      zoom: INITIAL_ZOOM
+      zoom: INITIAL_ZOOM,
     });
-  }
+  };
 
   initDirections = () => {
     this.directionsService = new maps.DirectionsService();
     this.directionsRenderer = new maps.DirectionsRenderer();
     this.directionsRenderer.setMap(this.map);
-  }
+  };
 
   initAutocomplete = (inputElement, onPlaceChanged) => {
-    let initElement = inputElement
-    if (typeof inputElement === 'string') {
+    let initElement = inputElement;
+    if (typeof inputElement === "string") {
       initElement = document.getElementById(inputElement);
     }
 
-    const autocomplete = new maps.places.Autocomplete(
-      initElement, 
-      { 
-        componentRestrictions: { country: 'us' },
-        types: ['geocode']
-      }
-    );
+    const autocomplete = new maps.places.Autocomplete(initElement, {
+      componentRestrictions: { country: "us" },
+      types: ["geocode"],
+    });
 
     //autocomplete.bindTo(this.map);
     //this.boundElements[inputElementId] = autocomplete
-    
+
     if (onPlaceChanged) {
       const handler = onPlaceChanged(autocomplete);
-      autocomplete.addListener('place_changed', handler);
+      autocomplete.addListener("place_changed", handler);
     }
 
     return autocomplete;
-  }
+  };
 
   focus = (coordinates, zoom = false) => {
     if (!this.map) {
@@ -102,7 +101,7 @@ class GoogleMaps {
     if (zoom) {
       this.map.setZoom(FOCUS_ZOOM);
     }
-  }
+  };
 
   addMarkers = (markerDescriptions, onClick) => {
     if (!this.map) {
@@ -110,14 +109,14 @@ class GoogleMaps {
     }
 
     if (!this.mapElements.markers) {
-      this.mapElements.markers = []
+      this.mapElements.markers = [];
     }
 
-    markerDescriptions.forEach((element) => {
+    markerDescriptions.forEach(element => {
       const markerOptions = {
         map: this.map,
         animation: maps.Animation.DROP,
-        position: { lat: element.coordinates[1], lng: element.coordinates[0] }
+        position: { lat: element.coordinates[1], lng: element.coordinates[0] },
       };
       if (element.label) {
         markerOptions.label = element.label;
@@ -128,37 +127,37 @@ class GoogleMaps {
 
       if (element.description) {
         const info = new maps.InfoWindow({
-          content: `<div>${element.description}</div>`
+          content: `<div>${element.description}</div>`,
         });
-  
-        marker.addListener('mouseover', () => {
+
+        marker.addListener("mouseover", () => {
           info.open(this.map, marker);
         });
 
-        marker.addListener('mouseout', () => {
+        marker.addListener("mouseout", () => {
           info.close();
         });
       }
 
       if (onClick) {
-        marker.addListener('click', onClick(marker));
+        marker.addListener("click", onClick(marker));
       }
 
       this.mapElements.markers.push(marker);
-    })
-  }
+    });
+  };
 
   clearMarkers = () => {
     if (!this.mapElements || !this.mapElements.markers) {
       return;
     }
 
-    this.mapElements.markers.forEach((element) => {
+    this.mapElements.markers.forEach(element => {
       element.setMap(null);
-    })
+    });
 
     this.mapElements.markers = [];
-  }
+  };
 
   getMarkerBounds = () => {
     if (!this.mapElements || !this.mapElements.markers) {
@@ -166,22 +165,22 @@ class GoogleMaps {
     }
 
     const bounds = new maps.LatLngBounds();
-    this.mapElements.markers.forEach((element) => {
+    this.mapElements.markers.forEach(element => {
       bounds.extend(element.position);
-    })
+    });
 
     return bounds;
-  }
+  };
 
   setMarkers = (markerDescriptions, onClick, center = true) => {
     this.clearMarkers();
     this.addMarkers(markerDescriptions, onClick);
-    
+
     if (this.map && center) {
       const bounds = this.getMarkerBounds();
       this.map.fitBounds(bounds);
     }
-  }
+  };
 
   setRoute = (source, destination, onRouteRetrieved) => {
     const sourcePoint = source.length
@@ -195,18 +194,18 @@ class GoogleMaps {
     const routeRequest = {
       origin: sourcePoint,
       destination: destinationPoint,
-      travelMode: maps.TravelMode["DRIVING"]
+      travelMode: maps.TravelMode["DRIVING"],
     };
 
     this.directionsService.route(routeRequest, (response, status) => {
-      if (status === 'OK') {
+      if (status === "OK") {
         this.directionsRenderer.setDirections(response);
         if (onRouteRetrieved) {
           onRouteRetrieved(response);
         }
       }
     });
-  }
+  };
 }
 
 export default GoogleMaps;

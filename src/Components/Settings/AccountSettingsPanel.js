@@ -1,9 +1,9 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 import { MIN_PASSWORD_LENGTH } from "../../Constants/Account";
 import { ValidationRule, Validator } from "../../Shared/Validator";
@@ -11,12 +11,12 @@ import { ValidationRule, Validator } from "../../Shared/Validator";
 const styles = theme => ({
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -28,18 +28,18 @@ class AccountSettingsPanel extends React.Component {
   constructor(props) {
     super(props);
     this.rules = {
-      email: { 
-        label: "Email Address", 
-        rules: [ValidationRule.EMAIL]
+      email: {
+        label: "Email Address",
+        rules: [ValidationRule.EMAIL],
       },
       password: {
         label: "Password",
-        rules: [[ValidationRule.LENGTH, MIN_PASSWORD_LENGTH]]
+        rules: [[ValidationRule.LENGTH, MIN_PASSWORD_LENGTH]],
       },
       confirmPassword: {
         label: "Confirm Password",
-        rules: [[ValidationRule.COMPARE, 'password']]
-      }
+        rules: [[ValidationRule.COMPARE, "password"]],
+      },
     };
 
     this.validator = new Validator(this.rules);
@@ -48,21 +48,21 @@ class AccountSettingsPanel extends React.Component {
       email: "",
       password: "",
       confirmPassword: "",
-      errors: this.validator.getDefaultErrorState()
+      errors: this.validator.getDefaultErrorState(),
     };
   }
 
-  handleChange = (event) => {
-    this.setState({[event.target.id]: event.target.value});
-  }
+  handleChange = event => {
+    this.setState({ [event.target.id]: event.target.value });
+  };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     if (!this.isDirty()) {
       return;
     }
 
-    const dirtyProperties = {}
+    const dirtyProperties = {};
     if (this.state.email !== this.props.profile.email) {
       dirtyProperties.email = this.state.email;
     }
@@ -77,14 +77,15 @@ class AccountSettingsPanel extends React.Component {
     if (validationState.isValid && this.props.onUpdate) {
       this.props.onUpdate(dirtyProperties);
     }
-  }
+  };
 
   isDirty = () => {
-    return this.props.profile && (
-      this.state.email !== this.props.profile.email ||
-      this.state.password !== ""
+    return (
+      this.props.profile &&
+      (this.state.email !== this.props.profile.email ||
+        this.state.password !== "")
     );
-  }
+  };
 
   componentDidUpdate = (prevProps, prevState, snapshot) => {
     if (this.props.profile !== prevProps.profile) {
@@ -92,15 +93,17 @@ class AccountSettingsPanel extends React.Component {
         email: this.props.profile.email,
       });
     }
-  }
+  };
 
   render = () => {
     return (
       <Paper className={this.props.classes.paper}>
-        <Typography variant="h4">
-          Account
-        </Typography>
-        <form className={this.props.classes.form} onSubmit={this.handleSubmit} noValidate>
+        <Typography variant="h4">Account</Typography>
+        <form
+          className={this.props.classes.form}
+          onSubmit={this.handleSubmit}
+          noValidate
+        >
           <TextField
             variant="outlined"
             margin="normal"
@@ -114,7 +117,8 @@ class AccountSettingsPanel extends React.Component {
             value={this.state.email}
             error={this.state.errors.email.isInvalid}
             helperText={this.state.errors.email.message}
-            autoFocus />
+            autoFocus
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -126,7 +130,8 @@ class AccountSettingsPanel extends React.Component {
             error={this.state.errors.password.isInvalid}
             helperText={this.state.errors.password.message}
             onChange={this.handleChange}
-            id="password" />
+            id="password"
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -138,20 +143,22 @@ class AccountSettingsPanel extends React.Component {
             error={this.state.errors.confirmPassword.isInvalid}
             helperText={this.state.errors.confirmPassword.message}
             onChange={this.handleChange}
-            id="confirmPassword" />
+            id="confirmPassword"
+          />
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
             disabled={!this.isDirty()}
-            className={this.props.classes.submit}>
+            className={this.props.classes.submit}
+          >
             Save
           </Button>
         </form>
       </Paper>
     );
-  }
+  };
 }
 
 export default withStyles(styles)(AccountSettingsPanel);

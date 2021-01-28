@@ -1,18 +1,18 @@
-import clsx from 'clsx';
-import { Link as RouterLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
-import React from 'react';
+import clsx from "clsx";
+import { Link as RouterLink } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import IconButton from "@material-ui/core/IconButton";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuIcon from "@material-ui/icons/Menu";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
+import React from "react";
 
 const styles = theme => ({
   toolbar: {
@@ -20,7 +20,7 @@ const styles = theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -28,7 +28,7 @@ const styles = theme => ({
   appBarShift: {
     marginLeft: 240,
     width: `calc(100% - 240px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -37,14 +37,14 @@ const styles = theme => ({
     marginRight: 36,
   },
   menuButtonHidden: {
-    display: 'none',
+    display: "none",
   },
   title: {
     flexGrow: 1,
   },
   menuIcon: {
-    minWidth: 20 + theme.spacing(2)
-  }
+    minWidth: 20 + theme.spacing(2),
+  },
 });
 
 class HeaderPanel extends React.Component {
@@ -52,7 +52,7 @@ class HeaderPanel extends React.Component {
     super(props);
 
     this.state = {
-      menuAnchor: null
+      menuAnchor: null,
     };
   }
 
@@ -64,47 +64,50 @@ class HeaderPanel extends React.Component {
     this.setState({ menuAnchor: null });
   };
 
-  getLinkReference = (path) => {
+  getLinkReference = path => {
     return React.forwardRef((props, ref) => (
       <RouterLink innerRef={ref} to={path} {...props} />
     ));
-  }
+  };
 
   renderAccount = () => {
     if (this.props.isLoggedIn) {
       return (
-        <IconButton 
+        <IconButton
           aria-label="account"
-          aria-controls="account-menu" 
+          aria-controls="account-menu"
           aria-haspopup="true"
           color="inherit"
-          onClick={this.handleMenuClick}>
+          onClick={this.handleMenuClick}
+        >
           <AccountCircleIcon />
         </IconButton>
-      )
+      );
     } else {
       return (
-        <IconButton 
+        <IconButton
           aria-label="account"
-          aria-controls="account-menu" 
+          aria-controls="account-menu"
           aria-haspopup="true"
           color="inherit"
-          component={this.getLinkReference("/login")}>
+          component={this.getLinkReference("/login")}
+        >
           <AccountCircleIcon />
         </IconButton>
-      )
+      );
     }
-  }
+  };
 
   renderMenu = () => {
     if (this.props.isLoggedIn) {
       return (
-        <Menu 
-          id="account-menu" 
+        <Menu
+          id="account-menu"
           keepMounted
           anchorEl={this.state.menuAnchor}
           open={Boolean(this.state.menuAnchor)}
-          onClose={this.handleMenuClose}>
+          onClose={this.handleMenuClose}
+        >
           <MenuItem component={this.getLinkReference("/account")}>
             <ListItemIcon className={this.props.classes.menuIcon}>
               <SettingsOutlinedIcon fontSize="small" />
@@ -118,36 +121,43 @@ class HeaderPanel extends React.Component {
             <Typography variant="inherit">Logout</Typography>
           </MenuItem>
         </Menu>
-      )
+      );
     }
-  }
+  };
 
   render = () => (
-    <AppBar 
-      position="absolute" 
+    <AppBar
+      position="absolute"
       className={clsx(
-        this.props.classes.appBar, 
-        this.props.isOpen && this.props.classes.appBarShift)}>
+        this.props.classes.appBar,
+        this.props.isOpen && this.props.classes.appBarShift
+      )}
+    >
       <Toolbar className={this.props.classes.toolbar}>
-        <IconButton 
-          edge="start" 
-          color="inherit" 
-          aria-label="menu" 
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="menu"
           onClick={this.props.onMenuOpen}
           className={clsx(
-            this.props.classes.menuButton, 
-            this.props.isOpen && this.props.classes.menuButtonHidden)}>
+            this.props.classes.menuButton,
+            this.props.isOpen && this.props.classes.menuButtonHidden
+          )}
+        >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" color="inherit" 
-          className={this.props.classes.title}>
+        <Typography
+          variant="h6"
+          color="inherit"
+          className={this.props.classes.title}
+        >
           Necro Automobilia
         </Typography>
         {this.renderAccount()}
         {this.renderMenu()}
       </Toolbar>
     </AppBar>
-  )
+  );
 }
 
 export default withStyles(styles)(HeaderPanel);

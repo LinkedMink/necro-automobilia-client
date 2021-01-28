@@ -1,23 +1,23 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 class ConfirmDialog extends React.Component {
   handleNo = () => {
     if (this.props.confirmNo) {
       this.props.confirmNo();
     }
-  }
+  };
 
   handleYes = () => {
     if (this.props.confirmYes) {
       this.props.confirmYes();
     }
-  }
+  };
 
   render = () => {
     return (
@@ -25,10 +25,9 @@ class ConfirmDialog extends React.Component {
         open={this.props.show}
         onClose={this.handleClose}
         aria-labelledby="confirm-dialog-title"
-        aria-describedby="confirm-dialog-description">
-        <DialogTitle id="confirm-dialog-title">
-          Confirm
-        </DialogTitle>
+        aria-describedby="confirm-dialog-description"
+      >
+        <DialogTitle id="confirm-dialog-title">Confirm</DialogTitle>
         <DialogContent>
           <DialogContentText id="confirm-dialog-description">
             {this.props.text}
@@ -44,7 +43,7 @@ class ConfirmDialog extends React.Component {
         </DialogActions>
       </Dialog>
     );
-  }
+  };
 }
 
 export default ConfirmDialog;

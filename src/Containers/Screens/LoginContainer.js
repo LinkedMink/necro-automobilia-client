@@ -7,16 +7,16 @@ import { HttpMethods, getJsonResponse } from "../../Shared/RequestFactory";
 import LoginScreen from "../../Components/Screens/LoginScreen";
 import { saveSession } from "../../Actions/AccountAction";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    isLoggedIn: state.account.token ? true : false
+    isLoggedIn: state.account.token ? true : false,
   };
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     login: (email, password, rememberMe) => {
-      let requestData = { 
+      let requestData = {
         email,
         password,
       };
@@ -29,19 +29,23 @@ const mapDispatchToProps = (dispatch) => {
 
         var decoded = decodeToken(data.token);
         return dispatch(saveSession(data.token, decoded));
-      }
+      };
 
       return getJsonResponse(
-        dispatch, 
+        dispatch,
         Services.USER,
-        Routes[Services.USER].AUTHENTICATE, 
-        responseHandler, 
+        Routes[Services.USER].AUTHENTICATE,
+        responseHandler,
         HttpMethods.POST,
-        requestData);
-    }
+        requestData
+      );
+    },
   };
-}
+};
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+const LoginContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginScreen);
 
-export default LoginContainer
+export default LoginContainer;

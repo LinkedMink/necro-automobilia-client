@@ -1,4 +1,7 @@
-import { SAVE_LOCATION_QUERY, SAVE_TEST_QUERY } from '../Actions/AccidentAction';
+import {
+  SAVE_LOCATION_QUERY,
+  SAVE_TEST_QUERY,
+} from "../Actions/AccidentAction";
 
 const accidentReducer = (state = {}, action) => {
   if (action.type === SAVE_LOCATION_QUERY) {
@@ -8,6 +11,6 @@ const accidentReducer = (state = {}, action) => {
   } else {
     return state;
   }
-}
+};
 
 export default accidentReducer;

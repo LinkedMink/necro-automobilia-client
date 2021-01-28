@@ -2,11 +2,13 @@ import { connect } from "react-redux";
 
 import RouteAuth from "../Components/RouteAuth";
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.account.token ? true : false,
-    claims: state.account.decodedToken && state.account.decodedToken.claims 
-      ? state.account.decodedToken.claims : []
+    claims:
+      state.account.decodedToken && state.account.decodedToken.claims
+        ? state.account.decodedToken.claims
+        : [],
   };
 }
 

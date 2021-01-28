@@ -1,10 +1,10 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 import store from "../Store";
 
 let verifyKey;
 
-export const decodeToken = (token) => {
+export const decodeToken = token => {
   const state = store.getState();
   if (state.config.jwtPublicKey) {
     if (!verifyKey) {
@@ -15,4 +15,4 @@ export const decodeToken = (token) => {
   } else {
     return jwt.decode(token);
   }
-}
+};

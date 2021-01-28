@@ -1,8 +1,8 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   footerBox: {
@@ -15,12 +15,12 @@ class FooterPanel extends React.Component {
     return (
       <Box pt={4} className={this.props.classes.footerBox}>
         <Typography variant="body1" color="textSecondary" align="center">
-          {'Copyright © '}
+          {"Copyright © "}
           <Link color="inherit" href="#">
             Harlan Sang
-          </Link>{' '}
+          </Link>{" "}
           {new Date().getFullYear()}
-          {'.'}
+          {"."}
         </Typography>
       </Box>
     );

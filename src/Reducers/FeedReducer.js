@@ -1,4 +1,4 @@
-import { SAVE_FEED_EVENTS } from '../Actions/FeedAction';
+import { SAVE_FEED_EVENTS } from "../Actions/FeedAction";
 
 const feedReducer = (state = {}, action) => {
   if (action.type === SAVE_FEED_EVENTS) {
@@ -6,6 +6,6 @@ const feedReducer = (state = {}, action) => {
   } else {
     return state;
   }
-}
+};
 
 export default feedReducer;
