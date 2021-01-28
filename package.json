@@ -2,7 +2,7 @@
   "name": "necro-automobilia-client",
   "version": "0.2.0",
   "description": "TODO",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "author": {
     "name": "Harlan Sang",
     "email": "harlan@linkedmink.space"
@@ -13,8 +13,9 @@
   },
   "private": true,
   "scripts": {
-    "start": "webpack serve --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "start": "webpack serve --config webpack.local.js",
+    "build": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js",
     "test": "jest",
     "lint": "eslint -c .eslintrc.js src/**/*.[tj]s{,x}",
     "format": "prettier --write src/**/*.[tj]s{,x} tests/**/*.[tj]s *.js{,on}",

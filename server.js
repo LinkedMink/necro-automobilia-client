@@ -18,7 +18,7 @@ const logLevelConsole = process.env.LOG_LEVEL_CONSOLE
   ? process.env.LOG_LEVEL_CONSOLE.toUpperCase()
   : "NONE";
 
-const logLevelPersist = process.env.LOG_LEVEL_CONSOLE
+const logLevelPersist = process.env.LOG_LEVEL_PERSIST
   ? process.env.LOG_LEVEL_PERSIST.toUpperCase()
   : "WARN";
 
@@ -35,6 +35,7 @@ app.get("/config", function (req, res) {
     logLevelConsole,
     logLevelPersist,
   });
+  res.status(200)
 });
 
 app.get("/*", function (req, res) {

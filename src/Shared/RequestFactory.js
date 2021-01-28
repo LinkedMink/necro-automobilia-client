@@ -68,7 +68,7 @@ const handleServiceResponse = (dispatch, requestSuccessFunc) => {
   return json => {
     if (json && json.status === ResponseCodes.SUCCESS) {
       dispatch(requestSuccessFunc(json.data));
-    } else if (json && json.status !== ResponseCodes.SUCCESS) {
+    } else if (json && json.status !== undefined && json.status !== ResponseCodes.SUCCESS) {
       dispatch(alertError(json.data));
     } else if (json) {
       dispatch(requestSuccessFunc(json));
