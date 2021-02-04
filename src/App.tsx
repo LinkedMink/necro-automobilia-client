@@ -16,13 +16,17 @@ import "./App.scss";
 
 type StyleClass = "root" | "appBarSpacer" | "content" | "container";
 
-interface AppProps {
-  isConfigLoaded: boolean;
-  isLoggedIn: boolean;
-  classes: Record<StyleClass, string>;
-  getConfig: () => void;
-  getAccount: () => void;
+export interface AppStateProps {
+  isConfigLoaded?: boolean;
+  isLoggedIn?: boolean;
 }
+
+export interface AppDispatchProps {
+  getConfig?: () => void;
+  getAccount?: () => void;
+}
+
+export type AppProps = AppStateProps & AppDispatchProps & { classes: Record<StyleClass, string> };
 
 interface AppState {
   isMenuOpen?: boolean;

@@ -12,4 +12,6 @@ export const DistanceUnit = {
   Miles: "Miles",
 };
 
-export const getDefaultSettings = setting => {};
+export const getDefaultSettings = (): void => {
+  return;
+};

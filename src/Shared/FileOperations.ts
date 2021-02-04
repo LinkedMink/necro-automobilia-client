@@ -1,9 +1,9 @@
 export const download = (
-  filename,
-  text,
+  filename: string,
+  text: string,
   mimeType = "text/plain",
   encoding = "utf-8"
-) => {
+): void => {
   const element = document.createElement("a");
   const data = encodeURIComponent(text);
   element.setAttribute("href", `data:${mimeType};charset=${encoding},${data}`);

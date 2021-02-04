@@ -1,27 +1,29 @@
 import store from "../Store";
 
-const LOG_ENTRY_DATE_LOCALE = "en-US";
+export enum LogLevel {
+  DEBUG = 0,
+  INFO = 1,
+  WARN = 2,
+  ERROR = 3,
+  NONE = 4,
+}
 
-export const LogLevel = {
-  DEBUG: 0,
-  INFO: 1,
-  WARN: 2,
-  ERROR: 3,
-  NONE: 4,
-};
-
-const logServiceMap = new Map();
-let logEntryBuffer = [];
+const logServiceMap = new Map<string, LogService>();
+let logEntryBuffer: string[] = [];
 
 export class LogService {
-  constructor(context) {
+  private readonly context: string;
+  private readonly levelConsole: number;
+  private readonly levelPersist: number;
+
+  constructor(context: string) {
     const state = store.getState();
     this.context = context;
-    this.levelConsole = LogLevel[state.config.logLevelConsole];
-    this.levelPersist = LogLevel[state.config.logLevelPersist];
+    this.levelConsole = state.config.logLevelConsole;
+    this.levelPersist = state.config.logLevelPersist;
   }
 
-  static get = context => {
+  static get = (context: string): LogService => {
     const service = logServiceMap.get(context);
     if (service) {
       return service;
@@ -32,56 +34,58 @@ export class LogService {
     return newService;
   };
 
-  static flushBuffer = () => {
+  static flushBuffer = (): void => {
     // TODO create and connect application log service for client side logging.
     logEntryBuffer = [];
   };
 
-  debug = object => {
+  debug = (object: string | Error | Record<string, unknown>): void => {
     const contextMessage = this.getContextMessage(object);
     if (this.levelConsole <= LogLevel.DEBUG) {
       console.debug(contextMessage);
     }
 
     if (this.levelPersist <= LogLevel.DEBUG) {
-      this.logToBuffer(contextMessage, "DEBUG");
+      this.logToBuffer(contextMessage, LogLevel.DEBUG);
     }
   };
 
-  info = object => {
+  info = (object: string | Error | Record<string, unknown>): void => {
     const contextMessage = this.getContextMessage(object);
     if (this.levelConsole <= LogLevel.INFO) {
       console.info(contextMessage);
     }
 
     if (this.levelPersist <= LogLevel.INFO) {
-      this.logToBuffer(contextMessage, "INFO");
+      this.logToBuffer(contextMessage, LogLevel.INFO);
     }
   };
 
-  warn = object => {
+  warn = (object: string | Error | Record<string, unknown>): void => {
     const contextMessage = this.getContextMessage(object);
     if (this.levelConsole <= LogLevel.WARN) {
       console.warn(contextMessage);
     }
 
     if (this.levelPersist <= LogLevel.WARN) {
-      this.logToBuffer(contextMessage, "WARN");
+      this.logToBuffer(contextMessage, LogLevel.WARN);
     }
   };
 
-  error = object => {
+  error = (object: string | Error | Record<string, unknown>): void => {
     const contextMessage = this.getContextMessage(object);
     if (this.levelConsole <= LogLevel.ERROR) {
       console.error(contextMessage);
     }
 
     if (this.levelPersist <= LogLevel.ERROR) {
-      this.logToBuffer(contextMessage, "ERROR");
+      this.logToBuffer(contextMessage, LogLevel.ERROR);
     }
   };
 
-  getContextMessage = object => {
+  getContextMessage = (
+    object: string | Error | Record<string, unknown>
+  ): string => {
     let output;
     if (object instanceof Error) {
       output = object.stack;
@@ -94,10 +98,8 @@ export class LogService {
     return `${this.context} - ${output}`;
   };
 
-  logToBuffer = (message, level) => {
-    const dateString = new Date(Date.UTC()).toLocaleString(
-      LOG_ENTRY_DATE_LOCALE
-    );
+  logToBuffer = (message: string, level: LogLevel): void => {
+    const dateString = new Date().toUTCString();
     logEntryBuffer.push(`${dateString}: ${level} - ${message}`);
   };
 }

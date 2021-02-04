@@ -1,4 +1,4 @@
-export const stateMap = new Map();
+export const stateMap = new Map<string, string>();
 
 stateMap.set("Alabama", "AL");
 stateMap.set("Alaska", "AK");

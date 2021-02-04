@@ -1,21 +1,35 @@
-import { connect } from "react-redux";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  connect,
+  MapDispatchToPropsFunction,
+  MapStateToProps,
+} from "react-redux";
+import { Dispatch } from "redux";
 
-import App from "./App";
+import App, { AppDispatchProps, AppStateProps } from "./App";
 import { StorageKey } from "./Constants/Storage";
 import { getJsonResponse } from "./Shared/RequestFactory";
-import { decodeToken } from "./Shared/DecodeToken";
 import { saveConfig } from "./Actions/ConfigAction";
 import { saveSession } from "./Actions/AccountAction";
 import { Routes, Services } from "./Constants/Service";
+import { RootState } from "./Reducers/RootReducer";
+import { decodeToken } from "./Shared/Token";
+import { alertError } from "./Actions/AlertAction";
+import { Account } from "./Constants/Message";
 
-const mapStateToProps = state => {
+const mapStateToProps: MapStateToProps<AppStateProps, unknown, RootState> = (
+  state: RootState
+) => {
   return {
     isConfigLoaded: state.config.urls ? true : false,
     isLoggedIn: state.account.token ? true : false,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps: MapDispatchToPropsFunction<
+  AppDispatchProps,
+  unknown
+> = (dispatch: Dispatch) => {
   return {
     getConfig: () => {
       if (process.env.LOCAL_CONFIG) {
@@ -24,7 +38,7 @@ const mapDispatchToProps = dispatch => {
         return;
       }
 
-      let responseHandler = data => {
+      const responseHandler = (data) => {
         return dispatch(saveConfig(data));
       };
 
@@ -37,10 +51,17 @@ const mapDispatchToProps = dispatch => {
     },
     getAccount: () => {
       const token = localStorage.getItem(StorageKey.JWT_TOKEN);
-      if (token) {
-        var decoded = decodeToken(token);
-        return dispatch(saveSession(token, decoded));
+      if (!token) {
+        return;
       }
+
+      const decoded = decodeToken(token);
+      if (decoded === null) {
+        localStorage.removeItem(StorageKey.JWT_TOKEN);
+        return dispatch(alertError(Account.SESSION_ERROR));
+      }
+
+      return dispatch(saveSession(token, decoded));
     },
   };
 };

@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    es6: true
   },
   parser: "@babel/eslint-parser",
   parserOptions: {
@@ -38,7 +39,7 @@ module.exports = {
       plugins: ["@typescript-eslint"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: "tsconfig.json",
+        project: ["tsconfig.json", "tsconfig.prod.json", "tsconfig.serve.json"],
         ecmaVersion: 2020,
         sourceType: "module",
         ecmaFeatures: {

@@ -1,33 +1,66 @@
-import { LogService } from "../Shared/LogService";
+import { LogService } from "./LogService";
+import { isArray } from "./TypeCheck";
 
 const logger = LogService.get("Validator");
 
-export const ValidationRule = {
-  REQUIRED: "REQUIRED",
-  EMAIL: "EMAIL",
-  LENGTH: "LENGTH",
-  RANGE: "RANGE",
-  COMPARE: "COMPARE",
-  JSON: "JSON",
-  FUNCTION: "FUNCTION",
-};
+export type ValidationRules<T, K extends keyof T = keyof T> = Record<
+  K,
+  FieldRules | never
+>;
 
-export const Comparison = {
-  GREATER: 0,
-  GREATER_OR_EQUAL: 1,
-  EQUAL: 2,
-  LESS_OR_EQUAL: 3,
-  LESS: 4,
-};
+export enum ValidationRuleType {
+  REQUIRED = "REQUIRED",
+  EMAIL = "EMAIL",
+  LENGTH = "LENGTH",
+  RANGE = "RANGE",
+  COMPARE = "COMPARE",
+  JSON = "JSON",
+  FUNCTION = "FUNCTION",
+}
+
+export type ValidationRule =
+  | ValidationRuleType
+  | [ValidationRuleType, ...unknown[]];
+
+export interface FieldRules {
+  label: string;
+  rules: ValidationRule[];
+}
+
+export interface FieldResult {
+  isInvalid: boolean;
+  message: string;
+}
+
+export interface ValidationResult<T, K extends keyof T = keyof T> {
+  isValid: boolean;
+  errors: Record<K, FieldResult | never>;
+}
+
+export interface FormComponentState<T, K extends keyof T = keyof T> {
+  [key: string]: unknown;
+  isValid?: boolean;
+  errors: Record<K, FieldResult | never>;
+}
+
+export enum Comparison {
+  GREATER = 0,
+  GREATER_OR_EQUAL = 1,
+  EQUAL = 2,
+  LESS_OR_EQUAL = 3,
+  LESS = 4,
+}
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export class Validator {
-  constructor(rules) {
-    this.rules = rules;
-  }
+export const hasValidationErrors = <T, K extends keyof T = keyof T>(
+  errors: Record<K, FieldResult | never>
+): boolean => Object.keys(errors).some((e) => errors[e].isInvalid);
 
-  getDefaultErrorState = () => {
+export class Validator<T, K extends keyof T = keyof T> {
+  constructor(private readonly rules: ValidationRules<T, K>) {}
+
+  getDefaultErrorState = (): Record<string, FieldResult> => {
     const errorState = {};
     for (const [property] of Object.entries(this.rules)) {
       errorState[property] = {
@@ -38,13 +71,14 @@ export class Validator {
     return errorState;
   };
 
-  validate = state => {
+  validate = (fields: T): ValidationResult<T, K> => {
     let isValid = true;
-    const errors = {};
+    const errors = {} as Record<K, FieldResult | never>;
 
-    for (const [property, ruleSet] of Object.entries(this.rules)) {
-      for (let i = 0; i < ruleSet.rules.length; i++) {
-        const error = this.validateRule(property, ruleSet.rules[i], state);
+    for (const [property, fieldRules] of Object.entries(this.rules)) {
+      const field = fieldRules as FieldRules;
+      for (let i = 0; i < field.rules.length; i++) {
+        const error = this.validateRule(property, field.rules[i], fields);
         if (error) {
           errors[property] = { isInvalid: true, message: error };
           isValid = false;
@@ -60,31 +94,33 @@ export class Validator {
     return { isValid, errors };
   };
 
-  validateRule = (property, rule, state) => {
+  validateRule = (
+    property: string,
+    rule: ValidationRule,
+    fields: T
+  ): string | void => {
     const label = this.rules[property].label;
-    const value = state[property];
-    let ruleType = rule;
-    if (Array.isArray(rule)) {
-      ruleType = rule[0];
-    }
+    const value = fields[property];
+    const ruleType = isArray(rule) ? rule[0] : rule;
 
-    let min, max;
     switch (ruleType) {
-      case ValidationRule.REQUIRED:
+      case ValidationRuleType.REQUIRED: {
         if (value === undefined || value === null || value === "") {
           return `${label} is required`;
         }
         return;
-      case ValidationRule.EMAIL:
+      }
+      case ValidationRuleType.EMAIL: {
         if (typeof value !== "string" || value.trim() === "") return;
         if (!EMAIL_REGEX.test(value)) {
           return `${label} must be an email address`;
         }
         return;
-      case ValidationRule.LENGTH:
+      }
+      case ValidationRuleType.LENGTH: {
         if (typeof value !== "string" || value.trim() === "") return;
-        min = rule[1];
-        max = rule[2];
+        const min = rule[1] as number;
+        const max = rule[2] as number;
         if (min !== undefined && value.length < min) {
           return `${label} must be longer than ${min} characters`;
         }
@@ -92,10 +128,11 @@ export class Validator {
           return `${label} must be shorter than ${max} characters`;
         }
         return;
-      case ValidationRule.RANGE:
+      }
+      case ValidationRuleType.RANGE: {
         if (typeof value !== "string" || value.trim() === "") return;
-        min = rule[1];
-        max = rule[2];
+        const min = rule[1] as number;
+        const max = rule[2] as number;
         if (min !== undefined && Number(value) < min) {
           return `${label} must be greater than ${min}`;
         }
@@ -103,10 +140,11 @@ export class Validator {
           return `${label} must be less than ${max}`;
         }
         return;
-      case ValidationRule.COMPARE:
-        const compareProperty = rule[1];
-        const order = rule[2] ? rule[2] : Comparison.EQUAL;
-        const compareTo = state[compareProperty];
+      }
+      case ValidationRuleType.COMPARE: {
+        const compareProperty = rule[1] as string;
+        const order = rule[2] ? (rule[2] as Comparison) : Comparison.EQUAL;
+        const compareTo = fields[compareProperty];
 
         if (value !== compareTo) {
           if (order === Comparison.EQUAL) {
@@ -127,7 +165,8 @@ export class Validator {
           }
         }
         return;
-      case ValidationRule.JSON:
+      }
+      case ValidationRuleType.JSON: {
         if (value.trim() === "") return;
         try {
           JSON.parse(value);
@@ -135,12 +174,15 @@ export class Validator {
           return `${label} must be valid JSON`;
         }
         return;
-      case ValidationRule.FUNCTION:
-        const validateFunction = rule[1];
+      }
+      case ValidationRuleType.FUNCTION: {
+        const validateFunction = rule[1] as () => string;
         return validateFunction();
-      default:
+      }
+      default: {
         logger.warn(`Validation rule not supported: ${ruleType}`);
         return;
+      }
     }
   };
 }

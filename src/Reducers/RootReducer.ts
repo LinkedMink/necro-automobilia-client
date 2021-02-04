@@ -9,7 +9,7 @@ import feed from "./FeedReducer";
 import loading from "./LoadingReducer";
 import route from "./RouteReducer";
 
-const rootReducer = combineReducers({
+const rootMap = {
   accident,
   account,
   alert,
@@ -18,6 +18,10 @@ const rootReducer = combineReducers({
   feed,
   loading,
   route,
-});
+};
+
+const rootReducer = combineReducers(rootMap);
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default rootReducer;

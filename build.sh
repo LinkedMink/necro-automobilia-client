@@ -18,9 +18,11 @@ fi
 
 if [ "$2" = "prod" ]; then
   npm run build:prod
+  npm run build:serve:prod
   DOCKER_ARGS="--build-arg ENVIRONMENT=production"
 else
   npm run build
+  npm run build:serve
 fi
 
 if [ "$1" = "deploy" ]; then
